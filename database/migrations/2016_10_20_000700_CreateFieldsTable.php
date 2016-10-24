@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSourcesTable extends Migration
+class CreateFieldsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,10 @@ class CreateSourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pkg_backup_sources', function (Blueprint $table) {
+        Schema::create('pkg_backup_fields', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('name');
-            $table->unique('name');
-            $table->string('ext');
 
             $table->integer('handler_id')
                 ->unsigned();
@@ -37,6 +35,6 @@ class CreateSourcesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pkg_backup_sources');
+        Schema::drop('pkg_backup_fields');
     }
 }

@@ -12,23 +12,25 @@ class CopyBackupToDest
 implements Queue\ShouldQueue
 {
     /**
-     * @var Backup\BackupToFileService
+     * @var DestService
      */
     protected $service;
 
     /**
-     * @param Backup\BackupToFileService $service
+     * @param DestService $service
      */
-    public function __construct(Backup\BackupToFileService $service)
+    public function __construct(DestService $service)
     {
         $this->service = $service;
     }
 
     /**
      * @param Backup\Events\BackupEvent $event
+     *
+     * @throws CopyToDestFailed
      */
     public function handle(Backup\Events\BackupEvent $event)
     {
-        $this->service->backup($event->target);
+        $this->service->copy($event->target);
     }
 }

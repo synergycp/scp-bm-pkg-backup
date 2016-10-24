@@ -1,6 +1,6 @@
 <?php
 
-namespace Packages\Backup\App\Backup\File\Handler;
+namespace Packages\Backup\App\Backup\Source\Handler;
 
 use Packages\Backup\App\Backup;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Packages\Backup\App\Backup\Dest;
+namespace Packages\Backup\App\Backup\File;
 
 use Packages\Backup\App\Backup;
 
-class CopiedBackupToDest
+class FileDeleted
 extends Backup\Events\BackupEvent
 {
 }

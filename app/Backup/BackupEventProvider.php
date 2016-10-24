@@ -14,14 +14,30 @@ extends EventServiceProvider
     protected $listen = [
         Events\BackupCreated::class => [
             EventLogger::class,
-            Listeners\BackupStart::class,
+            File\BackupToFile::class,
+        ],
+        Events\BackupCompleted::class => [
+            EventLogger::class,
+            MarkBackupStatus::class,
         ],
         Events\BackupFailed::class => [
             EventLogger::class,
+            MarkBackupStatus::class,
         ],
-        Events\BackupFileCreated::class => [
-            EventLogger::class,
+
+        File\FileCompressing::class => [
+            MarkBackupStatus::class,
+        ],
+        File\FileCreated::class => [
             Dest\CopyBackupToDest::class,
+        ],
+        File\FileDeleted::class => [
+            FireBackupCompleted::class,
+        ],
+
+        Dest\CopyingBackupToDest::class => [
+            EventLogger::class,
+            MarkBackupStatus::class,
         ],
         Dest\CopiedBackupToDest::class => [
             File\DeleteLocal::class,

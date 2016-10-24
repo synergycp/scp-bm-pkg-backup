@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBackupsTable extends Migration
+class CreateHandlersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,17 @@ class CreateBackupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pkg_backup_backups', function (Blueprint $table) {
+        Schema::create('pkg_backup_handlers', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->string('name');
+            $table->unique('name');
+
+            $table->text('class');
+
+            $table->tinyInteger('type');
+            $table->index('type');
+
             $table->timestamps();
         });
     }
@@ -25,6 +34,6 @@ class CreateBackupsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pkg_backup_backups');
+        Schema::drop('pkg_backup_handlers');
     }
 }

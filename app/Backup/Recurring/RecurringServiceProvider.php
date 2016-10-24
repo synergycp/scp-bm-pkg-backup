@@ -1,21 +1,18 @@
 <?php
 
-namespace Packages\Backup\App\Backup;
+namespace Packages\Backup\App\Backup\Recurring;
 
 use Illuminate\Support\ServiceProvider;
 
-class BackupServiceProvider
+class RecurringServiceProvider
 extends ServiceProvider
 {
     /**
      * @var array
      */
     protected $providers = [
-        BackupEventProvider::class,
-
-        Dest\DestServiceProvider::class,
-        Source\SourceServiceProvider::class,
-        Recurring\RecurringServiceProvider::class,
+        RecurringEventProvider::class,
+        RecurringCommandProvider::class,
     ];
 
     /**

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSourcesTable extends Migration
+class CreateFieldValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,19 +12,19 @@ class CreateSourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pkg_backup_sources', function (Blueprint $table) {
+        Schema::create('pkg_backup_field_values', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('name');
-            $table->unique('name');
-            $table->string('ext');
-
-            $table->integer('handler_id')
+            $table->integer('field_id')
                 ->unsigned();
-            $table->foreign('handler_id')
+            $table->foreign('field_id')
                 ->references('id')
-                ->on('pkg_backup_handlers')
+                ->on('pkg_backup_fields')
                 ;
+
+            $table->morphs('parent');
+
+            $table->text('value');
 
             $table->timestamps();
         });
@@ -37,6 +37,6 @@ class CreateSourcesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pkg_backup_sources');
+        Schema::drop('pkg_backup_field_values');
     }
 }

@@ -11,7 +11,7 @@ extends \App\Support\Event
     /**
      * @var Backup\Backup
      */
-    protected $target;
+    public $target;
 
     /**
      * @param Backup\Backup $target

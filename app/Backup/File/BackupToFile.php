@@ -1,6 +1,6 @@
 <?php
 
-namespace Packages\Backup\App\Backup\Listeners;
+namespace Packages\Backup\App\Backup\File;
 
 use Packages\Backup\App\Backup;
 use Illuminate\Contracts\Queue;
@@ -8,18 +8,18 @@ use Illuminate\Contracts\Queue;
 /**
  * Start a Backup.
  */
-class BackupStart
+class BackupToFile
 implements Queue\ShouldQueue
 {
     /**
-     * @var Backup\BackupToFileService
+     * @var FileService
      */
     protected $service;
 
     /**
-     * @param Backup\BackupToFileService $service
+     * @param FileService $service
      */
-    public function __construct(Backup\BackupToFileService $service)
+    public function __construct(FileService $service)
     {
         $this->service = $service;
     }
@@ -29,6 +29,6 @@ implements Queue\ShouldQueue
      */
     public function handle(Backup\Events\BackupEvent $event)
     {
-        $this->service->backup($event->target);
+        $this->service->save($event->target);
     }
 }

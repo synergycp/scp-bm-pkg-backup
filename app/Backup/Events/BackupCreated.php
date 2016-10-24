@@ -9,7 +9,7 @@ extends BackupLoggableEvent
 {
     public function log(Log\Log $log)
     {
-        $log->setDescription('Backup queued')
+        $log->setDesc('Backup queued')
             ->setTarget($this->target)
             ->save()
             ;

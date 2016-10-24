@@ -4,7 +4,9 @@ namespace Packages\Backup\App\Backup\File;
 
 use App\File;
 use Packages\Backup\App\Backup;
+use Packages\Backup\App\Backup\Source\Handler;
 use Illuminate\Contracts\Events;
+use Illuminate\Contracts\Config;
 
 /**
  * Handle the Business Logic behind turning a Backup into a File.
@@ -22,22 +24,38 @@ class FileService
     protected $event;
 
     /**
+     * @var Config\Repository
+     */
+    protected $config;
+
+    /**
      * @var Handler\HandlerService
      */
     protected $handler;
 
     /**
-     * @param File\FileManager       $event
+     * @var Backup\BackupService
+     */
+    protected $backup;
+
+    /**
+     * @param File\FileManager       $file
      * @param Events\Dispatcher      $event
+     * @param Config\Repository      $config
+     * @param Backup\BackupService   $backup
      * @param Handler\HandlerService $handler
      */
     public function __construct(
         File\FileManager $file,
         Events\Dispatcher $event,
+        Config\Repository $config,
+        Backup\BackupService $backup,
         Handler\HandlerService $handler
     ) {
         $this->file = $file;
         $this->event = $event;
+        $this->config = $config;
+        $this->backup = $backup;
         $this->handler = $handler;
     }
 
@@ -49,12 +67,20 @@ class FileService
     public function save(Backup\Backup $backup)
     {
         try {
+            $this->event->fire(
+                new FileCompressing($backup)
+            );
+
             $this->handler
-                ->get($backup->target)
+                ->get($backup->source)
                 ->handle($backup, $this->tempFile($backup))
                 ;
+
+            $this->event->fire(
+                new FileCreated($backup)
+            );
         } catch (\Exception $exc) {
-            $this->failed($backup, $exc);
+            $this->backup->failed($backup, $exc);
 
             throw $exc;
         }
@@ -65,26 +91,25 @@ class FileService
      */
     public function delete(Backup\Backup $backup)
     {
-        $this->file->delete(
-            $this->tempFile($backup)
-        );
+        try {
+            $this->file->delete(
+                $this->tempFile($backup)
+            );
+
+            $this->event->fire(
+                new FileDeleted($backup)
+            );
+        } catch (\Exception $exc) {
+            $this->backup->failed($backup, $exc);
+
+            throw $exc;
+        }
     }
 
     /**
      * @param Backup\Backup $backup
-     * @param \Exception    $exc
      */
-    public function failed(Backup\Backup $backup, \Exception $exc)
-    {
-        $this->event->fire(
-            new Backup\Events\BackupFailed($backup, $exc)
-        );
-    }
-
-    /**
-     * @param Backup\Backup $backup
-     */
-    protected function tempFile(Backup\Backup $backup)
+    public function tempFile(Backup\Backup $backup)
     {
         return $this->tempDir().$backup->id;
     }
@@ -94,6 +119,6 @@ class FileService
      */
     protected function tempDir()
     {
-        throw new \Exception('TODO: tempDir');
+        return $this->config->get('app.tmp').'/backup/';
     }
 }

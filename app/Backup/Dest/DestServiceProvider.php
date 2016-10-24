@@ -1,21 +1,16 @@
 <?php
 
-namespace Packages\Backup\App\Backup;
+namespace Packages\Backup\App\Backup\Dest;
 
 use Illuminate\Support\ServiceProvider;
 
-class BackupServiceProvider
+class DestServiceProvider
 extends ServiceProvider
 {
     /**
      * @var array
      */
     protected $providers = [
-        BackupEventProvider::class,
-
-        Dest\DestServiceProvider::class,
-        Source\SourceServiceProvider::class,
-        Recurring\RecurringServiceProvider::class,
     ];
 
     /**
@@ -23,6 +18,18 @@ extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(Handler\HandlerService::class);
+
         collect($this->providers)->each(_one([$this->app, 'register']));
+    }
+
+    /**
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            Handler\HandlerService::class,
+        ];
     }
 }
