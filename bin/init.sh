@@ -12,13 +12,14 @@ case $MODE in
 2)
     cd $MAIN_DIR
     php artisan migrate --force --path=$REL_DIR/database/migrations
-
+    ;;
+5)
     cd $DIR/admin
     npm install && gulp prod build
 
     cd $DIR/client
     npm install && gulp prod build
-
-    cd $DIR
     ;;
 esac
+
+cd $DIR
