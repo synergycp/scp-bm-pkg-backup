@@ -33,7 +33,7 @@ extends Command
     }
 
     /**
-     * @return
+     * Run the Command.
      */
     public function handle()
     {

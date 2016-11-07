@@ -89,6 +89,9 @@ implements Backup\Source\Handler\Handler
             '--quick',
             // The database that is getting exported.
             $database,
+
+            // Pipe the output through gzip
+            '| gzip -9',
         ];
 
         return implode(' ', $arguments);
