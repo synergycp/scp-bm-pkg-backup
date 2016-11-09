@@ -29,7 +29,7 @@ implements Backup\Source\Handler\Handler
     /**
      * @param Shell\Shell               $shell
      * @param Backup\Field\ValueService $value
-     */
+     */8
     public function __construct(
         Shell\Shell $shell,
         Backup\Field\ValueService $value
@@ -49,6 +49,8 @@ implements Backup\Source\Handler\Handler
 
     /**
      * @param string $tempFile
+     *
+     * @throws \Exception
      */
     protected function makeOutputDir($tempFile)
     {
@@ -61,6 +63,8 @@ implements Backup\Source\Handler\Handler
     /**
      * @param Backup\Backup $backup
      * @param string        $tempFile
+     *
+     * @throws \Exception
      */
     protected function dump(Backup\Backup $backup, $tempFile)
     {
