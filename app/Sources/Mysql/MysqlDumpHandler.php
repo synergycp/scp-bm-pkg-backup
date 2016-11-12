@@ -89,12 +89,11 @@ implements Backup\Source\Handler\Handler
             // --defaults-file option must be the first option.
             '--defaults-file=$(bash -c "echo ~")/.my.cnf',
             // Efficient, exact MyISAM backups.
-            '--single-transaction',
-            '--quick',
+            '--single-transaction --quick',
             // The database that is getting exported.
             $database,
 
-            // Pipe the output through gzip
+            // Pipe the output through gzip with maximum compression
             '| gzip -9',
         ];
 
