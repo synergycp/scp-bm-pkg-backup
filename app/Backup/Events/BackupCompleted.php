@@ -14,7 +14,7 @@ implements Backup\Events\BackupStatusChangeEvent
     /**
      * @var int
      */
-    protected $status = Backup\BackupStatus::FINISHED;
+    protected $status = Backup\ArchiveStatus::FINISHED;
 
     public function log(Log\Log $log)
     {

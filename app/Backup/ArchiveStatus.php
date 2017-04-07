@@ -2,7 +2,7 @@
 
 namespace Packages\Backup\App\Backup;
 
-interface BackupStatus
+interface ArchiveStatus
 {
     /**
      * @var int

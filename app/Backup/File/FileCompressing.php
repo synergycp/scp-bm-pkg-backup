@@ -13,5 +13,5 @@ implements Backup\Events\BackupStatusChangeEvent
     /**
      * @var int
      */
-    protected $status = Backup\BackupStatus::COMPRESS;
+    protected $status = Backup\ArchiveStatus::COMPRESS;
 }

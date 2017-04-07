@@ -34,7 +34,7 @@ class FileService
     protected $handler;
 
     /**
-     * @var Backup\BackupService
+     * @var Backup\ArchiveService
      */
     protected $backup;
 
@@ -42,14 +42,14 @@ class FileService
      * @param File\FileManager       $file
      * @param Events\Dispatcher      $event
      * @param Config\Repository      $config
-     * @param Backup\BackupService   $backup
+     * @param Backup\ArchiveService   $backup
      * @param Handler\HandlerService $handler
      */
     public function __construct(
         File\FileManager $file,
         Events\Dispatcher $event,
         Config\Repository $config,
-        Backup\BackupService $backup,
+        Backup\ArchiveService $backup,
         Handler\HandlerService $handler
     ) {
         $this->file = $file;
@@ -60,11 +60,11 @@ class FileService
     }
 
     /**
-     * @param Backup\Backup $backup
+     * @param Backup\Archive $backup
      *
      * @throws \Exception
      */
-    public function save(Backup\Backup $backup)
+    public function save(Backup\Archive $backup)
     {
         try {
             $this->event->fire(
@@ -87,9 +87,9 @@ class FileService
     }
 
     /**
-     * @param Backup\Backup $backup
+     * @param Backup\Archive $backup
      */
-    public function delete(Backup\Backup $backup)
+    public function delete(Backup\Archive $backup)
     {
         try {
             $this->file->delete(
@@ -107,9 +107,9 @@ class FileService
     }
 
     /**
-     * @param Backup\Backup $backup
+     * @param Backup\Archive $backup
      */
-    public function tempFile(Backup\Backup $backup)
+    public function tempFile(Backup\Archive $backup)
     {
         return $this->tempDir().$backup->id;
     }

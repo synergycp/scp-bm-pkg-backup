@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Backup;
 /**
  * Mark the status of a Backup based on a BackupStatusChange.
  */
-class MarkBackupStatus
+class MarkArchiveStatus
 {
     /**
      * @param Events\BackupStatusChangeEvent $event

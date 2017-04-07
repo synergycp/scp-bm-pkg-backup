@@ -14,7 +14,7 @@ implements Backup\Events\BackupStatusChangeEvent
     /**
      * @var int
      */
-    protected $status = Backup\BackupStatus::FAILED;
+    protected $status = Backup\ArchiveStatus::FAILED;
 
     /**
      * @var \Exception
@@ -22,11 +22,11 @@ implements Backup\Events\BackupStatusChangeEvent
     protected $exc;
 
     /**
-     * @param Backup\Backup $target
+     * @param Backup\Archive $target
      * @param \Exception    $exc
      */
     public function __construct(
-        Backup\Backup $target,
+        Backup\Archive $target,
         \Exception $exc
     ) {
         parent::__construct($target);

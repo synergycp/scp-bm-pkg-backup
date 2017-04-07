@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Backup;
 use App\Support\EventServiceProvider;
 use App\Log\EventLogger;
 
-class BackupEventProvider
+class ArchiveEventProvider
 extends EventServiceProvider
 {
     /**
@@ -18,26 +18,26 @@ extends EventServiceProvider
         ],
         Events\BackupCompleted::class => [
             EventLogger::class,
-            MarkBackupStatus::class,
+            MarkArchiveStatus::class,
         ],
         Events\BackupFailed::class => [
             EventLogger::class,
-            MarkBackupStatus::class,
+            MarkArchiveStatus::class,
         ],
 
         File\FileCompressing::class => [
-            MarkBackupStatus::class,
+            MarkArchiveStatus::class,
         ],
         File\FileCreated::class => [
             Dest\CopyBackupToDest::class,
         ],
         File\FileDeleted::class => [
-            FireBackupCompleted::class,
+            FireArchiveCompleted::class,
         ],
 
         Dest\CopyingBackupToDest::class => [
             EventLogger::class,
-            MarkBackupStatus::class,
+            MarkArchiveStatus::class,
         ],
         Dest\CopiedBackupToDest::class => [
             File\DeleteLocal::class,

@@ -11,7 +11,7 @@ use Illuminate\Contracts\Events;
 class DestService
 {
     /**
-     * @var Backup\BackupService
+     * @var Backup\ArchiveService
      */
     protected $backup;
 
@@ -32,13 +32,13 @@ class DestService
 
     /**
      * @param Events\Dispatcher       $event
-     * @param Backup\BackupService    $backup
+     * @param Backup\ArchiveService    $backup
      * @param Handler\HandlerService  $handler
      * @param Backup\File\FileService $file
      */
     public function __construct(
         Events\Dispatcher $event,
-        Backup\BackupService $backup,
+        Backup\ArchiveService $backup,
         Handler\HandlerService $handler,
         Backup\File\FileService $file
     ) {
@@ -51,11 +51,11 @@ class DestService
     /**
      * Copy the Backup to the Destination.
      *
-     * @param Backup\Backup $backup
+     * @param Backup\Archive $backup
      *
      * @throws CopyToDestFailed
      */
-    public function copy(Backup\Backup $backup)
+    public function copy(Backup\Archive $backup)
     {
         try {
             $this->event->fire(
@@ -88,11 +88,11 @@ class DestService
     /**
      * Delete the Backup off of the Destination.
      *
-     * @param Backup\Backup $backup
+     * @param Backup\Archive $backup
      *
      * @throws DeleteFromDestFailed
      */
-    public function delete(Backup\Backup $backup)
+    public function delete(Backup\Archive $backup)
     {
         try {
             $this->handler

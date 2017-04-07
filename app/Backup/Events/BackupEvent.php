@@ -9,14 +9,14 @@ class BackupEvent
 extends \App\Support\Event
 {
     /**
-     * @var Backup\Backup
+     * @var Backup\Archive
      */
     public $target;
 
     /**
-     * @param Backup\Backup $target
+     * @param Backup\Archive $target
      */
-    public function __construct(Backup\Backup $target)
+    public function __construct(Backup\Archive $target)
     {
         $this->target = $target;
     }

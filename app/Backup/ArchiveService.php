@@ -7,7 +7,7 @@ use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 /**
  * Handle the Business Logic for Backups.
  */
-class BackupService
+class ArchiveService
 {
     /**
      * @var EventDispatcher
@@ -15,17 +15,17 @@ class BackupService
     protected $event;
 
     /**
-     * @var BackupRepository
+     * @var ArchiveRepository
      */
     protected $backups;
 
     /**
      * @param EventDispatcher  $event
-     * @param BackupRepository $backups
+     * @param ArchiveRepository $backups
      */
     public function __construct(
         EventDispatcher $event,
-        BackupRepository $backups
+        ArchiveRepository $backups
     ) {
         $this->event = $event;
         $this->backups = $backups;
@@ -36,7 +36,7 @@ class BackupService
      * @param Dest\Dest           $dest
      * @param Recurring\Recurring $recurring
      *
-     * @return Backup
+     * @return Archive
      */
     public function create(
         Source\Source $source,
@@ -59,10 +59,10 @@ class BackupService
     }
 
     /**
-     * @param Backup     $backup
+     * @param Archive     $backup
      * @param \Exception $exc
      */
-    public function failed(Backup $backup, \Exception $exc)
+    public function failed(Archive $backup, \Exception $exc)
     {
         $this->event->fire(
             new Events\BackupFailed($backup, $exc)

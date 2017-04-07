@@ -5,15 +5,19 @@ namespace Packages\Backup\App\Backup;
 use App\Database\Models\Model;
 use Illuminate\Database\Eloquent\Relations;
 
-class Backup
-extends Model
+class Archive
+    extends Model
 {
-    use Backupable;
+    use Archivable;
 
     public $table = 'pkg_backup_backups';
     public $attributes = [
-        'status' => BackupStatus::QUEUED,
+        'status' => ArchiveStatus::QUEUED,
     ];
+
+    protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    public static $controller = 'pkg.backup.archive';
 
     /**
      * @return Relations\BelongsTo

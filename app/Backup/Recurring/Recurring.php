@@ -9,7 +9,7 @@ use Packages\Backup\App\Backup;
 class Recurring
 extends Model
 {
-    use Backup\Backupable;
+    use Backup\Archivable;
 
     public $table = 'pkg_backup_recurring_backups';
 

@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Backup;
 
+use App\Support\ClassMap;
 use Illuminate\Support\ServiceProvider;
 
 class BackupServiceProvider
@@ -11,7 +12,8 @@ extends ServiceProvider
      * @var array
      */
     protected $providers = [
-        BackupEventProvider::class,
+        ArchiveEventProvider::class,
+        ArchiveRoutesProvider::class,
 
         Dest\DestServiceProvider::class,
         Source\SourceServiceProvider::class,
@@ -23,6 +25,18 @@ extends ServiceProvider
      */
     public function register()
     {
-        collect($this->providers)->each(_one([$this->app, 'register']));
+        collect($this->providers)->each(function ($provider) {
+            $this->app->register($provider);
+        });
+    }
+
+    /**
+     * Boot the Backup Service Feature.
+     *
+     * @param ClassMap $classMap
+     */
+    public function boot(ClassMap $classMap)
+    {
+        $classMap->map('pkg.backup.archive', Archive::class);
     }
 }

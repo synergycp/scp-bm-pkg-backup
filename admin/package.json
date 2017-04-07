@@ -4,6 +4,7 @@
   "description": "Synergy Control Panel Backups Package Admin Front End",
   "author": "synergycontrolpanel",
   "devDependencies": {
+    "scp-angle": "git+ssh://git@github.com/cabloo/scp-angle.git",
     "scp-ng-gulp": "git+ssh://git@github.com/cabloo/scp-ng-gulp.git"
   },
   "scripts": {

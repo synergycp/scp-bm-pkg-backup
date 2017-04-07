@@ -4,7 +4,7 @@ namespace Packages\Backup\App\Backup;
 
 use Illuminate\Database\Eloquent\Relations;
 
-trait Backupable
+trait Archivable
 {
     /**
      * @return Relations\BelongsTo

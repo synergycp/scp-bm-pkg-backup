@@ -10,7 +10,7 @@ use Packages\Backup\App\Backup;
 trait HasBackupStatus
 {
     /**
-     * @return Backup\Backup
+     * @return Backup\Archive
      */
     public function target()
     {

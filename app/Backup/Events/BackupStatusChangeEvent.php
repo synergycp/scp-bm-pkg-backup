@@ -12,7 +12,7 @@ interface BackupStatusChangeEvent
     public function status();
 
     /**
-     * @return Backup\Backup
+     * @return Backup\Archive
      */
     public function target();
 }

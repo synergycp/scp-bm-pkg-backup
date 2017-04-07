@@ -4,7 +4,7 @@ namespace Packages\Backup\App\Backup;
 
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 
-class FireBackupCompleted
+class FireArchiveCompleted
 {
     /**
      * @var EventDispatcher

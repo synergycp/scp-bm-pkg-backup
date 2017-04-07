@@ -14,7 +14,7 @@ implements Backup\Events\BackupStatusChangeEvent
     /**
      * @var int
      */
-    protected $status = Backup\BackupStatus::COPYING;
+    protected $status = Backup\ArchiveStatus::COPYING;
 
     public function log(Log\Log $log)
     {
