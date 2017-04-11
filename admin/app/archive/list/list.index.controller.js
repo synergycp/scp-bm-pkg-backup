@@ -8,7 +8,7 @@
     /**
      * @ngInject
      */
-    function PkgBackupArchiveIndexCtrl(List, $stateParams, RouteHelpers) {
+    function PkgBackupArchiveIndexCtrl(List, $stateParams, RouteHelpers, ListFilter, $state) {
         var vm = this;
         var pkg = RouteHelpers.package('backup');
 
@@ -25,6 +25,12 @@
         };
 
         vm.list.load();
+
+        vm.filters = ListFilter(vm.list);
+        vm.filters.current.q = $state.params.q;
+        vm.filters.on('change', function () {
+            $state.go($state.current.name, vm.filters.current);
+        });
 
         activate();
 

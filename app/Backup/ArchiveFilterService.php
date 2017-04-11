@@ -55,12 +55,11 @@ class ArchiveFilterService extends FilterService
     public function query(Builder $query)
     {
         $this->prepare()->apply($query);
-        // Filter raw text search
-        if ($searchText = $this->request->input('q')) {
-            $query->search(
-                $this->search->search($searchText)
-            );
+
+        if ($this->request->exists('status')) {
+            $query->where('status', $this->request->input('status'));
         }
-        return $query;
+
+        return $query->orderBy('id', 'desc');
     }
 }

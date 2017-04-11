@@ -1,7 +1,13 @@
 {
   "list": {
     "TITLE": "Backup Archives",
-    "NONE": "There have been no archives of backup on your servers yet."
+    "NONE": "There have been no archives of backup on your servers yet.",
+    "filter": {
+      "status": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status..."
+      }
+    }
   },
   "heading": {
     "SOURCE": "Source",
