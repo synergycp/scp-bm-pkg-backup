@@ -10,7 +10,7 @@ class Archive
 {
     use Archivable;
 
-    public $table = 'pkg_backup_backups';
+    public $table = 'pkg_backup_archives';
     public $attributes = [
         'status' => ArchiveStatus::QUEUED,
     ];

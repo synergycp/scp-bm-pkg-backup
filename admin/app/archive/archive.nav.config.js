@@ -10,7 +10,6 @@
             refreshInterval: 10000,
         })
         .config(NavConfig)
-        .run(NavRun)
     ;
 
     /**
@@ -23,44 +22,4 @@
         ;
     }
 
-    /**
-     * @ngInject
-     */
-    function NavRun(PkgBackupArchiveNav, $interval, RouteHelpers, Auth) {
-        var $archives = RouteHelpers
-            .package('backup')
-            .api()
-            .all('archive');
-
-        var interval;
-
-        Auth.whileLoggedIn(startChecking, stopChecking);
-
-        ///////////
-
-        function startChecking() {
-            stopChecking();
-            load();
-
-            interval = $interval(load, PkgBackupArchiveNav.refreshInterval);
-        }
-
-        function stopChecking() {
-            if (interval) {
-                $interval.cancel(interval);
-            }
-        }
-
-        function load() {
-            return $archives
-                .getList({
-                    per_page: 1,
-                    pending_client: true,
-                })
-                .then(function (items) {
-                    PkgBackupArchiveNav.alert = items.meta.total;
-                    PkgBackupArchiveNav.group.syncAlerts();
-                });
-        }
-    }
 })();

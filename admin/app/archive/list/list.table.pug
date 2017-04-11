@@ -2,26 +2,26 @@ extends /resources/angle/pug/table-checkable
 
 block headings
     th.sortable(ng-if="table.showSource")
-        span(translate="archive.heading.SOURCE")
+        span(translate="pkg.backup.admin.archive.heading.SOURCE")
         sort(col="source_id")
     th.sortable(ng-if="table.showDestination")
-        span(translate="archive.heading.DESTINATION")
+        span(translate="pkg.backup.admin.archive.heading.DESTINATION")
         sort(col="destination_id")
     th.sortable(ng-if="table.showRecurring")
-        span(translate="archive.heading.RECURRING")
+        span(translate="pkg.backup.admin.archive.heading.RECURRING")
         sort(col="recurring_id")
     th.sortable(ng-if="table.showStatus")
-        span(translate="archive.heading.STATUS")
+        span(translate="pkg.backup.admin.archive.heading.STATUS")
         sort(col="status")
     th.sortable(ng-if="table.showCreatedAt")
-        span(translate="archive.heading.CREATED_AT")
+        span(translate="pkg.backup.admin.archive.heading.CREATED_AT")
         sort(col="created_at")
         th.sortable(ng-if="table.showUpdatedAt")
-            span(translate="archive.heading.UPDATED_AT")
+            span(translate="pkg.backup.admin.archive.heading.UPDATED_AT")
             sort(col="updated_at")
     th(
     ng-if="table.showActions"
-    translate="archive.heading.ACTIONS"
+    translate="pkg.backup.admin.archive.heading.ACTIONS"
     )
 
 block columns
@@ -43,11 +43,11 @@ block columns
     )
     td(
     ng-if="table.showCreatedAt"
-    ng-bind="row.created_at.date"
+    ng-bind="row.created_at"
     )
     td(
     ng-if="table.showUpdatedAt"
-    ng-bind="row.updated_at.date"
+    ng-bind="row.updated_at"
     )
     td(ng-if="table.showActions")
         .btn-group.btn-group-xs

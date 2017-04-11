@@ -9,6 +9,7 @@ use App\Api;
  */
 class ArchiveController extends Api\Controller
 {
+    use Api\Traits\CreateResource;
     use Api\Traits\ShowResource;
     use Api\Traits\ListResource;
     use Api\Traits\DeleteResource;
@@ -37,17 +38,17 @@ class ArchiveController extends Api\Controller
 
     /**
      * @param ArchiveRepository $items
+     * @param ArchiveTransformer $transform
      * @param ArchiveFilterService $filter
      * @param ArchiveUpdateService $update
      * @param ArchiveDeleteService $delete
-     * @param ArchiveTransformer $transform
      */
     public function boot(
         ArchiveRepository $items,
+        ArchiveTransformer $transform,
         ArchiveFilterService $filter,
         ArchiveUpdateService $update,
-        ArchiveDeleteService $delete,
-        ArchiveTransformer $transform
+        ArchiveDeleteService $delete
     ) {
         $this->items     = $items;
         $this->update    = $update;
