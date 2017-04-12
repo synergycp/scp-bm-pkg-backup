@@ -19,6 +19,7 @@ class ArchiveTransformer extends Transformer
         return $item->expose([
                 'id',
             ]) + [
+                'name'        => $this->itemSource($item) . ' - ' . $this->itemDestination($item) . ' (' . $this->itemStatus($item) . ')',
                 'created_at'  => $this->itemDateFormat($item->created_at),
                 'updated_at'  => $this->itemDateFormat($item->updated_at),
                 'source'      => $this->itemSource($item),

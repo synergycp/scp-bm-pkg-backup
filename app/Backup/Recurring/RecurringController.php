@@ -9,6 +9,7 @@ use App\Api;
  */
 class RecurringController extends Api\Controller
 {
+    use Api\Traits\CreateResource;
     use Api\Traits\ShowResource;
     use Api\Traits\ListResource;
     use Api\Traits\DeleteResource;

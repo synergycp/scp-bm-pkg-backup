@@ -6,5 +6,12 @@ use App\Http\Requests\ListRequest;
 
 class RecurringListRequest extends ListRequest
 {
-    public $orders = [];
+    public $orders = [
+        'source_id',
+        'destination_id',
+        'period',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
 }

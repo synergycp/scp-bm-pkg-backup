@@ -2,9 +2,10 @@
 
 namespace Packages\Backup\App\Backup;
 
+use App\Api\ApiAuthService;
 use Illuminate\Support\Collection;
 use App\Support\Http\DeleteService;
-use App\Api\ApiAuthService;
+use Packages\Backup\App\Backup\Events\BackupDeleted;
 
 class ArchiveDeleteService extends DeleteService
 {
@@ -27,25 +28,28 @@ class ArchiveDeleteService extends DeleteService
      */
     protected function afterDelete(Collection $items)
     {
-        $this->successItems('backup.deleted', $items);
+        $this->successItems('backup.archive.deleted', $items);
     }
 
     /**
-     * @param _STUB_ $item
+     * @param Archive $item
      */
     protected function delete($item)
     {
         $this->checkCanDelete($item);
         $item->delete();
-//        $this->queue(new Events\_STUB_Deleted($item));
+        $this->queue(new BackupDeleted($item));
     }
 
     /**
-     * @param _STUB_ $item
+     * @param Archive $item
      */
     protected function checkCanDelete(Archive $item)
     {
+        /* TODO: check status, throw Exception */
+
         if ($this->auth->is('admin')) {
+
         }
     }
 }

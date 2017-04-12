@@ -32,14 +32,10 @@
     "destination": {
       "LABEL": "Destination",
       "PLACEHOLDER": "Destination"
-    }
-  },
-  "modal":{
-    "delete":{
-      "TITLE":"Delete Archives",
-      "BODY":"Click \"Delete\" to permanently delete these Archives:",
-      "CANCEL":"Cancel",
-      "SUBMIT":"Delete"
+    },
+    "period": {
+      "LABEL": "Period",
+      "PLACEHOLDER": "Period"
     }
   }
 }

@@ -12,11 +12,10 @@
         var pkg = helper.package('backup');
         pkg
             .state('archive.list', {
-                url: '?search',
+                url: '',
                 title: 'Archives',
                 controller: 'PkgBackupArchiveIndexCtrl as vm',
                 templateUrl: pkg.asset('admin/archive/list/list.index.html'),
-                reloadOnSearch: false,
             })
         ;
     }

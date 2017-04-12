@@ -24,6 +24,9 @@ extends EventServiceProvider
             EventLogger::class,
             MarkArchiveStatus::class,
         ],
+        Events\BackupDeleted::class => [
+            EventLogger::class,
+        ],
 
         File\FileCompressing::class => [
             MarkArchiveStatus::class,
