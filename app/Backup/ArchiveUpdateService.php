@@ -37,7 +37,7 @@ class ArchiveUpdateService extends UpdateService
 
     public function afterCreate(Collection $items)
     {
-        $createEvent = $this->queueHandler(Events\BackupCreated::class);
+        $createEvent = $this->queueHandler(Events\ArchiveCreated::class);
 
         $this->successItems('backup.created', $items->each($createEvent));
     }

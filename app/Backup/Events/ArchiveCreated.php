@@ -4,12 +4,12 @@ namespace Packages\Backup\App\Backup\Events;
 
 use App\Log;
 
-class BackupDeleted
-extends BackupLoggableEvent
+class ArchiveCreated
+extends ArchiveLoggableEvent
 {
     public function log(Log\Log $log)
     {
-        $log->setDesc('Backup deleted')
+        $log->setDesc('Backup queued')
             ->setTarget($this->target)
             ->save()
             ;

@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Backup;
 use App\Api\ApiAuthService;
 use Illuminate\Support\Collection;
 use App\Support\Http\DeleteService;
-use Packages\Backup\App\Backup\Events\BackupDeleted;
+use Packages\Backup\App\Backup\Events\ArchiveDeleted;
 
 class ArchiveDeleteService extends DeleteService
 {
@@ -38,7 +38,7 @@ class ArchiveDeleteService extends DeleteService
     {
         $this->checkCanDelete($item);
         $item->delete();
-        $this->queue(new BackupDeleted($item));
+        $this->queue(new ArchiveDeleted($item));
     }
 
     /**

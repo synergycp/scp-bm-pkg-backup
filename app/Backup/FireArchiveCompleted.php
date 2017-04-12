@@ -20,12 +20,12 @@ class FireArchiveCompleted
     }
 
     /**
-     * @param Events\BackupEvent $event
+     * @param Events\ArchiveEvent $event
      */
-    public function handle(Events\BackupEvent $event)
+    public function handle(Events\ArchiveEvent $event)
     {
         $this->event->fire(
-            new Events\BackupCompleted($event->target)
+            new Events\ArchiveCompleted($event->target)
         );
     }
 }

@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Backup\Events;
 use Packages\Backup\App\Backup;
 
 abstract
-class BackupEvent
+class ArchiveEvent
 extends \App\Support\Event
 {
     /**

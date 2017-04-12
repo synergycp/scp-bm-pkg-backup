@@ -12,19 +12,19 @@ extends EventServiceProvider
      * @var array
      */
     protected $listen = [
-        Events\BackupCreated::class => [
+        Events\ArchiveCreated::class   => [
             EventLogger::class,
             File\BackupToFile::class,
         ],
-        Events\BackupCompleted::class => [
+        Events\ArchiveCompleted::class => [
             EventLogger::class,
             MarkArchiveStatus::class,
         ],
-        Events\BackupFailed::class => [
+        Events\ArchiveFailed::class    => [
             EventLogger::class,
             MarkArchiveStatus::class,
         ],
-        Events\BackupDeleted::class => [
+        Events\ArchiveDeleted::class   => [
             EventLogger::class,
         ],
 
@@ -38,11 +38,11 @@ extends EventServiceProvider
             FireArchiveCompleted::class,
         ],
 
-        Dest\CopyingBackupToDest::class => [
+        Dest\CopyingArchiveToDest::class => [
             EventLogger::class,
             MarkArchiveStatus::class,
         ],
-        Dest\CopiedBackupToDest::class => [
+        Dest\CopiedArchiveToDest::class  => [
             File\DeleteLocal::class,
         ],
     ];

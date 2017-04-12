@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Backup\Events;
 use Packages\Backup\App\Backup;
 
 /**
- * Implement the BackupStatusChangeEvent interface for a BackupEvent.
+ * Implement the ArchiveStatusChangeEvent interface for a ArchiveEvent.
  */
 trait HasBackupStatus
 {

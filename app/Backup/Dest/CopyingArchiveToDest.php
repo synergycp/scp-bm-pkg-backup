@@ -5,9 +5,9 @@ namespace Packages\Backup\App\Backup\Dest;
 use Packages\Backup\App\Backup;
 use App\Log;
 
-class CopyingBackupToDest
-extends Backup\Events\BackupLoggableEvent
-implements Backup\Events\BackupStatusChangeEvent
+class CopyingArchiveToDest
+extends Backup\Events\ArchiveLoggableEvent
+implements Backup\Events\ArchiveStatusChangeEvent
 {
     use Backup\Events\HasBackupStatus;
 

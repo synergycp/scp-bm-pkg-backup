@@ -52,7 +52,7 @@ class ArchiveService
         $backup->save();
 
         $this->event->fire(
-            new Events\BackupCreated($backup)
+            new Events\ArchiveCreated($backup)
         );
 
         return $backup;
@@ -65,7 +65,7 @@ class ArchiveService
     public function failed(Archive $backup, \Exception $exc)
     {
         $this->event->fire(
-            new Events\BackupFailed($backup, $exc)
+            new Events\ArchiveFailed($backup, $exc)
         );
     }
 }

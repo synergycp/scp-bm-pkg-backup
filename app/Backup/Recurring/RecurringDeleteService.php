@@ -5,6 +5,7 @@ namespace Packages\Backup\App\Backup\Recurring;
 use App\Api\ApiAuthService;
 use Illuminate\Support\Collection;
 use App\Support\Http\DeleteService;
+use Packages\Backup\App\Backup\Recurring\Events\RecurringDeleted;
 
 class RecurringDeleteService extends DeleteService
 {
@@ -36,6 +37,7 @@ class RecurringDeleteService extends DeleteService
     protected function delete($item)
     {
         $this->checkCanDelete($item);
+        $this->queue(new RecurringDeleted($item));
         $item->delete();
     }
 

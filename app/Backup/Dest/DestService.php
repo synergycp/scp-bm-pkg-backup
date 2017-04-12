@@ -59,7 +59,7 @@ class DestService
     {
         try {
             $this->event->fire(
-                new CopyingBackupToDest($backup)
+                new CopyingArchiveToDest($backup)
             );
 
             $tempFile = $this->file->tempFile($backup);
@@ -76,7 +76,7 @@ class DestService
                 ;
 
             $this->event->fire(
-                new CopiedBackupToDest($backup)
+                new CopiedArchiveToDest($backup)
             );
         } catch (\Exception $exc) {
             $this->backup->failed($backup, $exc);

@@ -5,8 +5,8 @@ namespace Packages\Backup\App\Backup\File;
 use Packages\Backup\App\Backup;
 
 class FileCompressing
-extends Backup\Events\BackupEvent
-implements Backup\Events\BackupStatusChangeEvent
+extends Backup\Events\ArchiveEvent
+implements Backup\Events\ArchiveStatusChangeEvent
 {
     use Backup\Events\HasBackupStatus;
 

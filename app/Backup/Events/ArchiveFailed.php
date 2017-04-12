@@ -5,9 +5,9 @@ namespace Packages\Backup\App\Backup\Events;
 use Packages\Backup\App\Backup;
 use App\Log;
 
-class BackupFailed
-extends BackupLoggableEvent
-implements Backup\Events\BackupStatusChangeEvent
+class ArchiveFailed
+extends ArchiveLoggableEvent
+implements Backup\Events\ArchiveStatusChangeEvent
 {
     use HasBackupStatus;
 

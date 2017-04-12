@@ -8,9 +8,9 @@ namespace Packages\Backup\App\Backup;
 class MarkArchiveStatus
 {
     /**
-     * @param Events\BackupStatusChangeEvent $event
+     * @param Events\ArchiveStatusChangeEvent $event
      */
-    public function handle(Events\BackupStatusChangeEvent $event)
+    public function handle(Events\ArchiveStatusChangeEvent $event)
     {
         $backup = $event->target;
         $backup->status = $event->status();
