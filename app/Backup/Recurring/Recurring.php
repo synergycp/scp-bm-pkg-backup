@@ -13,6 +13,11 @@ extends Model
 
     public $table = 'pkg_backup_recurring_backups';
 
+    public function __toString()
+    {
+        return "{$this->source->name} ({$this->period})";
+    }
+
     /**
      * @param Eloquent\Builder $query
      *

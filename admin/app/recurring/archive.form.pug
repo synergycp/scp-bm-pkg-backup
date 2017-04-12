@@ -1,0 +1,38 @@
+doctype html
+include /resources/angle/pug/mixins/form
+
++label("{{ 'pkg.backup.admin.recurring.form.source.LABEL' | translate }}")
+    .input-group
+        +ui-select("recurringForm.sources")(ng-model="recurringForm.input.source")
+            ui-select-match(placeholder="{{ 'pkg.backup.admin.recurring.form.source.PLACEHOLDER' | translate }}")
+                | {{ $select.selected.name }}
+            +ui-select-choices("recurringForm.sources")
+                span(ng-bind-html="choice.name | highlight: $select.search")
+        span.input-group-btn
+            button.btn.btn-default(
+            type="button"
+            ng-click="recurringForm.input.source = null"
+            )
+                span.fa.fa-times-circle
+
++label("{{ 'pkg.backup.admin.recurring.form.destination.LABEL' | translate }}")
+    .input-group
+        +ui-select("recurringForm.destinations")(ng-model="recurringForm.input.destination")
+            ui-select-match(placeholder="{{ 'pkg.backup.admin.recurring.form.destination.PLACEHOLDER' | translate }}")
+                | {{ $select.selected.name }}
+            +ui-select-choices("recurringForm.destinations")
+                span(ng-bind-html="choice.name | highlight: $select.search")
+        span.input-group-btn
+            button.btn.btn-default(
+            type="button"
+            ng-click="recurringForm.input.destination = null"
+            )
+                span.fa.fa-times-circle
+
++field(
+"{{ 'pkg.backup.admin.recurring.form.period.LABEL' | translate }}",
+"period"
+)(
+placeholder="{{ 'pkg.backup.admin.recurring.form.period.PLACEHOLDER' | translate }}"
+ng-model="recurringForm.input.period"
+)

@@ -19,12 +19,12 @@ class ArchiveTransformer extends Transformer
         return $item->expose([
                 'id',
             ]) + [
-                'name'        => $this->itemSource($item) . ' - ' . $this->itemDestination($item) . ' (' . $this->itemStatus($item) . ')',
+                'name'        => $this->itemSource($item),
                 'created_at'  => $this->itemDateFormat($item->created_at),
                 'updated_at'  => $this->itemDateFormat($item->updated_at),
                 'source'      => $this->itemSource($item),
                 'destination' => $this->itemDestination($item),
-                'recurring'   => $this->itemRecurring($item),
+                'recurring'   => $item->recurring->__toString(),
                 'status'      => $this->itemStatus($item)
             ];
     }

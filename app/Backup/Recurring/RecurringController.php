@@ -23,7 +23,14 @@ class RecurringController extends Api\Controller
      * @var RecurringFilterService
      */
     protected $filter;
-
+    /**
+     * @var RecurringUpdateService
+     */
+    protected $update;
+    /**
+     * @var RecurringDeleteService
+     */
+    protected $delete;
     /**
      * @var RecurringTransformer
      */
@@ -33,15 +40,21 @@ class RecurringController extends Api\Controller
      * @param RecurringRepository $items
      * @param RecurringFilterService $filter
      * @param RecurringTransformer $transform
+     * @param RecurringUpdateService $update
+     * @param RecurringDeleteService $delete
      */
     public function boot(
         RecurringRepository $items,
         RecurringFilterService $filter,
-        RecurringTransformer $transform
+        RecurringTransformer $transform,
+        RecurringUpdateService $update,
+        RecurringDeleteService $delete
     ) {
         $this->items     = $items;
         $this->transform = $transform;
         $this->filter    = $filter;
+        $this->update    = $update;
+        $this->delete    = $delete;
     }
 
     /**

@@ -12,8 +12,7 @@
   "heading": {
     "SOURCE": "Source",
     "DESTINATION": "Destination",
-    "RECURRING": "Recurring",
-    "STATUS": "Status",
+    "PERIOD": "Period",
     "CREATED_AT": "Created at",
     "UPDATED_AT": "Updated at",
     "ACTION": "Action"
@@ -36,6 +35,14 @@
     "period": {
       "LABEL": "Period",
       "PLACEHOLDER": "Period"
+    }
+  },
+  "modal":{
+    "delete":{
+      "TITLE":"Delete recurring backups",
+      "BODY":"Click \"Delete\" to permanently delete these recurring backups:",
+      "CANCEL":"Cancel",
+      "SUBMIT":"Delete"
     }
   }
 }

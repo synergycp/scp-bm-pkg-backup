@@ -32,6 +32,7 @@ class ArchiveUpdateService extends UpdateService
     {
         $item->source_id      = $this->request->input('source_id');
         $item->destination_id = $this->request->input('destination_id');
+        $item->recurring_id   = $this->request->input('recurring_id');
     }
 
     public function afterCreate(Collection $items)

@@ -15,7 +15,7 @@
             var pkg = RouteHelpers.package('backup');
             var list = List(pkg.api().all('archive'));
 
-            list.confirm = ListConfirm(list, 'archive.modal.delete');
+            list.confirm = ListConfirm(list, 'pkg.backup.admin.archive.modal.delete');
 
             list.bulk.add('Delete', list.confirm.delete);
 

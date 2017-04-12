@@ -11,7 +11,7 @@ class RecurringFormRequest extends RestRequest
         $this->rules = [
             'destination_id' => 'required|exists:pkg_backup_destinations,id',
             'source_id'      => 'required|exists:pkg_backup_sources,id',
-            'period'         => 'required|integer',
+            'period'         => 'required|integer|min:0',
         ];
     }
 }

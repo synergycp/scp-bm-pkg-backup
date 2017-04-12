@@ -37,9 +37,7 @@ class RecurringUpdateService extends UpdateService
 
     public function afterCreate(Collection $items)
     {
-        $createEvent = $this->queueHandler(Events\BackupCreated::class);
-
-        $this->successItems('backup.created', $items->each($createEvent));
+        $this->successItems('backup.recurring.created', $items);
     }
 
     /**

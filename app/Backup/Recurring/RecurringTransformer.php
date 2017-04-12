@@ -16,6 +16,7 @@ class RecurringTransformer extends Transformer
                 'id',
                 'period'
             ]) + [
+                'name'        => $item->__toString(),
                 'created_at'  => $this->itemDateFormat($item->created_at),
                 'updated_at'  => $this->itemDateFormat($item->updated_at),
                 'source'      => $this->itemSource($item),

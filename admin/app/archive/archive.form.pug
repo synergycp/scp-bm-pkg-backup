@@ -28,3 +28,17 @@ include /resources/angle/pug/mixins/form
             ng-click="archiveForm.input.destination = null"
             )
                 span.fa.fa-times-circle
+
++label("{{ 'pkg.backup.admin.archive.form.recurring.LABEL' | translate }}")
+    .input-group
+        +ui-select("archiveForm.recurrings")(ng-model="archiveForm.input.recurring")
+            ui-select-match(placeholder="{{ 'pkg.backup.admin.archive.form.recurring.PLACEHOLDER' | translate }}")
+                | {{ $select.selected.name }}
+            +ui-select-choices("archiveForm.recurrings")
+                span(ng-bind-html="choice.name | highlight: $select.search")
+        span.input-group-btn
+            button.btn.btn-default(
+            type="button"
+            ng-click="archiveForm.input.recurring = null"
+            )
+                span.fa.fa-times-circle

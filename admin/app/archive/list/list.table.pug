@@ -31,8 +31,11 @@ block columns
     )
     td(
     ng-if="table.showRecurring"
-    ng-bind="row.recurring"
     )
+        a(
+        ui-sref="app.pkg.backup.recurring.view({id: row.id})"
+        ng-bind="row.recurring"
+        )
     td(
     ng-if="table.showStatus"
     ng-bind="row.status"

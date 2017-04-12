@@ -4,6 +4,7 @@
     var INPUTS = {
         source_id: '',
         destination_id: '',
+        recurring_id: '',
     };
 
     angular
@@ -38,6 +39,7 @@
 
         var $destinations = Api.all('pkg/backup/destination');
         var $sources = Api.all('pkg/backup/source');
+        var $recurrings = Api.all('pkg/backup/recurring');
 
         archiveForm.input = _.clone(INPUTS);
 
@@ -49,6 +51,11 @@
         archiveForm.sources = {
             items: [],
             load: loadSources,
+        };
+
+        archiveForm.recurrings = {
+            items: [],
+            load: loadRecurrings,
         };
 
         archiveForm.$onInit = init;
@@ -75,6 +82,7 @@
 
             data.source_id = archiveForm.input.source ? archiveForm.input.source.id : null;
             data.destination_id = archiveForm.input.destination ? archiveForm.input.destination.id : null;
+            data.recurring_id = archiveForm.input.recurring ? archiveForm.input.recurring.id : null;
 
             return data;
         }
@@ -82,23 +90,25 @@
         function loadDestinations(search) {
             return $destinations
                 .getList({q: search})
-                .then(storeDestinations)
-                ;
-        }
-
-        function storeDestinations(destinations) {
-            _.setContents(archiveForm.destinations.items, destinations);
+                .then(function (destinations) {
+                    _.setContents(archiveForm.destinations.items, destinations);
+                });
         }
 
         function loadSources(search) {
             return $sources
                 .getList({q: search})
-                .then(storeSources)
-                ;
+                .then(function (sources) {
+                    _.setContents(archiveForm.sources.items, sources)
+                });
         }
 
-        function storeSources(sources) {
-            _.setContents(archiveForm.sources.items, sources);
+        function loadRecurrings(search) {
+            return $recurrings
+                .getList({q: search})
+                .then(function (recurrings) {
+                    _.setContents(archiveForm.recurrings.items, recurrings)
+                });
         }
 
     }

@@ -32,6 +32,10 @@
     "destination": {
       "LABEL": "Destination",
       "PLACEHOLDER": "Destination"
+    },
+    "recurring": {
+      "LABEL": "Recurring",
+      "PLACEHOLDER": "Recurring"
     }
   },
   "modal":{
