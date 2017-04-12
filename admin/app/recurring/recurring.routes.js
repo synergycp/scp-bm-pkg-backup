@@ -19,17 +19,17 @@
             })
             .state('recurring.view', {
                 url: '/:id',
-                title: 'View Report',
-                controller: 'ReportViewCtrl as vm',
+                title: 'View Recurring Backups',
+                controller: 'RecurringViewCtrl as vm',
                 templateUrl: pkg.asset('admin/recurring/recurring.view.html'),
             })
-            .url('recurring/?([0-9]*)', mapReportUrl)
+            .url('recurring/?([0-9]*)', mapRecurrentUrl)
             .sso('recurring', function($state, options) {
-                return mapReportUrl($state, options.id);
+                return mapRecurrentUrl($state, options.id);
             })
         ;
 
-        function mapReportUrl($state, id) {
+        function mapRecurrentUrl($state, id) {
             return $state.href('recurring.' + (id ? 'view' : 'list'), {
                 id: id,
             });

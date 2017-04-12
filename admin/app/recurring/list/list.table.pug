@@ -13,9 +13,11 @@ block headings
     th.sortable(ng-if="table.showCreatedAt")
         span(translate="pkg.backup.admin.recurring.heading.CREATED_AT")
         sort(col="created_at")
-        th.sortable(ng-if="table.showUpdatedAt")
-            span(translate="pkg.backup.admin.recurring.heading.UPDATED_AT")
-            sort(col="updated_at")
+    th.sortable(ng-if="table.showUpdatedAt")
+        span(translate="pkg.backup.admin.recurring.heading.UPDATED_AT")
+        sort(col="updated_at")
+    th.sortable(ng-if="table.showActions")
+        span(translate="pkg.backup.admin.recurring.heading.ACTION")
 
 block columns
     td(
@@ -32,9 +34,16 @@ block columns
     )
     td(
     ng-if="table.showCreatedAt"
-    ng-bind="row.created_at"
+    date="row.created_at"
     )
     td(
     ng-if="table.showUpdatedAt"
-    ng-bind="row.updated_at"
+    date="row.updated_at"
     )
+    td(ng-if="table.showActions")
+        .btn-group.btn-group-xs
+            //a.btn.btn-default(
+            //ui-sref="app.pkg.backup.recurring.view({id: row.id})"
+            //translate="app.action.EDIT"
+            //)
+

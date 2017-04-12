@@ -20,8 +20,8 @@ class ArchiveTransformer extends Transformer
                 'id',
             ]) + [
                 'name'        => $this->itemSource($item),
-                'created_at'  => $this->itemDateFormat($item->created_at),
-                'updated_at'  => $this->itemDateFormat($item->updated_at),
+                'created_at'  => $this->date($item->created_at),
+                'updated_at'  => $this->date($item->updated_at),
                 'source'      => $this->itemSource($item),
                 'destination' => $this->itemDestination($item),
                 'recurring'   => $item->recurring->__toString(),
@@ -44,14 +44,13 @@ class ArchiveTransformer extends Transformer
         return $item->dest ? $item->dest->name : null;
     }
 
-    private function itemRecurring(Archive $item)
+    public function date($date)
     {
-        return $item->recurring ? $item->recurring->id : null;
-    }
+        if ($date) {
+            return ['iso_8601' => $date->toIso8601String(), 'unix' => $date->tz('UTC')->timestamp];
+        }
 
-    private function itemDateFormat($dateTime)
-    {
-        return $dateTime->format('d.m.y H:i');
+        return;
     }
 
     private function itemStatus(Archive $item)

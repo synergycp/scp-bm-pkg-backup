@@ -17,8 +17,8 @@ class RecurringTransformer extends Transformer
                 'period'
             ]) + [
                 'name'        => $item->__toString(),
-                'created_at'  => $this->itemDateFormat($item->created_at),
-                'updated_at'  => $this->itemDateFormat($item->updated_at),
+                'created_at'  => $this->date($item->created_at),
+                'updated_at'  => $this->date($item->updated_at),
                 'source'      => $this->itemSource($item),
                 'destination' => $this->itemDestination($item),
             ];
@@ -39,9 +39,13 @@ class RecurringTransformer extends Transformer
         return $item->dest ? $item->dest->name : null;
     }
 
-    private function itemDateFormat($dateTime)
+    public function date($date)
     {
-        return $dateTime->format('d.m.y H:i');
+        if ($date) {
+            return ['iso_8601' => $date->toIso8601String(), 'unix' => $date->tz('UTC')->timestamp];
+        }
+
+        return;
     }
 
     public function resource(Recurring $item)

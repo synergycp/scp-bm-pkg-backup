@@ -48,6 +48,7 @@
                 showPeriod: true,
                 showCreatedAt: true,
                 showUpdatedAt: true,
+                showActions: true,
             });
         }
     }

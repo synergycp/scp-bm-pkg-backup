@@ -17,19 +17,13 @@
                 template: helper.dummyTemplate,
                 resolve: helper.resolveFor(pkg.lang('admin:archive')),
             })
-            .state('archive.view', {
-                url: '/:id',
-                title: 'View Report',
-                controller: 'ReportViewCtrl as vm',
-                templateUrl: pkg.asset('admin/archive/archive.view.html'),
-            })
-            .url('archive/?([0-9]*)', mapReportUrl)
+            .url('archive/?([0-9]*)', mapArchiveUrl)
             .sso('archive', function($state, options) {
-                return mapReportUrl($state, options.id);
+                return mapArchiveUrl($state, options.id);
             })
         ;
 
-        function mapReportUrl($state, id) {
+        function mapArchiveUrl($state, id) {
             return $state.href('archive.' + (id ? 'view' : 'list'), {
                 id: id,
             });

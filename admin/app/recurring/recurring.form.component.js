@@ -15,7 +15,7 @@
             },
             controller: 'RecurringFormCtrl as recurringForm',
             transclude: true,
-            templateUrl: tableTemplateUrl
+            templateUrl: formTemplateUrl
         })
         .controller('RecurringFormCtrl', RecurringFormCtrl)
     ;
@@ -23,7 +23,7 @@
     /**
      * @ngInject
      */
-    function tableTemplateUrl(RouteHelpers) {
+    function formTemplateUrl(RouteHelpers) {
         return RouteHelpers
             .package('backup')
             .trustedAsset('admin/recurring/recurring.form.html')

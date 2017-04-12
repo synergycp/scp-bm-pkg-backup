@@ -16,7 +16,7 @@
             },
             controller: 'ArchiveFormCtrl as archiveForm',
             transclude: true,
-            templateUrl: tableTemplateUrl
+            templateUrl: formTemplateUrl
         })
         .controller('ArchiveFormCtrl', ArchiveFormCtrl)
     ;
@@ -24,7 +24,7 @@
     /**
      * @ngInject
      */
-    function tableTemplateUrl(RouteHelpers) {
+    function formTemplateUrl(RouteHelpers) {
         return RouteHelpers
             .package('backup')
             .trustedAsset('admin/archive/archive.form.html')

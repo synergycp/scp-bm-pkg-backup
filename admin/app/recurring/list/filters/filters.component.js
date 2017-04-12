@@ -14,14 +14,14 @@
             },
             controller: 'RecurringFiltersCtrl as filters',
             transclude: true,
-            templateUrl: tableTemplateUrl
+            templateUrl: filterTemplateUrl
         })
     ;
 
     /**
      * @ngInject
      */
-    function tableTemplateUrl(RouteHelpers) {
+    function filterTemplateUrl(RouteHelpers) {
         return RouteHelpers
             .package('backup')
             .trustedAsset('admin/recurring/list/filters/filters.html')
