@@ -45,7 +45,7 @@ class ArchiveUpdateService extends UpdateService
     {
         $createEvent = $this->queueHandler(Events\ArchiveCreated::class);
 
-        $this->successItems('backup.archive,created', $items->each($createEvent));
+        $this->successItems('backup.archive.created', $items->each($createEvent));
     }
 
     /**
