@@ -7,5 +7,5 @@ namespace Packages\Backup\App;
  */
 
 return [
-    Backup\BackupServiceProvider::class,
+    Backup\ArchiveServiceProvider::class,
 ];

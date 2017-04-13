@@ -36,6 +36,9 @@
     "period": {
       "LABEL": "Period",
       "PLACEHOLDER": "Period"
+    },
+    "buttons": {
+      "DELETE": "Delete"
     }
   },
   "modal":{

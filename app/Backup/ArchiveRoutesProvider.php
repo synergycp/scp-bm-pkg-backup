@@ -4,7 +4,6 @@ namespace Packages\Backup\App\Backup;
 
 use Illuminate\Routing\Router;
 use App\Http\RouteServiceProvider;
-use Packages\Backup\App\Backup\Handler\HandlerController;
 use Packages\Backup\App\Backup\Recurring\RecurringController;
 
 /**
@@ -21,7 +20,6 @@ class ArchiveRoutesProvider
     protected function api(Router $router)
     {
         $router->resource('archive', ArchiveController::class);
-        $router->resource('handler', HandlerController::class);
         $router->resource('recurring', RecurringController::class);
     }
 }

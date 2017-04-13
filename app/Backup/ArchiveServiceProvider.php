@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Backup;
 use App\Support\ClassMap;
 use Illuminate\Support\ServiceProvider;
 
-class BackupServiceProvider
+class ArchiveServiceProvider
 extends ServiceProvider
 {
     /**

@@ -34,29 +34,13 @@
     /**
      * @ngInject
      */
-    function ArchiveFormCtrl(_, Api) {
+    function ArchiveFormCtrl(_, Select) {
         var archiveForm = this;
 
-        var $destinations = Api.all('pkg/backup/destination');
-        var $sources = Api.all('pkg/backup/source');
-        var $recurrings = Api.all('pkg/backup/recurring');
-
         archiveForm.input = _.clone(INPUTS);
-
-        archiveForm.destinations = {
-            items: [],
-            load: loadDestinations,
-        };
-
-        archiveForm.sources = {
-            items: [],
-            load: loadSources,
-        };
-
-        archiveForm.recurrings = {
-            items: [],
-            load: loadRecurrings,
-        };
+        archiveForm.destinations = Select('pkg/backup/destination');
+        archiveForm.sources = Select('pkg/backup/source');
+        archiveForm.recurrings = Select('pkg/backup/recurring');
 
         archiveForm.$onInit = init;
 
@@ -86,30 +70,5 @@
 
             return data;
         }
-
-        function loadDestinations(search) {
-            return $destinations
-                .getList({q: search})
-                .then(function (destinations) {
-                    _.setContents(archiveForm.destinations.items, destinations);
-                });
-        }
-
-        function loadSources(search) {
-            return $sources
-                .getList({q: search})
-                .then(function (sources) {
-                    _.setContents(archiveForm.sources.items, sources)
-                });
-        }
-
-        function loadRecurrings(search) {
-            return $recurrings
-                .getList({q: search})
-                .then(function (recurrings) {
-                    _.setContents(archiveForm.recurrings.items, recurrings)
-                });
-        }
-
     }
 })();

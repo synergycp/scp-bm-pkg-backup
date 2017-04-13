@@ -28,6 +28,9 @@ class ArchiveUpdateService extends UpdateService
         $this->auth = $auth;
     }
 
+    /**
+     * @param Archive $item
+     */
     public function fillData(Archive $item)
     {
         $item->source_id      = $this->request->input('source_id');
@@ -35,11 +38,14 @@ class ArchiveUpdateService extends UpdateService
         $item->recurring_id   = $this->request->input('recurring_id');
     }
 
+    /**
+     * @param Collection $items
+     */
     public function afterCreate(Collection $items)
     {
         $createEvent = $this->queueHandler(Events\ArchiveCreated::class);
 
-        $this->successItems('backup.created', $items->each($createEvent));
+        $this->successItems('backup.archive,created', $items->each($createEvent));
     }
 
     /**

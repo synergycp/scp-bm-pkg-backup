@@ -23,11 +23,11 @@ block headings
 block columns
     td(
     ng-if="table.showSource"
-    ng-bind="row.source"
+    ng-bind="row.source.name"
     )
     td(
     ng-if="table.showDestination"
-    ng-bind="row.destination"
+    ng-bind="row.dest.name"
     )
     td(
     ng-if="table.showRecurring"

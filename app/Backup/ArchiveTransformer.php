@@ -3,7 +3,6 @@
 namespace Packages\Backup\App\Backup;
 
 use App\Api\Transformer;
-use Illuminate\Support\Collection;
 use App\Server\ServerFilterService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Packages\Abuse\App\Report\Comment\CommentTransformer;
@@ -19,12 +18,12 @@ class ArchiveTransformer extends Transformer
         return $item->expose([
                 'id',
                 'recurring_id',
+                'dest',
+                'source',
             ]) + [
-                'name'        => $this->itemSource($item),
+                'name'        => $item->source->name,
                 'created_at'  => $this->date($item->created_at),
                 'updated_at'  => $this->date($item->updated_at),
-                'source'      => $this->itemSource($item),
-                'destination' => $this->itemDestination($item),
                 'recurring'   => $item->recurring->__toString(),
                 'status'      => $this->itemStatus($item)
             ];
@@ -32,17 +31,7 @@ class ArchiveTransformer extends Transformer
 
     public function itemPreload($items)
     {
-        $items->load('source.handler', 'dest.handler');
-    }
-
-    private function itemSource(Archive $item)
-    {
-        return $item->source ? $item->source->name : null;
-    }
-
-    private function itemDestination(Archive $item)
-    {
-        return $item->dest ? $item->dest->name : null;
+        $items->load('source', 'dest');
     }
 
     public function date($date)

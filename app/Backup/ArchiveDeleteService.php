@@ -46,8 +46,6 @@ class ArchiveDeleteService extends DeleteService
      */
     protected function checkCanDelete(Archive $item)
     {
-        /* TODO: check status, throw Exception */
-
         if ($this->auth->is('admin')) {
 
         }
