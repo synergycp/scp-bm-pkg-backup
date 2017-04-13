@@ -33,7 +33,7 @@ block columns
     ng-if="table.showRecurring"
     )
         a(
-        ui-sref="app.pkg.backup.recurring.view({id: row.id})"
+        ui-sref="app.pkg.backup.recurring.view({id: row.recurring_id})"
         ng-bind="row.recurring"
         )
     td(

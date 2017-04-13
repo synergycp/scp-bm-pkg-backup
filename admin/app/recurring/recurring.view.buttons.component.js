@@ -6,7 +6,7 @@
         .component('recurringButtons', {
             require: {},
             bindings: {
-                shell: '=',
+                recurring: '=',
             },
             controller: 'RecurringButtonsCtrl as buttons',
             transclude: true,
@@ -20,14 +20,14 @@
     function viewTemplateUrl(RouteHelpers) {
         return RouteHelpers
             .package('backup')
-            .trustedAsset('admin/recurring/recurring.view.html')
+            .trustedAsset('admin/recurring/recurring.view.buttons.html')
             ;
     }
 
     /**
      * @ngInject
      */
-    function RecurringButtonsCtrl(PxeShellList, Loader, $state) {
+    function RecurringButtonsCtrl(RecurringList, Loader, $state) {
         var buttons = this;
 
         buttons.loader = Loader();
@@ -43,9 +43,9 @@
 
         function doDelete() {
             return buttons.loader.during(
-                PxeShellList()
+                RecurringList()
                     .confirm
-                    .delete([buttons.shell])
+                    .delete([buttons.recurring])
                     .result.then(transferToList)
             );
         }

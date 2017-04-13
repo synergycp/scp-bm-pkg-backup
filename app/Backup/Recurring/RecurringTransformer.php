@@ -14,29 +14,19 @@ class RecurringTransformer extends Transformer
     {
         return $item->expose([
                 'id',
-                'period'
+                'period',
+                'dest',
+                'source'
             ]) + [
-                'name'        => $item->__toString(),
-                'created_at'  => $this->date($item->created_at),
-                'updated_at'  => $this->date($item->updated_at),
-                'source'      => $this->itemSource($item),
-                'destination' => $this->itemDestination($item),
+                'name'       => $item->__toString(),
+                'created_at' => $this->date($item->created_at),
+                'updated_at' => $this->date($item->updated_at),
             ];
     }
 
     public function itemPreload($items)
     {
-        $items->load('source.handler', 'dest.handler');
-    }
-
-    private function itemSource(Recurring $item)
-    {
-        return $item->source ? $item->source->name : null;
-    }
-
-    private function itemDestination(Recurring $item)
-    {
-        return $item->dest ? $item->dest->name : null;
+        $items->load('source', 'dest');
     }
 
     public function date($date)

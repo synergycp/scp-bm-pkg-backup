@@ -14,7 +14,7 @@
     function RecurringViewCtrl(Edit, $stateParams) {
         var vm = this;
 
-        vm.edit = Edit('/api/pkg/backup/recurring/' + $stateParams.id);
+        vm.edit = Edit('/pkg/backup/recurring/' + $stateParams.id);
 
         vm.edit.submit = submit;
 

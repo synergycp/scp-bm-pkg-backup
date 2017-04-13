@@ -18,6 +18,7 @@ class ArchiveTransformer extends Transformer
     {
         return $item->expose([
                 'id',
+                'recurring_id',
             ]) + [
                 'name'        => $this->itemSource($item),
                 'created_at'  => $this->date($item->created_at),

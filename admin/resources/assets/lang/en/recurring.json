@@ -1,7 +1,7 @@
 {
   "list": {
     "TITLE": "Backup Archives",
-    "NONE": "There have been no archives of backup on your servers yet.",
+    "NONE": "There have been no recurring backups on your servers yet.",
     "filter": {
       "status": {
         "LABEL": "Status",
@@ -18,11 +18,12 @@
     "ACTION": "Action"
   },
   "logs": {
-    "TITLE": "Archive logs"
+    "TITLE": "Recurring backup logs"
   },
   "form": {
     "title": {
-      "ADD": "Create archive"
+      "ADD": "Create recurring backup",
+      "EDIT": "Edit recurring backup"
     },
     "source": {
       "LABEL": "Source",

@@ -17,7 +17,7 @@ include /resources/angle/pug/mixins/form
 
 +label("{{ 'pkg.backup.admin.recurring.form.destination.LABEL' | translate }}")
     .input-group
-        +ui-select("recurringForm.destinations")(ng-model="recurringForm.input.destination")
+        +ui-select("recurringForm.destinations")(ng-model="recurringForm.input.dest")
             ui-select-match(placeholder="{{ 'pkg.backup.admin.recurring.form.destination.PLACEHOLDER' | translate }}")
                 | {{ $select.selected.name }}
             +ui-select-choices("recurringForm.destinations")
@@ -25,7 +25,7 @@ include /resources/angle/pug/mixins/form
         span.input-group-btn
             button.btn.btn-default(
             type="button"
-            ng-click="recurringForm.input.destination = null"
+            ng-click="recurringForm.input.dest = null"
             )
                 span.fa.fa-times-circle
 

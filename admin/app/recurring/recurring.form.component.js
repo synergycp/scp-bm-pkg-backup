@@ -3,7 +3,10 @@
 
     var INPUTS = {
         source_id: '',
+        source: '',
         destination_id: '',
+        dest: '',
+        period: '',
     };
 
     angular
@@ -33,25 +36,13 @@
     /**
      * @ngInject
      */
-    function RecurringFormCtrl(_, Api) {
+    function RecurringFormCtrl(_, Select) {
         var recurringForm = this;
 
-        var $destinations = Api.all('pkg/backup/destination');
-        var $sources = Api.all('pkg/backup/source');
-
-        recurringForm.input = _.clone(INPUTS);
-
-        recurringForm.destinations = {
-            items: [],
-            load: loadDestinations,
-        };
-
-        recurringForm.sources = {
-            items: [],
-            load: loadSources,
-        };
-
         recurringForm.$onInit = init;
+        recurringForm.input = _.clone(INPUTS);
+        recurringForm.destinations = Select('pkg/backup/destination');
+        recurringForm.sources = Select('pkg/backup/source');
 
         //////////
 
@@ -61,8 +52,8 @@
             (recurringForm.form.on || function () {
             })(['change', 'load'], function (response) {
                 fillFormInputs();
-
-                _.setContents(recurringForm.groups.selected, response.groups);
+                recurringForm.destinations.selected = response.dest;
+                recurringForm.sources.selected = response.source;
             });
         }
 
@@ -74,32 +65,9 @@
             var data = _.clone(recurringForm.input);
 
             data.source_id = recurringForm.input.source ? recurringForm.input.source.id : null;
-            data.destination_id = recurringForm.input.destination ? recurringForm.input.destination.id : null;
+            data.destination_id = recurringForm.input.dest ? recurringForm.input.dest.id : null;
 
             return data;
         }
-
-        function loadDestinations(search) {
-            return $destinations
-                .getList({q: search})
-                .then(storeDestinations)
-                ;
-        }
-
-        function storeDestinations(destinations) {
-            _.setContents(recurringForm.destinations.items, destinations);
-        }
-
-        function loadSources(search) {
-            return $sources
-                .getList({q: search})
-                .then(storeSources)
-                ;
-        }
-
-        function storeSources(sources) {
-            _.setContents(recurringForm.sources.items, sources);
-        }
-
     }
 })();

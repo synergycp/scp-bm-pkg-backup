@@ -22,11 +22,11 @@ block headings
 block columns
     td(
     ng-if="table.showSource"
-    ng-bind="row.source"
+    ng-bind="row.source.name"
     )
     td(
     ng-if="table.showDestination"
-    ng-bind="row.destination"
+    ng-bind="row.dest.name"
     )
     td(
     ng-if="table.showPeriod"
@@ -42,8 +42,8 @@ block columns
     )
     td(ng-if="table.showActions")
         .btn-group.btn-group-xs
-            //a.btn.btn-default(
-            //ui-sref="app.pkg.backup.recurring.view({id: row.id})"
-            //translate="app.action.EDIT"
-            //)
+            a.btn.btn-default(
+            ui-sref="app.pkg.backup.recurring.view({id: row.id})"
+            translate="app.action.EDIT"
+            )
 
