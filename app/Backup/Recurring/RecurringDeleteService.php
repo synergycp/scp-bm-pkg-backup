@@ -41,13 +41,8 @@ class RecurringDeleteService extends DeleteService
         $item->delete();
     }
 
-    /**
-     * @param Recurring $item
-     */
-    protected function checkCanDelete(Recurring $item)
+    protected function checkCanDelete()
     {
-        if ($this->auth->is('admin')) {
-
-        }
+        $this->auth->only('admin', 'integration');
     }
 }

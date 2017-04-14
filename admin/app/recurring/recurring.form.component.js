@@ -2,9 +2,7 @@
     'use strict';
 
     var INPUTS = {
-        source_id: '',
         source: '',
-        destination_id: '',
         dest: '',
         period: '',
     };
@@ -62,12 +60,7 @@
         }
 
         function getData() {
-            var data = _.clone(recurringForm.input);
-
-            data.source_id = recurringForm.input.source ? recurringForm.input.source.id : null;
-            data.destination_id = recurringForm.input.dest ? recurringForm.input.dest.id : null;
-
-            return data;
+            return _.clone(recurringForm.input);
         }
     }
 })();

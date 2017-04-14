@@ -36,18 +36,13 @@ class ArchiveDeleteService extends DeleteService
      */
     protected function delete($item)
     {
-        $this->checkCanDelete($item);
+        $this->checkCanDelete();
         $item->delete();
         $this->queue(new ArchiveDeleted($item));
     }
 
-    /**
-     * @param Archive $item
-     */
-    protected function checkCanDelete(Archive $item)
+    protected function checkCanDelete()
     {
-        if ($this->auth->is('admin')) {
-
-        }
+        $this->auth->only('admin', 'integration');
     }
 }

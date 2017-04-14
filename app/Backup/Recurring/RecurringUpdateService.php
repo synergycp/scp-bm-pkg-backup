@@ -40,8 +40,8 @@ class RecurringUpdateService extends UpdateService
 
     public function fillData(Recurring $item)
     {
-        $item->source_id      = $this->request->input('source_id');
-        $item->destination_id = $this->request->input('destination_id');
+        $item->source_id      = $this->request->input('source.id');
+        $item->destination_id = $this->request->input('dest.id');
         $item->period         = $this->request->input('period');
     }
 
@@ -73,7 +73,7 @@ class RecurringUpdateService extends UpdateService
     public function setSource(Collection $items)
     {
         $inputs = [
-            'source_id' => $this->input('source_id'),
+            'source_id' => $this->input('source.id'),
         ];
 
         $createEvent = $this->queueHandler(
@@ -92,7 +92,7 @@ class RecurringUpdateService extends UpdateService
     public function setDestination(Collection $items)
     {
         $inputs = [
-            'destination_id' => $this->input('destination_id'),
+            'destination_id' => $this->input('dest.id'),
         ];
 
         $createEvent = $this->queueHandler(

@@ -24,7 +24,7 @@ class ArchiveTransformer extends Transformer
                 'name'        => $item->source->name,
                 'created_at'  => $this->date($item->created_at),
                 'updated_at'  => $this->date($item->updated_at),
-                'recurring'   => $item->recurring->__toString(),
+                'recurring'   => $item->recurring ? $item->recurring->__toString() : null,
                 'status'      => $this->itemStatus($item)
             ];
     }

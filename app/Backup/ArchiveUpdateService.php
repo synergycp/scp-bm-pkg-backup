@@ -33,9 +33,9 @@ class ArchiveUpdateService extends UpdateService
      */
     public function fillData(Archive $item)
     {
-        $item->source_id      = $this->request->input('source_id');
-        $item->destination_id = $this->request->input('destination_id');
-        $item->recurring_id   = $this->request->input('recurring_id');
+        $item->source_id      = $this->request->input('source.id');
+        $item->destination_id = $this->request->input('destination.id');
+        $item->recurring_id   = $this->request->input('recurring.id');
     }
 
     /**
@@ -56,7 +56,7 @@ class ArchiveUpdateService extends UpdateService
     public function updateAll(Collection $items)
     {
         if ($this->create) {
-            return $items->map([$this, 'fillData']);
+            $items->map([$this, 'fillData']);
         }
     }
 }

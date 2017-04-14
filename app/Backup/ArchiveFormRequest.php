@@ -9,9 +9,9 @@ class ArchiveFormRequest extends RestRequest
     public function boot()
     {
         $this->rules = [
-            'destination_id' => 'required|exists:pkg_backup_destinations,id',
-            'source_id'      => 'required|exists:pkg_backup_sources,id',
-            'recurring_id'   => 'required|exists:pkg_backup_recurring_backups,id',
+            'destination.id' => 'required|exists:pkg_backup_destinations,id',
+            'source.id'      => 'required|exists:pkg_backup_sources,id',
+            'recurring.id'   => 'sometimes|exists:pkg_backup_recurring_backups,id',
         ];
     }
 }

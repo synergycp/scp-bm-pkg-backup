@@ -2,9 +2,8 @@
     'use strict';
 
     var INPUTS = {
-        source_id: '',
-        destination_id: '',
-        recurring_id: '',
+        source: '',
+        destination: '',
     };
 
     angular
@@ -64,9 +63,12 @@
         function getData() {
             var data = _.clone(archiveForm.input);
 
-            data.source_id = archiveForm.input.source ? archiveForm.input.source.id : null;
-            data.destination_id = archiveForm.input.destination ? archiveForm.input.destination.id : null;
-            data.recurring_id = archiveForm.input.recurring ? archiveForm.input.recurring.id : null;
+            // data.source_id = archiveForm.input.source ? archiveForm.input.source.id : null;
+            // data.destination_id = archiveForm.input.destination ? archiveForm.input.destination.id : null;
+            //
+            // if (archiveForm.input.recurring) {
+            //     data.recurring_id = archiveForm.input.recurring.id;
+            // }
 
             return data;
         }
