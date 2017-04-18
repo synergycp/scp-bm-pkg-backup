@@ -13,6 +13,13 @@ extends Model
 
     public $table = 'pkg_backup_recurring_backups';
 
+    public static function boot()
+    {
+        static::deleting(function ($recurring) {
+            $recurring->archives()->update(['recurring_id' => null]);
+        });
+    }
+
     public function __toString()
     {
         return "{$this->source->name} ({$this->period})";
@@ -67,5 +74,10 @@ extends Model
                 $joinType
             )
             ;
+    }
+
+    public function archives()
+    {
+        return $this->hasMany(Backup\Archive::class);
     }
 }
