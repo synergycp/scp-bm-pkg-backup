@@ -37,7 +37,9 @@ class RecurringDeleteService extends DeleteService
     protected function delete($item)
     {
         $this->checkCanDelete($item);
-        $this->queue(new RecurringDeleted($item));
+
+        event(new RecurringDeleted($item));
+
         $item->delete();
     }
 

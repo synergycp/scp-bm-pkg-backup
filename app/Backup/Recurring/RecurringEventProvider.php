@@ -9,6 +9,7 @@ use Packages\Backup\App\Backup\Recurring\Events\PeriodChanged;
 use Packages\Backup\App\Backup\Recurring\Events\RecurringCreated;
 use Packages\Backup\App\Backup\Recurring\Events\RecurringDeleted;
 use Packages\Backup\App\Backup\Recurring\Events\SourceChanged;
+use Packages\Backup\App\Backup\Recurring\Listeners\RemoveRecurring;
 
 class RecurringEventProvider
     extends EventServiceProvider
@@ -22,6 +23,7 @@ class RecurringEventProvider
         ],
         RecurringDeleted::class => [
             EventLogger::class,
+            RemoveRecurring::class,
         ],
         SourceChanged::class => [
             EventLogger::class,
