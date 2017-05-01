@@ -18,7 +18,15 @@ class Archive
 
     protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
 
+    public static $singular = 'Archive';
+    public static $plural = 'Archives';
+
     public static $controller = 'pkg.backup.archive';
+
+    public function getNameAttribute()
+    {
+        return $this->source->name;
+    }
 
     /**
      * @return Relations\BelongsTo
