@@ -29,7 +29,7 @@ implements Queue\ShouldQueue
      *
      * @throws CopyToDestFailed
      */
-    public function handle(Backup\Events\ArchiveEvent $event)
+    public function handle(Archive\Events\ArchiveEvent $event)
     {
         $this->service->copy($event->target);
     }

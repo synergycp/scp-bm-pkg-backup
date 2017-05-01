@@ -14,11 +14,11 @@ interface Handler
      * @param string           $tempFile
      * @param string           $destFile
      */
-    public function copy(Backup\Dest\Dest $dest, $tempFile, $destFile);
+    public function copy(Archive\Dest\Dest $dest, $tempFile, $destFile);
 
     /**
      * @param Archive\Dest\Dest $dest
      * @param string           $destFile
      */
-    public function delete(Backup\Dest\Dest $dest, $destFile);
+    public function delete(Archive\Dest\Dest $dest, $destFile);
 }

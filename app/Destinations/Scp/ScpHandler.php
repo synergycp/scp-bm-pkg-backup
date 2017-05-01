@@ -37,7 +37,7 @@ implements Archive\Dest\Handler\Handler
     /**
      * {@inheritdoc}
      */
-    public function copy(Backup\Dest\Dest $dest, $tempFile, $destFile)
+    public function copy(Archive\Dest\Dest $dest, $tempFile, $destFile)
     {
         $runCommand = function ($command) {
             $cmd = $this->shell
@@ -63,7 +63,7 @@ implements Archive\Dest\Handler\Handler
     /**
      * @inheritDoc
      */
-    public function delete(Backup\Dest\Dest $dest, $destFile)
+    public function delete(Archive\Dest\Dest $dest, $destFile)
     {
         throw new \LogicException('Not implemented'); // TODO
     }
@@ -75,7 +75,7 @@ implements Archive\Dest\Handler\Handler
      *
      * @return Collection
      */
-    protected function commands(Backup\Dest\Dest $dest, $tempFile, $destFile)
+    protected function commands(Archive\Dest\Dest $dest, $tempFile, $destFile)
     {
         $values = $this->value->all($dest);
         $folder = $values->value(ScpFields::FOLDER);

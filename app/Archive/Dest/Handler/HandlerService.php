@@ -28,7 +28,7 @@ class HandlerService
      *
      * @return Handler
      */
-    public function get(Backup\Dest\Dest $source)
+    public function get(Archive\Dest\Dest $source)
     {
         return $this->make($source->handler);
     }
@@ -38,7 +38,7 @@ class HandlerService
      *
      * @return Handler
      */
-    public function make(Backup\Handler\Handler $handler)
+    public function make(Archive\Handler\Handler $handler)
     {
         return $this->app->make($handler->class);
     }

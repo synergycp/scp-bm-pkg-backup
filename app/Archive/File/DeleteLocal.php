@@ -27,7 +27,7 @@ implements Queue\ShouldQueue
     /**
      * @param Archive\Events\ArchiveEvent $event
      */
-    public function handle(Backup\Events\ArchiveEvent $event)
+    public function handle(Archive\Events\ArchiveEvent $event)
     {
         $this->file->delete($event->target);
     }

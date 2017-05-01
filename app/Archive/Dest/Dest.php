@@ -16,7 +16,7 @@ implements Archive\Field\HasValues
      */
     public function fields()
     {
-        return $this->morphMany(Backup\Field\Field::class, 'parent');
+        return $this->morphMany(Archive\Field\Field::class, 'parent');
     }
 
     /**
@@ -24,6 +24,6 @@ implements Archive\Field\HasValues
      */
     public function handler()
     {
-        return $this->belongsTo(Backup\Handler\Handler::class);
+        return $this->belongsTo(Archive\Handler\Handler::class);
     }
 }

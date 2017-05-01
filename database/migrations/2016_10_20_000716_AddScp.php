@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Packages\Backup\App\Backup\Dest;
-use Packages\Backup\App\Backup\Field;
-use Packages\Backup\App\Backup\Handler;
+use Packages\Backup\App\Archive\Dest;
+use Packages\Backup\App\Archive\Field;
+use Packages\Backup\App\Archive\Handler;
 use Packages\Backup\App\Destinations\Scp;
 
 class AddScp extends Migration
