@@ -3,7 +3,7 @@
 namespace Packages\Backup\App\Sources\Mysql;
 
 use App\Shell;
-use Packages\Backup\App\Backup;
+use Packages\Backup\App\Archive;
 
 /**
  * MySQLDump Handler.

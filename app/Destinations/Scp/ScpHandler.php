@@ -3,7 +3,7 @@
 namespace Packages\Backup\App\Destinations\Scp;
 
 use App\Shell;
-use Packages\Backup\App\Backup;
+use Packages\Backup\App\Archive;
 use Illuminate\Support\Collection;
 
 /**
