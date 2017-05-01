@@ -64,7 +64,7 @@ extends Model
         return $query
             ->addSelect(\DB::raw("MAX($alias.created_at) as $date"))
             ->join(
-                "pkg_backup_backups as $alias",
+                "pkg_backup_archives as $alias",
                 "$alias.recurring_id",
                 '=',
                 "$this->table.id",
