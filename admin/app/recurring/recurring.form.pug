@@ -1,0 +1,27 @@
+doctype html
+include /node_modules/scp-ng-gulp/resources/pug/mixins/form
+
++label("pkg.backup.admin.recurring.form.source.LABEL")
+  .input-group
+    +ui-select("recurringForm.sources")(ng-model="recurringForm.input.source")
+      ui-select-match(placeholder="{{ 'pkg.backup.admin.recurring.form.source.PLACEHOLDER' | translate }}")
+        | {{ $select.selected.name }}
+      +ui-select-choices("recurringForm.sources")
+        span(ng-bind-html="choice.name | highlight: $select.search")
+
++label("pkg.backup.admin.recurring.form.destination.LABEL")
+  .input-group
+    +ui-select("recurringForm.destinations")(ng-model="recurringForm.input.dest")
+      ui-select-match(placeholder="{{ 'pkg.backup.admin.recurring.form.destination.PLACEHOLDER' | translate }}")
+        | {{ $select.selected.name }}
+      +ui-select-choices("recurringForm.destinations")
+        span(ng-bind-html="choice.name | highlight: $select.search")
+
++field(
+  "pkg.backup.admin.recurring.form.period.LABEL",
+  "period"
+)(
+  placeholder="{{ 'pkg.backup.admin.recurring.form.period.PLACEHOLDER' | translate }}"
+  ng-model="recurringForm.input.period"
+)
+  p.help-block(data-translate="pkg.backup.admin.recurring.form.period.HELP_TEXT")

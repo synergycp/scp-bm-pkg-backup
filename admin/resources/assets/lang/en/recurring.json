@@ -1,0 +1,51 @@
+{
+  "list": {
+    "TITLE": "Recurring Backups",
+    "filter": {
+      "status": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status..."
+      }
+    }
+  },
+  "heading": {
+    "SOURCE": "Source",
+    "DESTINATION": "Destination",
+    "PERIOD": "Period",
+    "CREATED_AT": "Created at",
+    "ACTION": "Action"
+  },
+  "logs": {
+    "TITLE": "Recurring Backup logs"
+  },
+  "form": {
+    "title": {
+      "ADD": "Create Recurring Backup",
+      "EDIT": "Edit Recurring Backup"
+    },
+    "source": {
+      "LABEL": "Source",
+      "PLACEHOLDER": "Source"
+    },
+    "destination": {
+      "LABEL": "Destination",
+      "PLACEHOLDER": "Destination"
+    },
+    "period": {
+      "LABEL": "Period",
+      "PLACEHOLDER": "In Seconds",
+      "HELP_TEXT": "The number of seconds between each Recurring Backup."
+    },
+    "buttons": {
+      "DELETE": "Delete"
+    }
+  },
+  "modal":{
+    "delete":{
+      "TITLE":"Delete Recurring Backups",
+      "BODY":"Click \"Delete\" to permanently delete these Recurring Backups:",
+      "CANCEL":"Cancel",
+      "SUBMIT":"Delete"
+    }
+  }
+}

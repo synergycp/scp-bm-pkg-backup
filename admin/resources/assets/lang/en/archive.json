@@ -1,0 +1,49 @@
+{
+  "list": {
+    "TITLE": "Backup Archives",
+    "NONE": "There have been no archives of backup on your servers yet.",
+    "filter": {
+      "status": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status..."
+      }
+    }
+  },
+  "heading": {
+    "SOURCE": "Source",
+    "DESTINATION": "Destination",
+    "RECURRING": "Recurring",
+    "STATUS": "Status",
+    "CREATED_AT": "Created at",
+    "UPDATED_AT": "Updated at",
+    "ACTION": "Action"
+  },
+  "logs": {
+    "TITLE": "Archive logs"
+  },
+  "form": {
+    "title": {
+      "ADD": "Create archive"
+    },
+    "source": {
+      "LABEL": "Source",
+      "PLACEHOLDER": "Source"
+    },
+    "destination": {
+      "LABEL": "Destination",
+      "PLACEHOLDER": "Destination"
+    },
+    "recurring": {
+      "LABEL": "Recurring",
+      "PLACEHOLDER": "Recurring"
+    }
+  },
+  "modal":{
+    "delete":{
+      "TITLE":"Delete Archives",
+      "BODY":"Click \"Delete\" to permanently delete these Archives:",
+      "CANCEL":"Cancel",
+      "SUBMIT":"Delete"
+    }
+  }
+}

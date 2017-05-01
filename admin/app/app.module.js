@@ -3,6 +3,7 @@
 
   angular
     .module('pkg.backup', [
-        'pkg.backup.report',
+        'pkg.backup.archive',
+        'pkg.backup.recurring',
     ]);
 })();

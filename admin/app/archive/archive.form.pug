@@ -1,0 +1,18 @@
+doctype html
+include /node_modules/scp-ng-gulp/resources/pug/mixins/form
+
++label("{{ 'pkg.backup.admin.archive.form.source.LABEL' | translate }}")
+  .input-group
+    +ui-select("archiveForm.sources")(ng-model="archiveForm.input.source")
+      ui-select-match(placeholder="{{ 'pkg.backup.admin.archive.form.source.PLACEHOLDER' | translate }}")
+        | {{ $select.selected.name }}
+      +ui-select-choices("archiveForm.sources")
+        span(ng-bind-html="choice.name | highlight: $select.search")
+
++label("{{ 'pkg.backup.admin.archive.form.destination.LABEL' | translate }}")
+  .input-group
+    +ui-select("archiveForm.destinations")(ng-model="archiveForm.input.destination")
+      ui-select-match(placeholder="{{ 'pkg.backup.admin.archive.form.destination.PLACEHOLDER' | translate }}")
+        | {{ $select.selected.name }}
+      +ui-select-choices("archiveForm.destinations")
+        span(ng-bind-html="choice.name | highlight: $select.search")

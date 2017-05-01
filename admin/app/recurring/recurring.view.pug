@@ -1,0 +1,12 @@
+extends /node_modules/scp-ng-gulp/resources/pug/edit
+
+block title
+  span(
+  translate='pkg.backup.admin.recurring.form.title.EDIT'
+  )
+
+block form
+  recurring-form(form="vm.edit")
+
+block append right-side
+  recurring-buttons(recurring="vm.edit.input")

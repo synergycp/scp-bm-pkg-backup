@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
  * Secure Copy Handler.
  */
 class ScpHandler
-implements Backup\Dest\Handler\Handler
+implements Archive\Dest\Handler\Handler
 {
     /**
      * @var Shell\Shell
@@ -18,17 +18,17 @@ implements Backup\Dest\Handler\Handler
     protected $shell;
 
     /**
-     * @var Backup\Field\ValueService
+     * @var Archive\Field\ValueService
      */
     protected $value;
 
     /**
      * @param Shell\Shell                $shell
-     * @param Backup\Field\ValueService $value
+     * @param Archive\Field\ValueService $value
      */
     public function __construct(
         Shell\Shell $shell,
-        Backup\Field\ValueService $value
+        Archive\Field\ValueService $value
     ) {
         $this->shell = $shell;
         $this->value = $value;
@@ -69,7 +69,7 @@ implements Backup\Dest\Handler\Handler
     }
 
     /**
-     * @param Backup\Dest\Dest $dest
+     * @param Archive\Dest\Dest $dest
      * @param string           $tempFile
      * @param string           $destFile
      *

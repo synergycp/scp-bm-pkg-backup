@@ -9,7 +9,7 @@ use Packages\Backup\App\Backup;
  * MySQLDump Handler.
  */
 class MysqlDumpHandler
-implements Backup\Source\Handler\Handler
+implements Archive\Source\Handler\Handler
 {
     /**
      * @var Shell\Shell
@@ -17,7 +17,7 @@ implements Backup\Source\Handler\Handler
     protected $shell;
 
     /**
-     * @var Backup\Field\ValueService
+     * @var Archive\Field\ValueService
      */
     protected $value;
 
@@ -28,11 +28,11 @@ implements Backup\Source\Handler\Handler
 
     /**
      * @param Shell\Shell               $shell
-     * @param Backup\Field\ValueService $value
+     * @param Archive\Field\ValueService $value
      */
     public function __construct(
         Shell\Shell $shell,
-        Backup\Field\ValueService $value
+        Archive\Field\ValueService $value
     ) {
         $this->shell = $shell;
         $this->value = $value;
@@ -41,7 +41,7 @@ implements Backup\Source\Handler\Handler
     /**
      * {@inheritdoc}
      */
-    public function handle(Backup\Backup $backup, $tempFile)
+    public function handle(Backup\Archive $backup, $tempFile)
     {
         $this->makeOutputDir($tempFile);
         $this->dump($backup, $tempFile);
@@ -61,12 +61,12 @@ implements Backup\Source\Handler\Handler
     }
 
     /**
-     * @param Backup\Backup $backup
+     * @param Archive\Archive $backup
      * @param string        $tempFile
      *
      * @throws \Exception
      */
-    protected function dump(Backup\Backup $backup, $tempFile)
+    protected function dump(Backup\Archive $backup, $tempFile)
     {
         $this->run(
             $this->shell->cmd()->setOutputFile($tempFile),
@@ -75,11 +75,11 @@ implements Backup\Source\Handler\Handler
     }
 
     /**
-     * @param Backup\Backup $backup
+     * @param Archive\Archive $backup
      *
      * @return string
      */
-    protected function command(Backup\Backup $backup)
+    protected function command(Backup\Archive $backup)
     {
         $database = $this->value
             ->byName($backup->source, MysqlDumpFields::DATABASE)

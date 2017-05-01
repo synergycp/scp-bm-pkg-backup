@@ -1,0 +1,28 @@
+include /node_modules/scp-ng-gulp/resources/pug/mixins/form
+
+mixin server-choice(select, highlight)
+  font(ng-bind=select+".text")
+  font(ng-if="!"+select+".text")
+    font(
+      ng-bind-html=select+".nickname | escape" +
+        (highlight ? "| highlight: " + highlight : "")
+    )
+    small
+      font  &lt;
+      font(
+        ng-bind-html=select+".srv_id | escape" +
+          (highlight ? "| highlight: " + highlight : "")
+      )
+      font &gt;
+
+.panel-body.form-horizontal(ng-show="filters.show")
+  .row
+    .col-md-6
+      +label("{{ 'pkg.backup.admin.archive.list.filter.status.LABEL' | translate }}")
+        +input-with-btn("fa fa-times-circle")(ng-click="filters.status.clear()")
+          +ui-select("filters.status")
+            ui-select-match(placeholder="{{ 'pkg.backup.admin.archive.list.filter.status.PLACEHOLDER' | translate }}")
+              span(ng-bind="$select.selected.name")
+
+            +ui-select-choices("filters.status")
+              span(ng-bind-html="choice.name | highlight: $select.search")
