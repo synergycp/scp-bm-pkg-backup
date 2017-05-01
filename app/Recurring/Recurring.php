@@ -11,11 +11,15 @@ extends Model
 {
     use Archive\Archivable;
 
+    public static $singular = 'Archive';
+    public static $plural = 'Archives';
+    public static $controller = 'pkg.backup.recurring';
+
     public $table = 'pkg_backup_recurring_backups';
 
-    public function __toString()
+    public function getNameAttribute()
     {
-        return "{$this->source->name} ({$this->period})";
+        return $this->source->name;
     }
 
     /**
