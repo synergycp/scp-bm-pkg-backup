@@ -3,6 +3,7 @@
 namespace Packages\Backup\App\Archive;
 
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
+use Packages\Backup\App\Recurring;
 
 /**
  * Handle the Business Logic for Backups.

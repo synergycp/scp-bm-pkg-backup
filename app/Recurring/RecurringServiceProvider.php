@@ -14,6 +14,7 @@ extends ServiceProvider
     protected $providers = [
         RecurringEventProvider::class,
         RecurringCommandProvider::class,
+        RecurringRoutesProvider::class,
     ];
 
     /**
