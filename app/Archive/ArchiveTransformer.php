@@ -7,61 +7,20 @@ use App\Server\ServerFilterService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Packages\Abuse\App\Report\Comment\CommentTransformer;
 
-class ArchiveTransformer extends Transformer
+class ArchiveTransformer
+    extends Transformer
 {
-    /**
-     * @param Archive $item
-     * @return mixed
-     */
-    public function item(Archive $item)
-    {
-        return $item->expose([
-                'id',
-                'recurring_id',
-                'dest',
-                'source',
-            ]) + [
-                'name'        => $item->source->name,
-                'created_at'  => $this->date($item->created_at),
-                'updated_at'  => $this->date($item->updated_at),
-                'recurring'   => $item->recurring ? $item->recurring->__toString() : null,
-                'status'      => $this->itemStatus($item)
-            ];
-    }
+    private $statuses = [
+        ArchiveStatus::QUEUED => 'Queued',
+        ArchiveStatus::COMPRESS => 'Compressing',
+        ArchiveStatus::COPYING => 'Copying Off-site',
+        ArchiveStatus::FINISHED => 'Finished',
+        ArchiveStatus::FAILED => 'Failed',
+    ];
 
     public function itemPreload($items)
     {
         $items->load('source', 'dest');
-    }
-
-    public function date($date)
-    {
-        if ($date) {
-            return ['iso_8601' => $date->toIso8601String(), 'unix' => $date->tz('UTC')->timestamp];
-        }
-
-        return;
-    }
-
-    private function itemStatus(Archive $item)
-    {
-        switch ($item->status) {
-            case 0:
-                return 'QUEUED';
-                break;
-            case 1:
-                return 'COMPRESS';
-                break;
-            case 2:
-                return 'COPYING';
-                break;
-            case 4:
-                return 'FINISHED';
-                break;
-            case 10:
-                return 'FAILED';
-                break;
-        }
     }
 
     public function resource(Archive $item)
@@ -69,4 +28,27 @@ class ArchiveTransformer extends Transformer
         return $this->item($item) + [];
     }
 
+    /**
+     * @param Archive $item
+     *
+     * @return mixed
+     */
+    public function item(Archive $item)
+    {
+        return $item->expose([
+            'id',
+            'dest',
+            'source',
+        ]) + [
+            'name' => $item->source->name,
+            'created_at' => $this->dateArr($item->created_at),
+            'updated_at' => $this->dateArr($item->updated_at),
+            'status' => $this->itemStatus($item),
+        ];
+    }
+
+    private function itemStatus(Archive $item)
+    {
+        return $this->statuses[$item->status];
+    }
 }
