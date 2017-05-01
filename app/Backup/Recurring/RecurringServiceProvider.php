@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Backup\Recurring;
 
+use App\Support\ClassMap;
 use Illuminate\Support\ServiceProvider;
 
 class RecurringServiceProvider
@@ -21,5 +22,15 @@ extends ServiceProvider
     public function register()
     {
         collect($this->providers)->each(_one([$this->app, 'register']));
+    }
+
+    /**
+     * Boot the Backup Service Feature.
+     *
+     * @param ClassMap $classMap
+     */
+    public function boot(ClassMap $classMap)
+    {
+        $classMap->map('pkg.backup.recurring', Recurring::class);
     }
 }

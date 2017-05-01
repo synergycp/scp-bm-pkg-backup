@@ -11,6 +11,7 @@ extends ServiceProvider
      * @var array
      */
     protected $providers = [
+        SourceRoutesProvider::class
     ];
 
     /**

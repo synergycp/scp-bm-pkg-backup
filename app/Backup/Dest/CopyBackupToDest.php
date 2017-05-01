@@ -25,11 +25,11 @@ implements Queue\ShouldQueue
     }
 
     /**
-     * @param Backup\Events\BackupEvent $event
+     * @param Backup\Events\ArchiveEvent $event
      *
      * @throws CopyToDestFailed
      */
-    public function handle(Backup\Events\BackupEvent $event)
+    public function handle(Backup\Events\ArchiveEvent $event)
     {
         $this->service->copy($event->target);
     }

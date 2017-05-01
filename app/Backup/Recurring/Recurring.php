@@ -9,9 +9,14 @@ use Packages\Backup\App\Backup;
 class Recurring
 extends Model
 {
-    use Backup\Backupable;
+    use Backup\Archivable;
 
     public $table = 'pkg_backup_recurring_backups';
+
+    public function __toString()
+    {
+        return "{$this->source->name} ({$this->period})";
+    }
 
     /**
      * @param Eloquent\Builder $query
@@ -62,5 +67,10 @@ extends Model
                 $joinType
             )
             ;
+    }
+
+    public function archives()
+    {
+        return $this->hasMany(Backup\Archive::class);
     }
 }

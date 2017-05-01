@@ -1,0 +1,52 @@
+{
+  "list": {
+    "TITLE": "Backup Archives",
+    "NONE": "There have been no recurring backups on your servers yet.",
+    "filter": {
+      "status": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status..."
+      }
+    }
+  },
+  "heading": {
+    "SOURCE": "Source",
+    "DESTINATION": "Destination",
+    "PERIOD": "Period",
+    "CREATED_AT": "Created at",
+    "UPDATED_AT": "Updated at",
+    "ACTION": "Action"
+  },
+  "logs": {
+    "TITLE": "Recurring backup logs"
+  },
+  "form": {
+    "title": {
+      "ADD": "Create recurring backup",
+      "EDIT": "Edit recurring backup"
+    },
+    "source": {
+      "LABEL": "Source",
+      "PLACEHOLDER": "Source"
+    },
+    "destination": {
+      "LABEL": "Destination",
+      "PLACEHOLDER": "Destination"
+    },
+    "period": {
+      "LABEL": "Period",
+      "PLACEHOLDER": "Period"
+    },
+    "buttons": {
+      "DELETE": "Delete"
+    }
+  },
+  "modal":{
+    "delete":{
+      "TITLE":"Delete recurring backups",
+      "BODY":"Click \"Delete\" to permanently delete these recurring backups:",
+      "CANCEL":"Cancel",
+      "SUBMIT":"Delete"
+    }
+  }
+}

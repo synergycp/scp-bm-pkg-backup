@@ -17,17 +17,17 @@ class RecurringService
     protected $recurrings;
 
     /**
-     * @var Backup\BackupService
+     * @var Backup\ArchiveService
      */
     protected $backup;
 
     /**
      * @param RecurringRepository $recurrings
-     * @param Backup\BackupService $backup
+     * @param Backup\ArchiveService $backup
      */
     public function __construct(
         RecurringRepository $recurrings,
-        Backup\BackupService $backup
+        Backup\ArchiveService $backup
     ) {
         $this->backup = $backup;
         $this->recurrings = $recurrings;
@@ -71,7 +71,7 @@ class RecurringService
     /**
      * @param Recurring $item
      *
-     * @return Backup\Backup
+     * @return Backup\Archive
      */
     public function createBackup(Recurring $item)
     {

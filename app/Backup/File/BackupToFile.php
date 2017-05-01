@@ -25,9 +25,9 @@ implements Queue\ShouldQueue
     }
 
     /**
-     * @param Backup\Events\BackupEvent $event
+     * @param Backup\Events\ArchiveEvent $event
      */
-    public function handle(Backup\Events\BackupEvent $event)
+    public function handle(Backup\Events\ArchiveEvent $event)
     {
         $this->service->save($event->target);
     }

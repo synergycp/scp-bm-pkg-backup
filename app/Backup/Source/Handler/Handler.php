@@ -10,8 +10,8 @@ use Packages\Backup\App\Backup;
 interface Handler
 {
     /**
-     * @param Backup\Backup $backup
+     * @param Backup\Archive $backup
      * @param string        $tempFile
      */
-    public function handle(Backup\Backup $backup, $tempFile);
+    public function handle(Backup\Archive $backup, $tempFile);
 }

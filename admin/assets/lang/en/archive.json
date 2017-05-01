@@ -1,0 +1,63 @@
+{
+  "list": {
+    "TITLE": "Backup Archives",
+    "NONE": "There have been no archives of backup on your servers yet.",
+    "tab": {
+      "admin": {
+        "TITLE": "Waiting on ADMIN",
+        "EMPTY": "No Backup Archives are currently waiting on admin."
+      },
+      "client": {
+        "TITLE": "Waiting on CLIENT",
+        "EMPTY": "No Backup Archives are currently waiting on client."
+      },
+      "archive": {
+        "TITLE": "Archive",
+        "EMPTY": "No Backup Archives are currently archived."
+      }
+    }
+  },
+  "modal": {
+    "assign": {
+      "TITLE": "Assign Backup Archive",
+      "SUBMIT": "Assign",
+      "CANCEL": "Cancel",
+      "client": {
+        "LABEL": "Client",
+        "PLACEHOLDER": "Type to search..."
+      },
+      "server": {
+        "LABEL": "Server",
+        "PLACEHOLDER": "Type to search..."
+      }
+    }
+  },
+  "view": {
+    "title": {
+      "PAGE": "View Backup Archive from {{ date }}"
+    },
+    "overview": {
+      "TITLE": "Overview",
+      "DATE": "Date",
+      "ADDR": "IP Address",
+      "status": {
+        "TITLE": "Current Status",
+        "RESOLVED": "{{ resolved ? 'Resolved on '+resolved : 'Unresolved'}}"
+      }
+    },
+    "resolve": {
+      "TOGGLE": "{{ resolved ? 'Mark Unresolved' : 'Mark Resolved' }}"
+    },
+    "body": {
+      "TITLE": "Archive Body"
+    },
+    "comments": {
+      "EMPTY": "There are no comments on this archive yet.",
+      "TITLE": "Comments",
+      "post": {
+        "TITLE": "Leave a Comment",
+        "SUBMIT": "Post Comment"
+      }
+    }
+  }
+}
