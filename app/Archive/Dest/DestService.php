@@ -55,7 +55,7 @@ class DestService
      *
      * @throws CopyToDestFailed
      */
-    public function copy(Backup\Archive $backup)
+    public function copy(Archive\Archive $backup)
     {
         try {
             $this->event->fire(
@@ -92,7 +92,7 @@ class DestService
      *
      * @throws DeleteFromDestFailed
      */
-    public function delete(Backup\Archive $backup)
+    public function delete(Archive\Archive $backup)
     {
         try {
             $this->handler

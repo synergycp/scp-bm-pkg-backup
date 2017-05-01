@@ -13,5 +13,5 @@ interface Handler
      * @param Archive\Archive $backup
      * @param string        $tempFile
      */
-    public function handle(Backup\Archive $backup, $tempFile);
+    public function handle(Archive\Archive $backup, $tempFile);
 }

@@ -41,7 +41,7 @@ implements Archive\Source\Handler\Handler
     /**
      * {@inheritdoc}
      */
-    public function handle(Backup\Archive $backup, $tempFile)
+    public function handle(Archive\Archive $backup, $tempFile)
     {
         $this->makeOutputDir($tempFile);
         $this->dump($backup, $tempFile);
@@ -66,7 +66,7 @@ implements Archive\Source\Handler\Handler
      *
      * @throws \Exception
      */
-    protected function dump(Backup\Archive $backup, $tempFile)
+    protected function dump(Archive\Archive $backup, $tempFile)
     {
         $this->run(
             $this->shell->cmd()->setOutputFile($tempFile),
@@ -79,7 +79,7 @@ implements Archive\Source\Handler\Handler
      *
      * @return string
      */
-    protected function command(Backup\Archive $backup)
+    protected function command(Archive\Archive $backup)
     {
         $database = $this->value
             ->byName($backup->source, MysqlDumpFields::DATABASE)

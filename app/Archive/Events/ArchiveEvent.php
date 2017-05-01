@@ -16,7 +16,7 @@ extends \App\Support\Event
     /**
      * @param Archive\Archive $target
      */
-    public function __construct(Backup\Archive $target)
+    public function __construct(Archive\Archive $target)
     {
         $this->target = $target;
     }

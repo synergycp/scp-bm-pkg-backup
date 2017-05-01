@@ -71,6 +71,6 @@ extends Model
 
     public function archives()
     {
-        return $this->hasMany(Backup\Archive::class);
+        return $this->hasMany(Archive\Archive::class);
     }
 }

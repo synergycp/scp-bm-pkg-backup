@@ -64,7 +64,7 @@ class FileService
      *
      * @throws \Exception
      */
-    public function save(Backup\Archive $backup)
+    public function save(Archive\Archive $backup)
     {
         try {
             $this->event->fire(
@@ -89,7 +89,7 @@ class FileService
     /**
      * @param Archive\Archive $backup
      */
-    public function delete(Backup\Archive $backup)
+    public function delete(Archive\Archive $backup)
     {
         try {
             $this->file->delete(
@@ -109,7 +109,7 @@ class FileService
     /**
      * @param Archive\Archive $backup
      */
-    public function tempFile(Backup\Archive $backup)
+    public function tempFile(Archive\Archive $backup)
     {
         return $this->tempDir().$backup->id;
     }
