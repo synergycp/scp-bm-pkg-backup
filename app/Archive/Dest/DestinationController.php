@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Archive\Dest;
 use App\Api;
 
 /**
- * Routing for Abuse Report API Requests.
+ * Routing for Archive Destinations API Requests.
  */
 class DestinationController extends Api\Controller
 {

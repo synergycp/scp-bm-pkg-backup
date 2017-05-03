@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Recurring;
 use App\Api;
 
 /**
- * Routing for Abuse Report API Requests.
+ * Routing for Recurring Archives API Requests.
  */
 class RecurringController extends Api\Controller
 {

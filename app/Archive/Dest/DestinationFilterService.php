@@ -18,7 +18,7 @@ class DestinationFilterService extends FilterService
      */
     protected $servers;
     /**
-     * @var ReportListRequest
+     * @var DestinationListRequest
      */
     protected $request;
 

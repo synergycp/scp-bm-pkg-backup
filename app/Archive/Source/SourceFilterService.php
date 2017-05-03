@@ -18,7 +18,7 @@ class SourceFilterService extends FilterService
      */
     protected $servers;
     /**
-     * @var ReportListRequest
+     * @var SourceListRequest
      */
     protected $request;
 

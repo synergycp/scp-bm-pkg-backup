@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Archive\Source;
 use App\Api;
 
 /**
- * Routing for Abuse Report API Requests.
+ * Routing for Archive Source API Requests.
  */
 class SourceController extends Api\Controller
 {
