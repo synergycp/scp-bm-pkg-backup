@@ -18,7 +18,7 @@ class RecurringTransformer extends Transformer
                 'dest',
                 'source'
             ]) + [
-                'name'       => $item->__toString(),
+                'name'       => $item->source->name,
                 'created_at' => $this->date($item->created_at),
                 'updated_at' => $this->date($item->updated_at),
             ];

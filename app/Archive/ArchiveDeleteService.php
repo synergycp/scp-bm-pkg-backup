@@ -28,7 +28,7 @@ class ArchiveDeleteService extends DeleteService
      */
     protected function afterDelete(Collection $items)
     {
-        $this->successItems('pkg.backup::backup.archive.deleted', $items);
+        $this->successItems('pkg.backup::archive.deleted', $items);
     }
 
     /**

@@ -49,7 +49,7 @@ class RecurringUpdateService extends UpdateService
     {
         $createEvent = $this->queueHandler(RecurringCreated::class);
 
-        $this->successItems('pkg.backup::backup.recurring.created', $items->each($createEvent));
+        $this->successItems('pkg.backup::recurring.created', $items->each($createEvent));
 
         $this->recurringService->createBackups($items);
     }
@@ -81,7 +81,7 @@ class RecurringUpdateService extends UpdateService
         );
 
         $this->successItems(
-            'pkg.backup::backup.recurring.update.source',
+            'pkg.backup::recurring.update.source',
             $items
                 ->filter($this->changed($inputs))
                 ->reject([$this, 'isCreating'])
@@ -100,7 +100,7 @@ class RecurringUpdateService extends UpdateService
         );
 
         $this->successItems(
-            'pkg.backup::backup.recurring.update.destination',
+            'pkg.backup::recurring.update.destination',
             $items
                 ->filter($this->changed($inputs))
                 ->reject([$this, 'isCreating'])
@@ -119,7 +119,7 @@ class RecurringUpdateService extends UpdateService
         );
 
         $this->successItems(
-            'pkg.backup::backup.recurring.update.period',
+            'pkg.backup::recurring.update.period',
             $items
                 ->filter($this->changed($inputs))
                 ->reject([$this, 'isCreating'])

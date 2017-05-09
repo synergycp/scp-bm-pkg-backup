@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Archive;
 use App\Api;
 
 /**
- * Routing for Abuse Report API Requests.
+ * Routing for Archives API Requests.
  */
 class ArchiveController extends Api\Controller
 {

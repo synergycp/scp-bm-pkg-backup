@@ -18,7 +18,7 @@ class HandlerFilterService extends FilterService
      */
     protected $servers;
     /**
-     * @var ReportListRequest
+     * @var HandlerListRequest
      */
     protected $request;
 

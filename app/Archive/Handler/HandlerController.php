@@ -5,7 +5,7 @@ namespace Packages\Backup\App\Archive\Handler;
 use App\Api;
 
 /**
- * Routing for Abuse Report API Requests.
+ * Routing for Handler API Requests.
  */
 class HandlerController extends Api\Controller
 {

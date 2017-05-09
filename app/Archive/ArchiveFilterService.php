@@ -18,7 +18,7 @@ class ArchiveFilterService extends FilterService
      */
     protected $servers;
     /**
-     * @var ReportListRequest
+     * @var ArchiveListRequest
      */
     protected $request;
 

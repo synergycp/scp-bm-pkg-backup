@@ -18,7 +18,7 @@ class RecurringFilterService extends FilterService
      */
     protected $servers;
     /**
-     * @var ReportListRequest
+     * @var RecurringListRequest
      */
     protected $request;
 

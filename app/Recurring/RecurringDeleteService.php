@@ -28,7 +28,7 @@ class RecurringDeleteService extends DeleteService
      */
     protected function afterDelete(Collection $items)
     {
-        $this->successItems('pkg.backup::backup.recurring.deleted', $items);
+        $this->successItems('pkg.backup::recurring.deleted', $items);
     }
 
     /**
