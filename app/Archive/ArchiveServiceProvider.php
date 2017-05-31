@@ -4,6 +4,8 @@ namespace Packages\Backup\App\Archive;
 
 use App\Support\ClassMap;
 use Illuminate\Support\ServiceProvider;
+use Packages\Backup\App\Archive\Field\FieldRoutesProvider;
+use Packages\Backup\App\Archive\Handler\HandlerRoutesProvider;
 
 class ArchiveServiceProvider
 extends ServiceProvider
@@ -17,6 +19,8 @@ extends ServiceProvider
 
         Dest\DestServiceProvider::class,
         Source\SourceServiceProvider::class,
+        HandlerRoutesProvider::class,
+        FieldRoutesProvider::class
     ];
 
     /**

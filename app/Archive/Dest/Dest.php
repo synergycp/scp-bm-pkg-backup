@@ -19,6 +19,11 @@ implements Archive\Field\HasValues
         return $this->morphMany(Archive\Field\Field::class, 'parent');
     }
 
+    public function values()
+    {
+        return $this->morphMany(Archive\Field\Value::class, 'parent');
+    }
+
     /**
      * @return Relations\BelongsTo
      */

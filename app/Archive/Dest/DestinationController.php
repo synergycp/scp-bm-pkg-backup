@@ -9,6 +9,7 @@ use App\Api;
  */
 class DestinationController extends Api\Controller
 {
+    use Api\Traits\CreateResource;
     use Api\Traits\ShowResource;
     use Api\Traits\ListResource;
     use Api\Traits\DeleteResource;
@@ -18,6 +19,7 @@ class DestinationController extends Api\Controller
      * @var DestinationRepository
      */
     protected $items;
+
     /**
      * @var DestinationFilterService
      */
@@ -29,18 +31,26 @@ class DestinationController extends Api\Controller
     protected $transform;
 
     /**
+     * @var DestinationUpdateService
+     */
+    protected $update;
+
+    /**
      * @param DestinationRepository $items
      * @param DestinationFilterService $filter
+     * @param DestinationUpdateService $update
      * @param DestinationTransformer $transform
      */
     public function boot(
         DestinationRepository $items,
         DestinationFilterService $filter,
+        DestinationUpdateService $update,
         DestinationTransformer $transform
     ) {
         $this->items     = $items;
         $this->transform = $transform;
         $this->filter    = $filter;
+        $this->update    = $update;
     }
 
     /**

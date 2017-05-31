@@ -5,5 +5,6 @@
     .module('pkg.backup', [
         'pkg.backup.archive',
         'pkg.backup.recurring',
+        'pkg.backup.destination',
     ]);
 })();

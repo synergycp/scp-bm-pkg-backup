@@ -1,0 +1,19 @@
+extends /node_modules/scp-ng-gulp/resources/pug/table-checkable
+
+block headings
+  th.sortable(ng-if="table.showName")
+    span(translate="pkg.backup.admin.destination.heading.NAME")
+    sort(col="source_id")
+  th.sortable(ng-if="table.showHandler")
+    span(translate="pkg.backup.admin.destination.heading.HANDLER")
+    sort(col="destination_id")
+
+block columns
+  td(
+    ng-if="table.showName"
+    ng-bind="row.name"
+  )
+  td(
+    ng-if="table.showHandler"
+    ng-bind="row.handler.name"
+  )

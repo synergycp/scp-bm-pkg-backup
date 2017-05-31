@@ -1,0 +1,41 @@
+{
+  "list": {
+    "TITLE": "Archive Destinations",
+    "NONE": "There are no destinations for archives yet.",
+    "filter": {
+      "status": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status..."
+      }
+    }
+  },
+  "heading": {
+    "NAME": "Name",
+    "HANDLER": "Handler",
+    "ACTION": "Action"
+  },
+  "logs": {
+    "TITLE": "Destination logs"
+  },
+  "form": {
+    "title": {
+      "ADD": "Create destination"
+    },
+    "name": {
+      "LABEL": "Name",
+      "PLACEHOLDER": "Name"
+    },
+    "handler": {
+      "LABEL": "Handler",
+      "PLACEHOLDER": "Handler"
+    }
+  },
+  "modal":{
+    "delete":{
+      "TITLE":"Delete Destinations",
+      "BODY":"Click \"Delete\" to permanently delete these Destinations:",
+      "CANCEL":"Cancel",
+      "SUBMIT":"Delete"
+    }
+  }
+}

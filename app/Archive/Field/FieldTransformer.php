@@ -1,16 +1,16 @@
 <?php
 
-namespace Packages\Backup\App\Archive\Dest;
+namespace Packages\Backup\App\Archive\Field;
 
 use App\Api\Transformer;
 
-class DestinationTransformer extends Transformer
+class FieldTransformer extends Transformer
 {
     /**
-     * @param Dest $item
+     * @param Field $item
      * @return mixed
      */
-    public function item(Dest $item)
+    public function item(Field $item)
     {
         return $item->expose(['id', 'name']) +
             [
@@ -18,7 +18,7 @@ class DestinationTransformer extends Transformer
             ];
     }
 
-    public function resource(Dest $item)
+    public function resource(Field $item)
     {
         return $this->item($item) + [];
     }
