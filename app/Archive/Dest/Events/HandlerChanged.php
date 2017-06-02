@@ -4,7 +4,7 @@ namespace Packages\Backup\App\Archive\Dest\Events;
 
 use App\Log\Log;
 
-class HandlerChanged extends DestinationLoggableEvent
+class HandlerChanged extends DestLoggableEvent
 {
     public function log(Log $log)
     {

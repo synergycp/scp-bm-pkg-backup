@@ -2,12 +2,11 @@
 
 namespace Packages\Backup\App\Archive\Dest\Events;
 
-
 use App\Support\Event;
 use App\Support\Database\SerializesModels;
 use Packages\Backup\App\Archive\Dest\Dest;
 
-abstract class DestinationEvent extends Event
+abstract class DestEvent extends Event
 {
     use SerializesModels;
 

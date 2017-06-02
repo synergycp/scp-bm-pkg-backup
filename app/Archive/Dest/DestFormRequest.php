@@ -4,7 +4,7 @@ namespace Packages\Backup\App\Archive\Dest;
 
 use App\Http\Requests\RestRequest;
 
-class DestinationFormRequest extends RestRequest
+class DestFormRequest extends RestRequest
 {
     public function boot()
     {

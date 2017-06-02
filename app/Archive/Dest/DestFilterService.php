@@ -7,34 +7,14 @@ use App\Server\ServerRepository;
 use App\Support\Http\FilterService;
 use Illuminate\Database\Eloquent\Builder;
 
-class DestinationFilterService extends FilterService
+class DestFilterService extends FilterService
 {
     /**
-     * @var ApiAuthService
-     */
-    protected $auth;
-    /**
-     * @var ServerRepository
-     */
-    protected $servers;
-    /**
-     * @var DestinationListRequest
+     * @var DestListRequest
      */
     protected $request;
 
-    protected $requestClass = DestinationListRequest::class;
-
-    /**
-     * @param ApiAuthService $auth
-     * @param ServerRepository $servers
-     */
-    public function boot(
-        ApiAuthService $auth,
-        ServerRepository $servers
-    ) {
-        $this->auth    = $auth;
-        $this->servers = $servers;
-    }
+    protected $requestClass = DestListRequest::class;
 
     /**
      * @param Builder $query

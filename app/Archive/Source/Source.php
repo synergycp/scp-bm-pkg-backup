@@ -13,11 +13,11 @@ implements Archive\Field\HasValues
     public $table = 'pkg_backup_sources';
 
     /**
-     * @inheritDoc
+     * @return Relations\MorphMany
      */
-    public function fields()
+    public function fieldValues()
     {
-        return $this->morphMany(Archive\Field\Field::class, 'parent');
+        return $this->morphMany(Archive\Field\Value::class, 'parent');
     }
 
     /**

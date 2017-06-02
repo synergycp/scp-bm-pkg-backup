@@ -9,10 +9,11 @@ block headings
     sort(col="destination_id")
 
 block columns
-  td(
-    ng-if="table.showName"
+  td(ng-if="table.showName")
+    a(
+    ui-sref="app.pkg.backup.destination.view({id: row.id})"
     ng-bind="row.name"
-  )
+    )
   td(
     ng-if="table.showHandler"
     ng-bind="row.handler.name"

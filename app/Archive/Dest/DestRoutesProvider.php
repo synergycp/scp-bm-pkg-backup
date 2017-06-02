@@ -8,8 +8,7 @@ use App\Http\RouteServiceProvider;
 /**
  * Routes regarding Servers.
  */
-class DestinationRoutesProvider
-    extends RouteServiceProvider
+class DestRoutesProvider extends RouteServiceProvider
 {
     /**
      * @var string
@@ -18,6 +17,6 @@ class DestinationRoutesProvider
 
     protected function api(Router $router)
     {
-        $router->resource('destination', DestinationController::class);
+        $router->resource('destination', DestController::class);
     }
 }

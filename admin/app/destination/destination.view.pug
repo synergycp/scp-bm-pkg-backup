@@ -1,0 +1,12 @@
+extends /node_modules/scp-ng-gulp/resources/pug/edit
+
+block title
+  span(
+  translate='pkg.backup.admin.destination.form.title.EDIT'
+  )
+
+block form
+  destination-form(form="vm.edit")
+
+block append right-side
+  destination-buttons(destination="vm.edit.input")

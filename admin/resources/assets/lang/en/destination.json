@@ -19,7 +19,8 @@
   },
   "form": {
     "title": {
-      "ADD": "Create destination"
+      "ADD": "Create destination",
+      "EDIT": "Update destination"
     },
     "name": {
       "LABEL": "Name",
@@ -28,14 +29,17 @@
     "handler": {
       "LABEL": "Handler",
       "PLACEHOLDER": "Handler"
+    },
+    "buttons": {
+      "DELETE": "Delete"
     }
   },
-  "modal":{
-    "delete":{
-      "TITLE":"Delete Destinations",
-      "BODY":"Click \"Delete\" to permanently delete these Destinations:",
-      "CANCEL":"Cancel",
-      "SUBMIT":"Delete"
+  "modal": {
+    "delete": {
+      "TITLE": "Delete Destinations",
+      "BODY": "Click \"Delete\" to permanently delete these Destinations:",
+      "CANCEL": "Cancel",
+      "SUBMIT": "Delete"
     }
   }
 }

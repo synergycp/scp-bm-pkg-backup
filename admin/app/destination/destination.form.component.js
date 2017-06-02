@@ -39,6 +39,11 @@
         destinationForm.input = _.clone(INPUTS);
         destinationForm.handlers = Select('pkg/backup/handler');
 
+        (destinationForm.handlers.on || function () {
+        })(['change', 'load'], function (response) {
+            destinationForm.input.fields = {};
+        });
+
         //////////
 
         function init() {
@@ -48,6 +53,7 @@
             })(['change', 'load'], function (response) {
                 fillFormInputs();
                 destinationForm.handlers.selected = response.handler;
+                destinationForm.input.fields = response.handler.fields;
             });
         }
 

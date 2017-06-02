@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Archive\Dest;
 
+use App\Support\ClassMap;
 use Illuminate\Support\ServiceProvider;
 
 class DestServiceProvider
@@ -11,7 +12,8 @@ extends ServiceProvider
      * @var array
      */
     protected $providers = [
-        DestinationRoutesProvider::class
+        DestRoutesProvider::class,
+        DestEventProvider::class
     ];
 
     /**
@@ -32,5 +34,34 @@ extends ServiceProvider
         return [
             Handler\HandlerService::class,
         ];
+    }
+
+    /**
+     * Boot the Backup Service Feature.
+     *
+     * @param ClassMap $classMap
+     */
+    public function boot(ClassMap $classMap)
+    {
+        $classMap->map('pkg.backup.destination', Dest::class);
+
+        $this->loadTranslationsFrom(
+            $this->basePath().'/resources/lang',
+            'pkg.backup'.$this->folder()
+        );
+    }
+
+    protected function folder()
+    {
+        return 'backup';
+    }
+
+    protected function basePath()
+    {
+        return sprintf(
+            '%s/packages/%s',
+            $this->app->basePath(),
+            $this->folder()
+        );
     }
 }

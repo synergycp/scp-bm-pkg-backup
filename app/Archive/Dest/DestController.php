@@ -7,7 +7,7 @@ use App\Api;
 /**
  * Routing for Archive Destinations API Requests.
  */
-class DestinationController extends Api\Controller
+class DestController extends Api\Controller
 {
     use Api\Traits\CreateResource;
     use Api\Traits\ShowResource;
@@ -16,41 +16,49 @@ class DestinationController extends Api\Controller
     use Api\Traits\UpdateResource;
 
     /**
-     * @var DestinationRepository
+     * @var DestRepository
      */
     protected $items;
 
     /**
-     * @var DestinationFilterService
+     * @var DestFilterService
      */
     protected $filter;
 
     /**
-     * @var DestinationTransformer
+     * @var DestTransformer
      */
     protected $transform;
 
     /**
-     * @var DestinationUpdateService
+     * @var DestUpdateService
      */
     protected $update;
 
     /**
-     * @param DestinationRepository $items
-     * @param DestinationFilterService $filter
-     * @param DestinationUpdateService $update
-     * @param DestinationTransformer $transform
+     * @var DestDeleteService
+     */
+    protected $delete;
+
+    /**
+     * @param DestRepository $items
+     * @param DestFilterService $filter
+     * @param DestUpdateService $update
+     * @param DestDeleteService $delete
+     * @param DestTransformer $transform
      */
     public function boot(
-        DestinationRepository $items,
-        DestinationFilterService $filter,
-        DestinationUpdateService $update,
-        DestinationTransformer $transform
+        DestRepository $items,
+        DestFilterService $filter,
+        DestUpdateService $update,
+        DestDeleteService $delete,
+        DestTransformer $transform
     ) {
         $this->items     = $items;
         $this->transform = $transform;
         $this->filter    = $filter;
         $this->update    = $update;
+        $this->delete    = $delete;
     }
 
     /**

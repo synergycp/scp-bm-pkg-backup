@@ -19,4 +19,4 @@ ng-model="destinationForm.input.name"
 
 div(ng-if="destinationForm.input.handler")
     div(ng-repeat="item in destinationForm.input.handler.fields")
-        +field("{{item.name}}")(ng-model="destinationForm.input.fields[item.id]" required)
+        +field("{{item.name}}")(ng-model="destinationForm.input.fields[item.id].value" required)

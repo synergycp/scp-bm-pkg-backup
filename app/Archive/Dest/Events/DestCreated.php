@@ -4,11 +4,11 @@ namespace Packages\Backup\App\Archive\Dest\Events;
 
 use App\Log\Log;
 
-class NameChanged extends DestLoggableEvent
+class DestCreated extends DestLoggableEvent
 {
     public function log(Log $log)
     {
-        $log->setDesc('Destination name changed')
+        $log->setDesc('Backup destination created')
             ->setTarget($this->target)
             ->save();
     }
