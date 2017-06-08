@@ -12,7 +12,11 @@ class HandlerTransformer extends Transformer
      */
     public function item(Handler $item)
     {
-        return $item->expose(['id', 'name', 'class', 'type']);
+        return $item->expose(['id', 'name', 'class', 'type']) + [
+                'fields' => $item->fields->map(function($field){
+                    return $field->expose(['id', 'name']);
+                })
+            ];
     }
 
     public function resource(Handler $item)

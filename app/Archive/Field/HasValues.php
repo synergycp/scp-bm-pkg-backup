@@ -12,7 +12,7 @@ interface HasValues
     /**
      * @return Relations\MorphMany
      */
-    public function fields();
+    public function fieldValues();
 
     /**
      * @return int

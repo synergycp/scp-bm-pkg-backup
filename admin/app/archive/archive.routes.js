@@ -24,7 +24,6 @@
     ;
 
     function mapArchiveUrl($state, id) {
-      return $state.href('archive.list');
       return $state.href('archive.' + (id ? 'view' : 'list'), {
         id: id,
       });

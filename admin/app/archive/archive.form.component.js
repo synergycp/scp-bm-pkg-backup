@@ -61,16 +61,7 @@
         }
 
         function getData() {
-            var data = _.clone(archiveForm.input);
-
-            // data.source_id = archiveForm.input.source ? archiveForm.input.source.id : null;
-            // data.destination_id = archiveForm.input.destination ? archiveForm.input.destination.id : null;
-            //
-            // if (archiveForm.input.recurring) {
-            //     data.recurring_id = archiveForm.input.recurring.id;
-            // }
-
-            return data;
+            return _.clone(archiveForm.input);
         }
     }
 })();

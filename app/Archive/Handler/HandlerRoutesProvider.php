@@ -1,6 +1,6 @@
 <?php
 
-namespace Packages\Backup\App\Archive\Dest;
+namespace Packages\Backup\App\Archive\Handler;
 
 use Illuminate\Routing\Router;
 use App\Http\RouteServiceProvider;
@@ -8,7 +8,7 @@ use App\Http\RouteServiceProvider;
 /**
  * Routes regarding Servers.
  */
-class DestinationRoutesProvider
+class HandlerRoutesProvider
     extends RouteServiceProvider
 {
     /**
@@ -18,6 +18,6 @@ class DestinationRoutesProvider
 
     protected function api(Router $router)
     {
-        $router->resource('destination', DestinationController::class);
+        $router->resource('handler', HandlerController::class);
     }
 }
