@@ -1,0 +1,45 @@
+{
+  "list": {
+    "TITLE": "Archive Sources",
+    "NONE": "There are no sources for archives yet.",
+    "filter": {
+      "status": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status..."
+      }
+    }
+  },
+  "heading": {
+    "NAME": "Name",
+    "HANDLER": "Handler",
+    "ACTION": "Action"
+  },
+  "logs": {
+    "TITLE": "Source logs"
+  },
+  "form": {
+    "title": {
+      "ADD": "Create source",
+      "EDIT": "Update source"
+    },
+    "name": {
+      "LABEL": "Name",
+      "PLACEHOLDER": "Name"
+    },
+    "handler": {
+      "LABEL": "Handler",
+      "PLACEHOLDER": "Handler"
+    },
+    "buttons": {
+      "DELETE": "Delete"
+    }
+  },
+  "modal": {
+    "delete": {
+      "TITLE": "Delete Sources",
+      "BODY": "Click \"Delete\" to permanently delete these Sources:",
+      "CANCEL": "Cancel",
+      "SUBMIT": "Delete"
+    }
+  }
+}

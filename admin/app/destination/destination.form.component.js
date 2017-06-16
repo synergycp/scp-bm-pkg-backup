@@ -37,7 +37,7 @@
 
         destinationForm.$onInit = init;
         destinationForm.input = _.clone(INPUTS);
-        destinationForm.handlers = Select('pkg/backup/handler');
+        destinationForm.handlers = Select('pkg/backup/handler?type=destination');
 
         (destinationForm.handlers.on || function () {
         })(['change', 'load'], function (response) {

@@ -12,7 +12,29 @@ class SourceTransformer extends Transformer
      */
     public function item(Source $item)
     {
-        return $item->expose(['id', 'name', 'ext']);
+        return $item->expose(['id', 'name', 'ext']) + $this->handler($item);
+    }
+
+    private function handler(Source $item)
+    {
+        return [
+            'handler' => $item->handler->expose(['name']) + ['fields'  => $this->fields($item)],
+        ];
+    }
+
+    private function fields(Source $item)
+    {
+        $fields = [];
+
+        $item->fieldValues->each(function ($field) use (&$fields) {
+            $fields[$field->field_id] = [
+                'id'    => $field->field_id,
+                'name'  => $field->field->name,
+                'value' => $field->value,
+            ];
+        });
+
+        return $fields;
     }
 
     public function resource(Source $item)

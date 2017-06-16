@@ -9,6 +9,7 @@ use App\Api;
  */
 class SourceController extends Api\Controller
 {
+    use Api\Traits\CreateResource;
     use Api\Traits\ShowResource;
     use Api\Traits\ListResource;
     use Api\Traits\DeleteResource;
@@ -22,25 +23,38 @@ class SourceController extends Api\Controller
      * @var SourceFilterService
      */
     protected $filter;
-
     /**
      * @var SourceTransformer
      */
     protected $transform;
+    /**
+     * @var SourceUpdateService
+     */
+    protected $update;
+    /**
+     * @var SourceDeleteService
+     */
+    protected $delete;
 
     /**
      * @param SourceRepository $items
      * @param SourceFilterService $filter
+     * @param SourceUpdateService $update
      * @param SourceTransformer $transform
+     * @param SourceDeleteService $delete
      */
     public function boot(
         SourceRepository $items,
         SourceFilterService $filter,
-        SourceTransformer $transform
+        SourceUpdateService $update,
+        SourceTransformer $transform,
+        SourceDeleteService $delete
     ) {
         $this->items     = $items;
         $this->transform = $transform;
         $this->filter    = $filter;
+        $this->update    = $update;
+        $this->delete    = $delete;
     }
 
     /**
