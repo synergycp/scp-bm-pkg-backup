@@ -28,7 +28,7 @@ extends ServiceProvider
      */
     public function register()
     {
-        collect($this->providers)->each(function ($provider) {
+        collection($this->providers)->each(function ($provider) {
             $this->app->register($provider);
         });
     }

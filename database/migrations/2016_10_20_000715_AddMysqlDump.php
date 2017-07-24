@@ -37,7 +37,7 @@ class AddMysqlDump extends Migration
             return $field;
         }, array_combine($fieldNames, $fieldNames));
 
-        collect([
+        collection([
             Mysql\MysqlDumpFields::DATABASE => 'synergy',
         ])->each(function ($value, $name) use ($fields, $source) {
             $fieldValue = new Field\Value();

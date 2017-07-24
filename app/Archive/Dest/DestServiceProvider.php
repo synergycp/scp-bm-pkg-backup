@@ -23,7 +23,7 @@ extends ServiceProvider
     {
         $this->app->singleton(Handler\HandlerService::class);
 
-        collect($this->providers)->each(_one([$this->app, 'register']));
+        collection($this->providers)->each(_one([$this->app, 'register']));
     }
 
     /**

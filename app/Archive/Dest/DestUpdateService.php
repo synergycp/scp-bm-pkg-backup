@@ -93,7 +93,7 @@ class DestUpdateService extends UpdateService
 
     private function createFields(Dest $item)
     {
-        $fields = collect($this->input('fields'))
+        $fields = collection($this->input('fields'))
             ->map(function ($value, $id) use ($item) {
                 $fieldValue = new Value();
 
@@ -118,7 +118,7 @@ class DestUpdateService extends UpdateService
 
             $this->successItems(
                 'pkg.backup::destination.update.field_value',
-                collect([$fieldValue])
+                collection([$fieldValue])
                     ->filter($changed)
                     ->reject([$this, 'isCreating'])
                     ->each(function ($fieldValue) use ($event) {

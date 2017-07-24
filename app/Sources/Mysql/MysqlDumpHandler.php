@@ -9,7 +9,7 @@ use Packages\Backup\App\Archive;
  * MySQLDump Handler.
  */
 class MysqlDumpHandler
-implements Archive\Source\Handler\Handler
+    implements Archive\Source\Handler\Handler
 {
     /**
      * @var Shell\Shell
@@ -27,7 +27,7 @@ implements Archive\Source\Handler\Handler
     protected $exec = 'mysqldump';
 
     /**
-     * @param Shell\Shell               $shell
+     * @param Shell\Shell                $shell
      * @param Archive\Field\ValueService $value
      */
     public function __construct(
@@ -61,46 +61,6 @@ implements Archive\Source\Handler\Handler
     }
 
     /**
-     * @param Archive\Archive $backup
-     * @param string        $tempFile
-     *
-     * @throws \Exception
-     */
-    protected function dump(Archive\Archive $backup, $tempFile)
-    {
-        $this->run(
-            $this->shell->cmd()->setOutputFile($tempFile),
-            $this->command($backup)
-        );
-    }
-
-    /**
-     * @param Archive\Archive $backup
-     *
-     * @return string
-     */
-    protected function command(Archive\Archive $backup)
-    {
-        $database = $this->value
-            ->byName($backup->source, MysqlDumpFields::DATABASE)
-            ->value();
-        $arguments = [
-            $this->exec,
-            // --defaults-file option must be the first option.
-            '--defaults-file=$(bash -c "echo ~")/.my.cnf',
-            // Efficient, exact MyISAM backups.
-            '--single-transaction --quick',
-            // The database that is getting exported.
-            $database,
-
-            // Pipe the output through gzip with maximum compression
-            '| gzip -9',
-        ];
-
-        return implode(' ', $arguments);
-    }
-
-    /**
      * @param Shell\ShellCommand $cmd
      * @param string             $command
      *
@@ -117,5 +77,69 @@ implements Archive\Source\Handler\Handler
                 $errors
             ));
         }
+    }
+
+    /**
+     * @param Archive\Archive $backup
+     * @param string          $tempFile
+     *
+     * @throws \Exception
+     */
+    protected function dump(Archive\Archive $backup, $tempFile)
+    {
+        $this->run(
+            $this
+                ->shell
+                ->cmd()
+                ->setOutputFile($tempFile),
+            $this->command($backup)
+        );
+    }
+
+    /**
+     * @param Archive\Archive $backup
+     *
+     * @return string
+     */
+    protected function command(Archive\Archive $backup)
+    {
+        $arguments = [
+            $this->exec,
+
+            // --defaults-file option must be the first option.
+            // '--defaults-file=$(bash -c "echo ~")/.my.cnf',
+
+            sprintf(
+                '-u "%s" -p"%s" -h "%s"',
+                config('database.connections.mysql.username'),
+                config('database.connections.mysql.password'),
+                config('database.connections.mysql.host')
+            ),
+
+            // Efficient, exact MyISAM backups.
+            '--single-transaction --quick',
+
+            // The database that is getting exported.
+            $this->getDatabase($backup),
+
+            // Pipe the output through gzip with maximum compression
+            '| gzip -9',
+        ];
+
+        return implode(' ', $arguments);
+    }
+
+    /**
+     * @param Archive\Archive $backup
+     *
+     * @return string
+     */
+    protected function getDatabase(Archive\Archive $backup)
+    {
+        return $this
+            ->value
+            ->byName($backup->source, MysqlDumpFields::DATABASE)
+            ->value()
+            ;
     }
 }

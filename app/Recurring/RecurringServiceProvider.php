@@ -22,7 +22,7 @@ extends ServiceProvider
      */
     public function register()
     {
-        collect($this->providers)->each(_one([$this->app, 'register']));
+        collection($this->providers)->each(_one([$this->app, 'register']));
     }
 
     /**

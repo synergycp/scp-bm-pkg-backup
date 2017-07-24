@@ -99,7 +99,7 @@ implements Archive\Dest\Handler\Handler
             $file
         );
 
-        return collect([
+        return collection([
             implode(' ', [
                 'ssh',
                 '-o "StrictHostKeyChecking false"',
