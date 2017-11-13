@@ -5,6 +5,7 @@ namespace Packages\Backup\App\Destinations\Scp;
 use App\Shell;
 use Packages\Backup\App\Archive;
 use Illuminate\Support\Collection;
+use App\System\SSH\Key\GlobalSSHKey;
 
 /**
  * Secure Copy Handler.
@@ -23,15 +24,22 @@ implements Archive\Dest\Handler\Handler
     protected $value;
 
     /**
+     * @var GlobalSSHKey
+     */
+    protected $sshKey;
+
+    /**
+     * ScpHandler constructor.
+     *
      * @param Shell\Shell                $shell
      * @param Archive\Field\ValueService $value
+     * @param GlobalSSHKey               $sshKey
      */
-    public function __construct(
-        Shell\Shell $shell,
-        Archive\Field\ValueService $value
-    ) {
+    public function __construct(Shell\Shell $shell, Archive\Field\ValueService $value, GlobalSSHKey $sshKey)
+    {
         $this->shell = $shell;
         $this->value = $value;
+        $this->sshKey = $sshKey;
     }
 
     /**
@@ -45,9 +53,13 @@ implements Archive\Dest\Handler\Handler
                 ->exec($command)
                 ;
 
-            if ($errors = $cmd->getErrors()) {
+
+            if ($status = $cmd->getExitCode()) {
+                $errors = $cmd->getErrors();
+
                 throw new \Exception(sprintf(
-                    "Error with: %s: %s",
+                    "Error %d with: %s: %s",
+                    $status,
                     $command,
                     $errors
                 ));
@@ -99,16 +111,20 @@ implements Archive\Dest\Handler\Handler
             $file
         );
 
+        $sshKeyFile = $this->sshKey->getPrivateKeyFile();
+
         return collection([
             implode(' ', [
                 'ssh',
                 '-o "StrictHostKeyChecking false"',
+                sprintf('-i "%s"', $sshKeyFile),
                 $login,
                 '--',
                 sprintf('mkdir -p "%s"', $fileFolder),
             ]),
             sprintf(
-                'scp "%s" %s',
+                'scp -i "%s" "%s" %s',
+                $sshKeyFile,
                 $tempFile,
                 $dest
             ),

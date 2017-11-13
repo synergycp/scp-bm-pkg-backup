@@ -1,2 +1,4 @@
-# scp-package-backup
-Synergy Control Panel Backups Package
+# Synergy Control Panel Backups Package
+
+## Setup
+
