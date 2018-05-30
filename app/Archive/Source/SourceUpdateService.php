@@ -1,26 +1,26 @@
 <?php
 
-namespace Packages\Backup\App\Archive\Dest;
+namespace Packages\Backup\App\Archive\Source;
 
 use Illuminate\Support\Collection;
 use App\Support\Http\UpdateService;
 use Packages\Backup\App\Archive\Field\Value;
 use Packages\Backup\App\Archive\Field\Events\FieldValueChanged;
 
-class DestUpdateService extends UpdateService
+class SourceUpdateService extends UpdateService
 {
     /**
-     * @var DestFormRequest
+     * @var SourceFormRequest
      */
     protected $request;
-    protected $requestClass = DestFormRequest::class;
+    protected $requestClass = SourceFormRequest::class;
 
     public function afterCreate(Collection $items)
     {
-        $createEvent = $this->queueHandler(Events\DestCreated::class);
+        $createEvent = $this->queueHandler(Events\SourceCreated::class);
 
         $this->successItems(
-            'pkg.backup::destination.created',
+            'pkg.backup::source.created',
             $items->each(function ($item) use ($createEvent) {
                 $createEvent($item);
                 $this->createFields($item);
@@ -47,7 +47,7 @@ class DestUpdateService extends UpdateService
         );
 
         $this->successItems(
-            'pkg.backup::destination.update.name',
+            'pkg.backup::source.update.name',
             $items
                 ->filter($changed)
                 ->reject([$this, 'isCreating'])
@@ -66,7 +66,7 @@ class DestUpdateService extends UpdateService
         );
 
         $this->successItems(
-            'pkg.backup::destination.update.handler',
+            'pkg.backup::source.update.handler',
             $items
                 ->filter(function ($item) use ($changed) {
                     if (!$changed($item)) {
@@ -85,15 +85,15 @@ class DestUpdateService extends UpdateService
         );
     }
 
-    private function restoreFields(Dest $item)
+    private function restoreFields(Source $item)
     {
         $item->fieldValues()->delete();
         $this->createFields($item);
     }
 
-    private function createFields(Dest $item)
+    private function createFields(Source $item)
     {
-        $fields = collection($this->input('fields'))
+        $fields = collect($this->input('fields'))
             ->map(function ($value, $id) use ($item) {
                 $fieldValue = new Value();
 
@@ -106,7 +106,7 @@ class DestUpdateService extends UpdateService
         $item->fieldValues()->saveMany($fields);
     }
 
-    private function updateFields(Dest $item)
+    private function updateFields(Source $item)
     {
         $item->fieldValues->each(function ($fieldValue) {
 
@@ -117,8 +117,8 @@ class DestUpdateService extends UpdateService
             $event = $this->queueHandler(FieldValueChanged::class);
 
             $this->successItems(
-                'pkg.backup::destination.update.field_value',
-                collection([$fieldValue])
+                'pkg.backup::source.update.field_value',
+                collect([$fieldValue])
                     ->filter($changed)
                     ->reject([$this, 'isCreating'])
                     ->each(function ($fieldValue) use ($event) {

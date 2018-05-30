@@ -61,6 +61,18 @@ class HandlerFilterService extends FilterService
                 $this->search->search($searchText)
             );
         }
+
+        switch ($type = $this->request->input('type')) {
+            case 'source':
+                $query->where('type', HandlerType::SOURCE);
+                break;
+            case 'destination':
+                $query->where('type', HandlerType::DEST);
+                break;
+            default:
+                abort(409, "There are no source with '{$type}' type");
+        }
+
         return $query;
     }
 }

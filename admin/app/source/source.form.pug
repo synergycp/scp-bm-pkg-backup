@@ -1,0 +1,22 @@
+doctype html
+include /node_modules/scp-ng-gulp/resources/pug/mixins/form
+
++field(
+"pkg.backup.admin.source.form.name.LABEL",
+"period"
+)(
+placeholder="{{ 'pkg.backup.admin.source.form.name.PLACEHOLDER' | translate }}"
+ng-model="sourceForm.input.name"
+)
+
++label("pkg.backup.admin.source.form.handler.LABEL")
+    .input-group
+        +ui-select("sourceForm.handlers")(ng-model="sourceForm.input.handler")
+            ui-select-match(placeholder="{{ 'pkg.backup.admin.source.form.handler.PLACEHOLDER' | translate }}")
+                | {{ $select.selected.name }}
+            +ui-select-choices("sourceForm.handlers")
+                span(ng-bind-html="choice.name | highlight: $select.search")
+
+div(ng-if="sourceForm.input.handler")
+    div(ng-repeat="item in sourceForm.input.handler.fields")
+        +field("{{item.name}}")(ng-model="sourceForm.input.fields[item.id].value" required)
