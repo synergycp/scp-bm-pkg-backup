@@ -50,3 +50,19 @@ On Synergy, go to System > Backup Destinations and create a new destination. Sel
     ```bash
     cat backup.sql | sudo /scp/bin/scp-db
     ```
+    
+5. The DHCP & File server running on the main SynergyCP web instance will now be out of date, since new API key 
+   information was generated during the install process. To update them:
+   
+   ```bash
+   cd /scp/pxe/dhcp
+   ./bin/install.sh
+   # Copy the info to the DHCP server on SynergyCP.
+  
+   cd /scp/pxe/file
+   ./bin/install.sh
+   # Copy the info to the File server on SynergyCP.
+   ```
+
+6. Run switch scans on every switch to update the bandwidth polling configuration file that is stored on disk. This can 
+   be done in bulk using the checkboxes on the switch list page. 
