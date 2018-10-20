@@ -110,10 +110,10 @@ class MysqlDumpHandler
             // '--defaults-file=$(bash -c "echo ~")/.my.cnf',
 
             sprintf(
-                '-u "%s" -p"%s" -h "%s"',
-                config('database.connections.mysql.username'),
-                config('database.connections.mysql.password'),
-                config('database.connections.mysql.host')
+                '-u %s -p%s -h %s',
+                escapeshellarg(config('database.connections.mysql.username')),
+                escapeshellarg(config('database.connections.mysql.password')),
+                escapeshellarg(config('database.connections.mysql.host'))
             ),
 
             // Efficient, exact MyISAM backups.

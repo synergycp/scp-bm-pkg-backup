@@ -99,10 +99,14 @@ implements Archive\Dest\Handler\Handler
             $fileFolder = $folder.'/'.$fileFolder;
         }
 
+        $hostParts = explode(':', $values->value(ScpFields::HOST));
+        $host = $hostParts[0];
+        $port = (int)array_get($hostParts, 1, 22);
+
         $login = sprintf(
             '%s@%s',
-            $values->value(ScpFields::USER),
-            $values->value(ScpFields::HOST)
+            escapeshellarg($values->value(ScpFields::USER)),
+            escapeshellarg($host)
         );
 
         $dest = sprintf(
@@ -117,6 +121,7 @@ implements Archive\Dest\Handler\Handler
             implode(' ', [
                 'ssh',
                 '-o "StrictHostKeyChecking false"',
+                sprintf('-p %d', $port),
                 sprintf('-i "%s"', $sshKeyFile),
                 $login,
                 '--',
