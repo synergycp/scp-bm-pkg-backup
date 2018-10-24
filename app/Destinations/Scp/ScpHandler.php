@@ -110,7 +110,7 @@ implements Archive\Dest\Handler\Handler
         );
 
         $dest = sprintf(
-            '%s:%s',
+            '%s:"%s"',
             $login,
             $file
         );
@@ -127,12 +127,12 @@ implements Archive\Dest\Handler\Handler
                 '--',
                 sprintf('mkdir -p "%s"', $fileFolder),
             ]),
-            sprintf(
-                'scp -i "%s" "%s" %s',
-                $sshKeyFile,
-                $tempFile,
-                $dest
-            ),
+            implode(' ', [
+                'scp',
+                sprintf('-i "%s"', $sshKeyFile),
+                sprintf('-P %d', $port),
+                sprintf('"%s" %s', $tempFile, $dest),
+            ]),
         ]);
     }
 }
