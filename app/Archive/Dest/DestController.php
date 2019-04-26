@@ -68,4 +68,11 @@ class DestController extends Api\Controller
     {
         $this->items->filter([$this->filter, 'viewable']);
     }
+
+    protected function checkCanEdit()
+    {
+        if (!$this->permission->has('pkg.backup.write')) {
+            abort(403, 'You do not have access to the backups package.');
+        }
+    }
 }

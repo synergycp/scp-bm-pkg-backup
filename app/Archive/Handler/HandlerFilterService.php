@@ -44,7 +44,16 @@ class HandlerFilterService extends FilterService
      */
     public function viewable(Builder $query)
     {
+        $checkPerms = function () {
+            if (!$this->permission->has('pkg.backup.read')) {
+                abort(403, 'You do not have access to backups packages.');
+            }
+        };
 
+        $this->auth->only([
+            'admin' => $checkPerms,
+            'integration' => $checkPerms,
+        ]);
     }
 
     /**
