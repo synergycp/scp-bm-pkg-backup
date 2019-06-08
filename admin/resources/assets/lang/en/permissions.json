@@ -1,0 +1,9 @@
+{
+  "TITLE": "Backups",
+  "read": {
+    "LABEL": "View"
+  },
+  "write": {
+    "LABEL": "Edit"
+  }
+}
