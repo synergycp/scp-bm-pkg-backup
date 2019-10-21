@@ -13,27 +13,26 @@ var js = {
   src: PATH.SCRIPTS,
   app: 'app.js',
 };
-var scss = {
-  img: 'assets/img/',
-  src: 'app/',
-};
-var appStyles = {
-  src: [scss.src + '**/*.scss'],
-  dest: PATH.PUBLIC,
-  base: scss.src,
-  image: scss.image,
-};
 
-/*
 // CSS
-var styles = gulp.require('styles');
-gulp.task('styles', [
-  'styles:app',
-  'styles:app:rtl',
-]);
-gulp.task('styles:app', styles.add(appStyles));
-gulp.task('styles:app:rtl', styles.rtl(appStyles));
-*/
+// var scss = {
+//   img: 'assets/img/',
+//   src: 'app/',
+// };
+// var appStyles = {
+//   src: [scss.src + '**/*.scss'],
+//   dest: PATH.PUBLIC,
+//   base: scss.src,
+//   image: scss.image,
+// };
+// var styles = gulp.require('styles');
+// gulp.task('styles', [
+//   'styles:app',
+//   'styles:app:rtl',
+// ]);
+// gulp.task('styles:app', styles.add(appStyles));
+// gulp.task('styles:app:rtl', styles.rtl(appStyles));
+
 gulp.task('styles', gulp.noop);
 
 var scripts = gulp.require('scripts');
