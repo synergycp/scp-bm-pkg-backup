@@ -23,10 +23,9 @@
       })
     ;
 
-    function mapArchiveUrl($state, id) {
-      return $state.href('archive.' + (id ? 'view' : 'list'), {
-        id: id,
-      });
+    function mapArchiveUrl($state) {
+      // note: there is no archive view route, so ID is not needed.
+      return $state.href('archive.list');
     }
   }
 })();
