@@ -2,40 +2,54 @@
 
 namespace Packages\Backup\App\Archive;
 
+use App\Auth\Permission\Rule\AllowIfUserHasPermissions;
+use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
 use Illuminate\Database\Eloquent\Relations;
+use Packages\Backup\App\Archive\Dest\Dest;
 use Packages\Backup\App\Recurring;
 
-class Archive
-    extends Model
-{
-    use Archivable;
+/**
+ * Class Archive
+ * @package Packages\Backup\App\Archive
+ * @property int $period
+ * @property int $recurring_id
+ * @property Dest $dest
+ */
+class Archive extends Model {
+  use THasPermissionChecks;
+  use Archivable;
 
-    public $table = 'pkg_backup_archives';
-    public $attributes = [
-        'status' => ArchiveStatus::QUEUED,
-    ];
+  const PERMISSION_READ = 'pkg.backup.read';
+  const PERMISSION_WRITE = 'pkg.backup.write';
 
-    protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
+  public $table = 'pkg_backup_archives';
+  public $attributes = [
+    'status' => ArchiveStatus::QUEUED,
+  ];
 
-    public static $singular = 'Archive';
-    public static $plural = 'Archives';
+  protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
 
-    public static $controller = 'pkg.backup.archive';
+  public static $singular = 'Backup Archive';
+  public static $plural = 'Backup Archives';
 
-    public function getNameAttribute()
-    {
-        return $this->source->name;
-    }
+  public static $controller = 'pkg.backup.archive';
 
-    /**
-     * @return Relations\BelongsTo
-     */
-    public function recurring()
-    {
-        return $this->belongsTo(
-            Recurring\Recurring::class,
-            'recurring_id'
-        );
-    }
+  public function getNameAttribute() {
+    return $this->source->name;
+  }
+
+  /**
+   * @return Relations\BelongsTo
+   */
+  public function recurring() {
+    return $this->belongsTo(Recurring\Recurring::class, 'recurring_id');
+  }
+
+  /**
+   * @inheritDoc
+   */
+  protected function permissionRulesForEdit(): array {
+    return [new AllowIfUserHasPermissions([self::PERMISSION_WRITE])];
+  }
 }

@@ -2,26 +2,38 @@
 
 namespace Packages\Backup\App\Archive\Handler;
 
-use Packages\Backup\App\Archive;
+use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
 use Illuminate\Database\Eloquent\Relations;
+use Packages\Backup\App\Archive;
 
-class Handler
-extends Model
-{
-    public $table = 'pkg_backup_handlers';
+/**
+ * Class Handler
+ * @package Packages\Backup\App\Archive\Handler
+ * @property string $class
+ */
+class Handler extends Model {
+  use THasPermissionChecks;
 
-    protected $casts = [
-        'type' => 'int',
-    ];
+  const PERMISSION_READ = Archive\Archive::PERMISSION_READ;
 
-    /**
-     * @return Relations\HasMany
-     */
-    public function fields()
-    {
-        return $this->hasMany(
-            Archive\Field\Field::class
-        );
-    }
+  const PERMISSION_WRITE = Archive\Archive::PERMISSION_WRITE;
+
+  public $table = 'pkg_backup_handlers';
+
+  protected $casts = ['type' => 'int'];
+
+  /**
+   * @return Relations\HasMany
+   */
+  public function fields() {
+    return $this->hasMany(Archive\Field\Field::class);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  protected function permissionRulesForEdit(): array {
+    return []; // No one can edit this except for migrations.
+  }
 }

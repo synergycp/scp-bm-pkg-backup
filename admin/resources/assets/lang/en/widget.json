@@ -1,0 +1,76 @@
+{
+  "archive": {
+    "TITLE": "Latest Backup",
+    "LIST_LINK": "View All Backups",
+    "state": {
+      "alert": {
+        "SUCCESS": "Succeeded",
+        "WARNING": "Not yet ready",
+        "ERROR": "Not working",
+        "LOADING": "Loading..."
+      },
+      "body": {
+        "NONE": "No backups started."
+      }
+    },
+    "latest": {
+      "LAST_ATTEMPT": "Last Attempt",
+      "STATUS": "Status"
+    }
+  },
+  "configuration": {
+    "TITLE": "Configuration Backups",
+    "LIST_LINK": "Save Configuration Backup",
+    "state": {
+      "alert": {
+        "SUCCESS": "Backed Up",
+        "WARNING": "Not backed up",
+        "ERROR": "Not backed up",
+        "LOADING": "Loading..."
+      },
+      "body": {
+        "NONE": "Configuration backup has not been saved."
+      }
+    },
+    "latest": {
+      "LAST_ATTEMPT": "Last Backup",
+      "LAST_BY": "Backed up by"
+    },
+    "modal": {
+      "TITLE": "Save Configuration Backup",
+      "BODY": "Sensitive information in SynergyCP's database (e.g. Switch/IPMI authentication details) is encrypted. That encryption uses a secret key unique to your SynergyCP install, which can be downloaded as part of the configuration backup. Without that secret key, that information will be unrecoverable, so it is important that the configuration be saved in a safe place. Ideally, the configuration should be backed up on a completely separate physical machine from the database backups so that access to the database backups does not give an attacker all of the sensitive information.",
+      "CANCEL": "Cancel",
+      "SUBMIT": "Download Backup"
+    }
+  },
+  "destination": {
+    "TITLE": "Backup Destinations",
+    "LIST_LINK": "Configure Remote Backups",
+    "state": {
+      "alert": {
+        "SUCCESS": "Succeeded",
+        "WARNING": "Not configured",
+        "ERROR": "Not configured",
+        "LOADING": "Loading..."
+      },
+      "body": {
+        "COUNT": "{{count === '0' ? 'No' : count}} remote backup {{count === '1' ? 'destination' : 'destinations'}} configured."
+      }
+    }
+  },
+  "recurring": {
+    "TITLE": "Recurring Backups",
+    "LIST_LINK": "Configure Recurring Backups",
+    "state": {
+      "alert": {
+        "SUCCESS": "Configured",
+        "WARNING": "Not configured",
+        "ERROR": "Not configured",
+        "LOADING": "Loading..."
+      },
+      "body": {
+        "COUNT": "{{count === '0' ? 'No' : count}} recurring {{count === '1' ? 'backup' : 'backups'}} configured."
+      }
+    }
+  }
+}

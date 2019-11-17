@@ -8,15 +8,13 @@ use App\Http\RouteServiceProvider;
 /**
  * Routes regarding Servers.
  */
-class DestRoutesProvider extends RouteServiceProvider
-{
-    /**
-     * @var string
-     */
-    protected $package = 'backup';
+class DestRoutesProvider extends RouteServiceProvider {
+  /**
+   * @var string
+   */
+  protected $package = 'backup';
 
-    protected function api(Router $router)
-    {
-        $router->resource('destination', DestController::class);
-    }
+  protected function api(Router $router) {
+    $router->resource('destination', DestController::class);
+  }
 }

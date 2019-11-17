@@ -2,49 +2,28 @@
 
 namespace Packages\Backup\App\Recurring;
 
-use App\Api\ApiAuthService;
-use Illuminate\Support\Collection;
 use App\Support\Http\DeleteService;
+use Illuminate\Support\Collection;
 use Packages\Backup\App\Recurring\Events\RecurringDeleted;
 
-class RecurringDeleteService extends DeleteService
-{
-    /**
-     * @var ApiAuthService
-     */
-    protected $auth;
+class RecurringDeleteService extends DeleteService {
+  /**
+   * @param Collection $items
+   */
+  protected function afterDelete(Collection $items) {
+    $this->successItems('pkg.backup::recurring.deleted', $items);
+  }
 
-    /**
-     * @param ApiAuthService $auth
-     */
-    public function boot(
-        ApiAuthService $auth
-    ) {
-        $this->auth = $auth;
-    }
+  /**
+   * @param Recurring $item
+   *
+   * @throws \Exception
+   */
+  protected function delete($item) {
+    $item->assertHasPermissionToDelete();
 
-    /**
-     * @param Collection $items
-     */
-    protected function afterDelete(Collection $items)
-    {
-        $this->successItems('pkg.backup::recurring.deleted', $items);
-    }
+    event(new RecurringDeleted($item));
 
-    /**
-     * @param Recurring $item
-     */
-    protected function delete($item)
-    {
-        $this->checkCanDelete($item);
-
-        event(new RecurringDeleted($item));
-
-        $item->delete();
-    }
-
-    protected function checkCanDelete()
-    {
-        $this->auth->only('admin', 'integration');
-    }
+    $item->delete();
+  }
 }

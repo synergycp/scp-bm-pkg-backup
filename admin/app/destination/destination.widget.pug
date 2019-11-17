@@ -1,0 +1,31 @@
+- LANG = "pkg.backup.admin.widget.destination."
+
+.card.text-center.rounded-10(ng-class="widget.loader.class")
+  .loader.rounded-10
+  .card-heading.pv-lg.bg-gray-dark.rounded-top-10
+    .btn-group.btn-group-xs.card-heading-fixed-right
+      a.btn.btn-default(ng-click="widget.refresh()")
+        i.fa.fa-refresh
+    h5.card-title(translate=LANG+"TITLE")
+  .alert.card-alert(ng-class=`{
+    'alert-success': widget.state === widget.STATE.SUCCESS,
+    'alert-danger': widget.state === widget.STATE.ERROR,
+    'alert-warning': widget.state === widget.STATE.WARNING,
+  }`)
+    .fa(ng-class=`{
+      'fa-check': widget.state === widget.STATE.SUCCESS,
+      'fa-warning': widget.state === widget.STATE.ERROR || widget.state === widget.STATE.WARNING,
+    }`)
+    | &nbsp;
+    span(translate=LANG+"state.alert.{{widget.state}}")
+  .card-body
+    h5(translate=LANG+"state.body.COUNT" translate-value-count="{{widget.destinations.length}}")
+  a.card-footer.block.btn.btn-default.bg-blue-grey-50.rounded-bottom-10.radius-clear.b0(
+    ui-sref="app.pkg.backup.destination.list()"
+    translate=LANG + "LIST_LINK"
+  )
+
+
+
+
+

@@ -1,0 +1,34 @@
+- LANG = "pkg.backup.admin.widget.configuration."
+
+.card.text-center.rounded-10(ng-class="widget.loader.class")
+  .loader.rounded-10
+  .card-heading.pv-lg.bg-gray-dark.rounded-top-10
+    .btn-group.btn-group-xs.card-heading-fixed-right
+      a.btn.btn-default(ng-click="widget.refresh()")
+        i.fa.fa-refresh
+    h5.card-title(translate=LANG+"TITLE")
+  .alert.card-alert(ng-class=`{
+    'alert-success': widget.state === widget.STATE.SUCCESS,
+    'alert-danger': widget.state === widget.STATE.ERROR,
+    'alert-warning': widget.state === widget.STATE.WARNING,
+  }`)
+    .fa(ng-class=`{
+      'fa-check': widget.state === widget.STATE.SUCCESS,
+      'fa-warning': widget.state === widget.STATE.ERROR || widget.state === widget.STATE.WARNING,
+    }`)
+    | &nbsp;
+    span(translate=LANG+"state.alert.{{widget.state}}")
+  table.table.table-bordered.table-no-edge-border.text-left.mb0.bv1(ng-if="widget.latest")
+    tbody
+      tr
+        td.shrink(translate=LANG + "latest.LAST_ATTEMPT")
+        td(ng-bind="widget.latest.created_at.unix * 1000 | date")
+      tr
+        td.shrink(translate=LANG + "latest.LAST_BY")
+        td(ng-bind="widget.latest.admin.name || 'System (command line)'")
+  .card-body(ng-if="!widget.latest")
+    h5(translate=LANG + "state.body.NONE")
+  a.card-footer.block.btn.btn-default.bg-blue-grey-50.rounded-bottom-10.radius-clear.b0(
+    translate=LANG + "LIST_LINK"
+    ng-click="widget.saveConfigurationModal()"
+  )

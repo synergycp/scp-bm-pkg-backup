@@ -1,0 +1,21 @@
+{
+  "action": {
+    "ARCHIVE": "Database Backups",
+    "RECURRING": "Recurring Backups",
+    "DESTINATION": "Backup Destinations"
+  },
+  "health": {
+    "recurring": {
+      "ERROR": "Recurring Backups not setup",
+      "HEALTHY": "Recurring Backups configured"
+    },
+    "latest": {
+      "SUCCESS": "Latest backup succeeded",
+      "FAILED": "Latest backup failed",
+      "NONE": "No backups have been completed yet."
+    }
+  },
+  "logs": {
+    "TITLE": "Backup Logs"
+  }
+}

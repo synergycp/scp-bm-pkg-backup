@@ -1,0 +1,19 @@
+- LANG = "pkg.backup.admin.home."
+.row
+  .col-md-6
+    .row
+      // These are in the order the user is expected to set them up in.
+      .col-sm-6
+        pkg-backup-destination-widget
+      .col-sm-6
+        pkg-backup-archive-widget
+      .col-sm-6
+        pkg-backup-recurring-widget
+      .col-sm-6
+        pkg-backup-configuration-widget
+  .col-md-6
+    logs(
+      heading="pkg.backup.admin.home.logs.TITLE"
+      filter="vm.logs.filter"
+      listen-to="vm.list"
+    )

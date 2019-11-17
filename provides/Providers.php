@@ -7,6 +7,7 @@ namespace Packages\Backup\App;
  */
 
 return [
-    Archive\ArchiveServiceProvider::class,
-    Recurring\RecurringServiceProvider::class,
+  Archive\ArchiveServiceProvider::class,
+  Recurring\RecurringServiceProvider::class,
+  Configuration\ConfigurationServiceProvider::class,
 ];

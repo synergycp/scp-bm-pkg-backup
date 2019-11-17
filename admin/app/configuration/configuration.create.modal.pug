@@ -1,0 +1,26 @@
+- LANG = "pkg.backup.admin.widget.configuration.modal"
+
+form(method="POST" action="{{modal.data.href}}" target="_blank")
+  input(type="hidden" name="key" value="{{modal.data.apiKey}}")
+  .modal-header
+    button.close(
+      type="button"
+      ng-click="modal.$dismiss()"
+    ) &times;
+
+    h4.modal-title
+      span(translate=LANG + ".TITLE")
+
+  .modal-body
+    p(translate=LANG + ".BODY")
+
+  .modal-footer
+    button.btn.btn-secondary(
+      type="button"
+      ng-click="modal.$dismiss()"
+      data-translate=LANG + ".CANCEL"
+    )
+    button.btn.btn-primary(
+      type="submit"
+      data-translate=LANG + ".SUBMIT"
+    )
