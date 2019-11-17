@@ -14,6 +14,7 @@ use Packages\Backup\App\Recurring;
  * @package Packages\Backup\App\Archive
  * @property int $period
  * @property int $recurring_id
+ * @property int $status one of ArchiveStatus::*
  * @property Dest $dest
  */
 class Archive extends Model {

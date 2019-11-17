@@ -1,6 +1,6 @@
 - LANG = "pkg.backup.admin.widget.configuration.modal"
 
-form(method="POST" action="{{modal.data.href}}" target="_blank")
+form(method="POST" action="{{modal.data.href}}" target="_blank" ng-submit="modal.$close()")
   input(type="hidden" name="key" value="{{modal.data.apiKey}}")
   .modal-header
     button.close(

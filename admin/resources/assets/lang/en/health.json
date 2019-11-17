@@ -1,0 +1,22 @@
+{
+  "archive": {
+    "status": {
+      "OK": "Latest backup succeeded",
+      "ERROR": "Latest backup failed",
+      "WARN": "No backups have been completed yet."
+    }
+  },
+  "configuration": {
+    "exists": {
+      "ERROR": "Configuration Backup not saved",
+      "WARN": "Configuration Backup not saved",
+      "OK": "Configuration Backup saved"
+    }
+  },
+  "recurring": {
+    "exists": {
+      "ERROR": "Recurring Backups not setup",
+      "OK": "Recurring Backups configured"
+    }
+  }
+}

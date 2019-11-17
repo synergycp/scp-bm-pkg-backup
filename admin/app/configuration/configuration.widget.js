@@ -39,9 +39,7 @@
     Loader,
     RouteHelpers,
     _,
-    Modal,
-    ApiKey,
-    $sce
+    PkgBackupConfigurationModal
   ) {
     var widget = this;
     var pkg = RouteHelpers.package("backup");
@@ -55,19 +53,7 @@
     widget.STATE = STATE;
 
     function saveConfigurationModal() {
-      return widget.loader.during(
-        Modal.information()
-          .templateUrl(
-            pkg.trustedAsset(
-              "admin/configuration/configuration.create.modal.html"
-            )
-          )
-          .data({
-            href: $sce.trustAsResourceUrl($configurations.getRequestedUrl()),
-            apiKey: ApiKey.get()
-          })
-          .open().result
-      );
+      return widget.loader.during(PkgBackupConfigurationModal.save());
     }
 
     function refresh() {

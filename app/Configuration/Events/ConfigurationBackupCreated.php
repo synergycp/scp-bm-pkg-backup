@@ -3,10 +3,14 @@
 namespace Packages\Backup\App\Configuration\Events;
 
 use App\Log;
+use App\Support\Job;
+use App\Support\Jobs\IEventWithJob;
 use Packages\Backup\App\Configuration\Configuration;
+use Packages\Backup\App\Configuration\ConfigurationHealthCheckJob;
 
 class ConfigurationBackupCreated extends \App\Support\Event implements
-  Log\LoggableEvent {
+  Log\LoggableEvent,
+  IEventWithJob {
   /**
    * @var Configuration
    */
@@ -24,5 +28,9 @@ class ConfigurationBackupCreated extends \App\Support\Event implements
       ->setDesc('New configuration backup saved')
       ->setTarget($this->target)
       ->save();
+  }
+
+  public function job(): Job {
+    return new ConfigurationHealthCheckJob();
   }
 }
