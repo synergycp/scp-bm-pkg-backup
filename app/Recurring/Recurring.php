@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Recurring;
 
+use App\Auth\Permission\ICanHavePermissions;
 use App\Auth\Permission\Rule\AllowIfUserHasPermissions;
 use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
@@ -13,7 +14,7 @@ use Packages\Backup\App\Archive;
  * @package Packages\Backup\App\Recurring
  * @property int $period
  */
-class Recurring extends Model {
+class Recurring extends Model implements ICanHavePermissions {
   use Archive\Archivable;
   use THasPermissionChecks;
 

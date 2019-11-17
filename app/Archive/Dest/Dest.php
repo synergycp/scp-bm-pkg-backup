@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Archive\Dest;
 
+use App\Auth\Permission\ICanHavePermissions;
 use App\Auth\Permission\Rule\AllowIfUserHasPermissions;
 use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
@@ -15,7 +16,9 @@ use Illuminate\Database\Eloquent\Relations;
  * @property Collection $fieldValues
  * @property Archive\Handler\Handler $handler
  */
-class Dest extends Model implements Archive\Field\HasValues {
+class Dest extends Model implements
+  Archive\Field\HasValues,
+  ICanHavePermissions {
   use THasPermissionChecks;
 
   const PERMISSION_READ = Archive\Archive::PERMISSION_READ;

@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Archive\Field;
 
+use App\Auth\Permission\ICanHavePermissions;
 use App\Auth\Permission\Rule\AllowIfUserHasPermissions;
 use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
@@ -16,7 +17,7 @@ use Packages\Backup\App\Archive\Archive;
  * @property string $value
  * @property Field $field
  */
-class Value extends Model {
+class Value extends Model implements ICanHavePermissions {
   use THasPermissionChecks;
 
   const PERMISSION_READ = Archive::PERMISSION_READ;

@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Archive\Handler;
 
+use App\Auth\Permission\ICanHavePermissions;
 use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
 use Illuminate\Database\Eloquent\Relations;
@@ -12,7 +13,7 @@ use Packages\Backup\App\Archive;
  * @package Packages\Backup\App\Archive\Handler
  * @property string $class
  */
-class Handler extends Model {
+class Handler extends Model implements ICanHavePermissions {
   use THasPermissionChecks;
 
   const PERMISSION_READ = Archive\Archive::PERMISSION_READ;

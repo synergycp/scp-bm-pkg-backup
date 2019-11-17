@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Archive\Field;
 
+use App\Auth\Permission\ICanHavePermissions;
 use App\Auth\Permission\Rule\AllowIfUserHasPermissions;
 use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations;
 use Packages\Backup\App\Archive;
 
-class Field extends Model {
+class Field extends Model implements ICanHavePermissions {
   use THasPermissionChecks;
 
   const PERMISSION_READ = Archive\Archive::PERMISSION_READ;

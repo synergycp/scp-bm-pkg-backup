@@ -2,6 +2,7 @@
 
 namespace Packages\Backup\App\Archive;
 
+use App\Auth\Permission\ICanHavePermissions;
 use App\Auth\Permission\Rule\AllowIfUserHasPermissions;
 use App\Auth\Permission\THasPermissionChecks;
 use App\Database\Models\Model;
@@ -17,7 +18,7 @@ use Packages\Backup\App\Recurring;
  * @property int $status one of ArchiveStatus::*
  * @property Dest $dest
  */
-class Archive extends Model {
+class Archive extends Model implements ICanHavePermissions {
   use THasPermissionChecks;
   use Archivable;
 
