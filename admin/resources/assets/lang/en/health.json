@@ -1,6 +1,7 @@
 {
   "archive": {
     "status": {
+      "LOADING": "Checking Backups status",
       "OK": "Latest backup succeeded",
       "ERROR": "Latest backup failed",
       "WARN": "No backups have been completed yet."
@@ -8,6 +9,7 @@
   },
   "configuration": {
     "exists": {
+      "LOADING": "Checking Configuration Backup status",
       "ERROR": "Configuration Backup not saved",
       "WARN": "Configuration Backup not saved",
       "OK": "Configuration Backup saved"
@@ -15,7 +17,9 @@
   },
   "recurring": {
     "exists": {
+      "LOADING": "Checking Recurring Backups status",
       "ERROR": "Recurring Backups not setup",
+      "WARN": "Recurring Backups not setup",
       "OK": "Recurring Backups configured"
     }
   }
