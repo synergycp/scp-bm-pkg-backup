@@ -8,16 +8,15 @@ use App\Http\RouteServiceProvider;
 /**
  * Routes regarding Servers.
  */
-class FieldRoutesProvider
-    extends RouteServiceProvider
-{
-    /**
-     * @var string
-     */
-    protected $package = 'backup';
+class FieldRoutesProvider extends RouteServiceProvider {
+  /**
+   * @var string
+   */
+  protected $package = 'backup';
 
-    protected function api(Router $router)
-    {
-        $router->resource('field/{handler?}', FieldController::class, ['only' => ['index']]);
-    }
+  protected function api(Router $router) {
+    $router->resource('field/{handler?}', FieldController::class, [
+      'only' => ['index'],
+    ]);
+  }
 }
