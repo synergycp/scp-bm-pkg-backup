@@ -2,10 +2,9 @@
 
 namespace Packages\Backup\App\Sources\Mysql;
 
-interface MysqlDumpFields
-{
-    /**
-     * @var string
-     */
-    const DATABASE = 'database';
+interface MysqlDumpFields {
+  /**
+   * @var string
+   */
+  const DATABASE = 'database';
 }

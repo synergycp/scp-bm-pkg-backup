@@ -8,16 +8,13 @@ use App\Http\RouteServiceProvider;
 /**
  * Routes regarding Servers.
  */
-class SourceRoutesProvider
-    extends RouteServiceProvider
-{
-    /**
-     * @var string
-     */
-    protected $package = 'backup';
+class SourceRoutesProvider extends RouteServiceProvider {
+  /**
+   * @var string
+   */
+  protected $package = 'backup';
 
-    protected function api(Router $router)
-    {
-        $router->resource('source', SourceController::class);
-    }
+  protected function api(Router $router) {
+    $router->resource('source', SourceController::class);
+  }
 }

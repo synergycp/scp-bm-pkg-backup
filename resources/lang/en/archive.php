@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'created' => 'New archive queued.',
-    'deleted' => 'Archive deleted.'
+  'created' => 'New archive queued.',
+  'deleted' => 'Archive deleted.',
 ];
