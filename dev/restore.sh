@@ -14,6 +14,15 @@ exit-with-error() {
   exit ${ERROR}
 }
 
+php-exec() {
+  /scp/bin/scp-exec php_server su www -- "$@"
+  return $?
+}
+artisan-cmd() {
+  php-exec php artisan "$@"
+  return $?
+}
+
 START_DIR=$(pwd)
 
 # Config
@@ -23,9 +32,9 @@ CONT_TMP_DIR=/tmp/scp-backup
 SCP_ROOT_DIR=/scp
 
 
-#if [ "$(which docker)" != "" ]; then
-#  exit-with-error "Docker is already installed. This probably means that SynergyCP has already been installed on this server. Currently, backup recovery must be done on a fresh Debian OS with nothing else installed."
-#fi
+if [ "$(which docker)" != "" ]; then
+  exit-with-error "Docker is already installed. This probably means that SynergyCP has already been installed on this server. Currently, backup recovery must be done on a fresh Debian OS with nothing else installed."
+fi
 
 echo -n "Checking for database file and config file..."
 if [ ! -f $DB_FILE ]; then
@@ -37,8 +46,9 @@ fi
 
 printf "\t\t\t[OK]\n"
 
-#echo "Running app install process..."
-#cd /tmp && wget https://install.synergycp.com/bm/app.sh && bash app.sh || exit-with-error "Failed to install the application."
+echo "Running app install process..."
+# @nocommit TODO: remove channel=test
+cd /tmp && wget -q https://install.synergycp.com/bm/app.sh && bash app.sh test || exit-with-error "Failed to install the application."
 
 clear
 echo "App install finished. Importing config..."
@@ -98,15 +108,19 @@ echo -n "Database cleared. Importing database backup..."
 (gunzip < "$START_DIR/$DB_FILE" | ./bin/scp-db) || exit-with-error "Failed to import database"
 printf "\t\t[OK]\n"
 
+# This is required so that the settings cache gets rewritten (and possibly other caches).
+echo -n "Database backup imported. Clearing application cache..."
+artisan-cmd system:cache:flush
+printf "\t\t[OK]\n"
 
 # This is required e.g. to make sure that database migrations are run.
 echo -n "Config files regenerated. Running application update..."
 # @nocommit TODO: remove channel=test
-./bin/scp-exec php_server su www -c 'php artisan version:update --force --channel=test' || exit-with-error "Failed to update application"
+artisan-cmd version:update --force --channel=test || exit-with-error "Failed to update application"
 
 echo -n "Application update succeeded. Regenerating config files..."
-./bin/scp-exec php_server su www -c 'php artisan domain:sync' || exit-with-error "Failed to sync domain config"
-./bin/scp-exec php_server su www -c 'php artisan theme:sync' || exit-with-error "Failed to sync theme config"
+artisan-cmd domain:sync || exit-with-error "Failed to sync domain config"
+artisan-cmd theme:sync || exit-with-error "Failed to sync theme config"
 
 echo ""
 echo "========="
