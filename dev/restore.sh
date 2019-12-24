@@ -23,6 +23,7 @@ CONT_TMP_DIR=/tmp/scp-backup
 SCP_ROOT_DIR=/scp
 
 
+#TODO: uncomment
 #if [ "$(which docker)" != "" ]; then
 #  exit-with-error "Docker is already installed. This probably means that SynergyCP has already been installed on this server. Currently, backup recovery must be done on a fresh Debian OS with nothing else installed."
 #fi
@@ -37,8 +38,9 @@ fi
 
 printf "\t\t\t[OK]\n"
 
-#echo "Running app install process..."
-#cd /tmp && wget https://install.synergycp.com/bm/app.sh && bash app.sh || exit-with-error "Failed to install the application."
+echo "Running app install process..."
+# @nocommit TODO: remove channel=test
+cd /tmp && wget https://install.synergycp.com/bm/app.sh && bash app.sh test || exit-with-error "Failed to install the application."
 
 clear
 echo "App install finished. Importing config..."
@@ -98,11 +100,15 @@ echo -n "Database cleared. Importing database backup..."
 (gunzip < "$START_DIR/$DB_FILE" | ./bin/scp-db) || exit-with-error "Failed to import database"
 printf "\t\t[OK]\n"
 
-
 # This is required e.g. to make sure that database migrations are run.
 echo -n "Config files regenerated. Running application update..."
 # @nocommit TODO: remove channel=test
 ./bin/scp-exec php_server su www -c 'php artisan version:update --force --channel=test' || exit-with-error "Failed to update application"
+./bin/scp-exec php_server su www -c 'php artisan system:cache:flush' || exit-with-error "Failed to reinstall packages"
+
+# TODO: move before application update
+./bin/scp-exec php_server su www -c 'php artisan pkg:reinstall' || exit-with-error "Failed to reinstall packages"
+
 
 echo -n "Application update succeeded. Regenerating config files..."
 ./bin/scp-exec php_server su www -c 'php artisan domain:sync' || exit-with-error "Failed to sync domain config"
