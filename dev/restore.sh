@@ -111,7 +111,15 @@ echo -n "Config files regenerated. Running application update..."
 
 
 echo -n "Application update succeeded. Regenerating config files..."
-./bin/scp-exec php_server su www -c 'php artisan domain:sync' || exit-with-error "Failed to sync domain config"
+./bin/scp-exec php_server su www -c 'php artisan domain:sync'
+DOMAIN_SYNC_EXIT_CODE=$?
+
+if [ $DOMAIN_SYNC_EXIT_CODE -gt 0 ]; then
+  echo "Failed to sync domain config. Removing SSL then reattempting."
+  ./bin/scp-exec php_server su www -c 'php artisan ssl:remove' || exit-with-error "Failed to remove SSL"
+  ./bin/scp-exec php_server su www -c 'php artisan domain:sync' || exit-with-error "Failed to sync domain config"
+fi
+
 ./bin/scp-exec php_server su www -c 'php artisan theme:sync' || exit-with-error "Failed to sync theme config"
 
 echo ""
