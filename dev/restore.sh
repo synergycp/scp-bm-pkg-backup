@@ -110,7 +110,7 @@ printf "\t\t[OK]\n"
 
 # This is required so that the settings cache gets rewritten (and possibly other caches).
 echo -n "Database backup imported. Clearing application cache..."
-artisan-cmd system:cache:flush
+artisan-cmd system:cache:flush || exit-with-error "Failed to flush system cache"
 printf "\t\t[OK]\n"
 
 # This is required e.g. to make sure that database migrations are run.
@@ -118,8 +118,20 @@ echo -n "Config files regenerated. Running application update..."
 # @nocommit TODO: remove channel=test
 artisan-cmd version:update --force --channel=test || exit-with-error "Failed to update application"
 
+# TODO: move before application update, once application install has this command
+artisan-cmd pkg:reinstall || exit-with-error "Failed to reinstall packages"
+
 echo -n "Application update succeeded. Regenerating config files..."
-artisan-cmd domain:sync || exit-with-error "Failed to sync domain config"
+
+artisan-cmd domain:sync
+DOMAIN_SYNC_EXIT_CODE=$?
+
+if [ $DOMAIN_SYNC_EXIT_CODE -gt 0 ]; then
+  echo "Failed to sync domain config. Removing SSL then reattempting."
+  artisan-cmd ssl:remove || exit-with-error "Failed to remove SSL"
+  artisan-cmd domain:sync || exit-with-error "Failed to sync domain config"
+fi
+
 artisan-cmd theme:sync || exit-with-error "Failed to sync theme config"
 
 echo ""
