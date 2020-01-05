@@ -15,7 +15,7 @@ exit-with-error() {
 }
 
 php-exec() {
-  /scp/bin/scp-exec php_server su www -- "$@"
+  echo "$@" | /scp/bin/scp-exec php_server su www -c bash
   return $?
 }
 artisan-cmd() {
