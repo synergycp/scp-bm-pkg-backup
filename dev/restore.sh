@@ -114,14 +114,14 @@ artisan-cmd system:cache:flush || exit-with-error "Failed to flush system cache"
 printf "\t\t[OK]\n"
 
 # This is required e.g. to make sure that database migrations are run.
-echo -n "Config files regenerated. Running application update..."
+echo "Config files regenerated. Running application update..."
 # @nocommit TODO: remove channel=test
 artisan-cmd version:update --force --channel=test || exit-with-error "Failed to update application"
 
-# TODO: move before application update, once application install has this command
+echo "Application updated. Reinstalling packages..."
 artisan-cmd pkg:reinstall || exit-with-error "Failed to reinstall packages"
 
-echo -n "Application update succeeded. Regenerating config files..."
+echo "Packages reinstalled. Regenerating config files..."
 
 artisan-cmd domain:sync
 DOMAIN_SYNC_EXIT_CODE=$?
