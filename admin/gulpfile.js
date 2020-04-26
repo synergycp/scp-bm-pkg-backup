@@ -9,6 +9,7 @@ var PATH = {
   SCRIPTS: "app/",
   ASSETS: "resources/assets/"
 };
+
 var js = {
   src: PATH.SCRIPTS,
   app: "app.js"
