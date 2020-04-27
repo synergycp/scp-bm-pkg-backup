@@ -9,10 +9,17 @@ var PATH = {
   SCRIPTS: "app/",
   ASSETS: "resources/assets/"
 };
+
 var js = {
   src: PATH.SCRIPTS,
   app: "app.js"
 };
+
+var versionManifest = gulp.require("version-manifest")({
+  build: PATH.PUBLIC,
+  files: [PATH.PUBLIC + "**/*.*"],
+  package: "backup/admin"
+});
 
 // CSS
 // var scss = {
@@ -63,8 +70,12 @@ gulp.task(
   })
 );
 
+gulp.task("manifest", versionManifest);
+
 var production = gulp.require("production");
 gulp.task("prod", production());
 
-gulp.task("default", ["copy", "styles", "templates", "scripts"]);
+gulp.task("default", ["copy", "styles", "templates", "scripts"], function() {
+  return gulp.start("manifest");
+});
 gulp.task("build", ["default"]);

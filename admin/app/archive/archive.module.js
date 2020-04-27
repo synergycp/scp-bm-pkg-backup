@@ -1,10 +1,9 @@
-(function () {
-    'use strict';
+(function() {
+  "use strict";
 
-    angular
-        .module('pkg.backup.archive', [
-            'scp.angle.layout.list',
-            'scp.core.api',
-            'pkg.backup.archive.list',
-        ]);
+  angular.module("pkg.backup.archive", [
+    "scp.angle.layout.list",
+    "scp.core.api",
+    "pkg.backup.archive.list"
+  ]);
 })();

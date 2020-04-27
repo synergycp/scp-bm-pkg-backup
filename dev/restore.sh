@@ -14,6 +14,15 @@ exit-with-error() {
   exit ${ERROR}
 }
 
+php-exec() {
+  echo "$@" | /scp/bin/scp-exec php_server su www -c bash
+  return $?
+}
+artisan-cmd() {
+  php-exec php artisan "$@"
+  return $?
+}
+
 START_DIR=$(pwd)
 
 # Config
@@ -23,10 +32,9 @@ CONT_TMP_DIR=/tmp/scp-backup
 SCP_ROOT_DIR=/scp
 
 
-#TODO: uncomment
-#if [ "$(which docker)" != "" ]; then
-#  exit-with-error "Docker is already installed. This probably means that SynergyCP has already been installed on this server. Currently, backup recovery must be done on a fresh Debian OS with nothing else installed."
-#fi
+if [ "$(which docker)" != "" ]; then
+  exit-with-error "Docker is already installed. This probably means that SynergyCP has already been installed on this server. Currently, backup recovery must be done on a fresh Debian OS with nothing else installed."
+fi
 
 echo -n "Checking for database file and config file..."
 if [ ! -f $DB_FILE ]; then
@@ -40,7 +48,7 @@ printf "\t\t\t[OK]\n"
 
 echo "Running app install process..."
 # @nocommit TODO: remove channel=test
-cd /tmp && wget https://install.synergycp.com/bm/app.sh && bash app.sh test || exit-with-error "Failed to install the application."
+cd /tmp && wget -q https://install.synergycp.com/bm/app.sh && bash app.sh test || exit-with-error "Failed to install the application."
 
 clear
 echo "App install finished. Importing config..."
@@ -100,27 +108,31 @@ echo -n "Database cleared. Importing database backup..."
 (gunzip < "$START_DIR/$DB_FILE" | ./bin/scp-db) || exit-with-error "Failed to import database"
 printf "\t\t[OK]\n"
 
+# This is required so that the settings cache gets rewritten (and possibly other caches).
+echo -n "Database backup imported. Clearing application cache..."
+artisan-cmd system:cache:flush || exit-with-error "Failed to flush system cache"
+printf "\t\t[OK]\n"
+
 # This is required e.g. to make sure that database migrations are run.
-echo -n "Config files regenerated. Running application update..."
+echo "Config files regenerated. Running application update..."
 # @nocommit TODO: remove channel=test
-./bin/scp-exec php_server su www -c 'php artisan version:update --force --channel=test' || exit-with-error "Failed to update application"
-./bin/scp-exec php_server su www -c 'php artisan system:cache:flush' || exit-with-error "Failed to reinstall packages"
+artisan-cmd version:update --force --channel=test || exit-with-error "Failed to update application"
 
-# TODO: move before application update
-./bin/scp-exec php_server su www -c 'php artisan pkg:reinstall' || exit-with-error "Failed to reinstall packages"
+echo "Application updated. Reinstalling packages..."
+artisan-cmd pkg:reinstall || exit-with-error "Failed to reinstall packages"
 
+echo "Packages reinstalled. Regenerating config files..."
 
-echo -n "Application update succeeded. Regenerating config files..."
-./bin/scp-exec php_server su www -c 'php artisan domain:sync'
+artisan-cmd domain:sync
 DOMAIN_SYNC_EXIT_CODE=$?
 
 if [ $DOMAIN_SYNC_EXIT_CODE -gt 0 ]; then
   echo "Failed to sync domain config. Removing SSL then reattempting."
-  ./bin/scp-exec php_server su www -c 'php artisan ssl:remove' || exit-with-error "Failed to remove SSL"
-  ./bin/scp-exec php_server su www -c 'php artisan domain:sync' || exit-with-error "Failed to sync domain config"
+  artisan-cmd ssl:remove || exit-with-error "Failed to remove SSL"
+  artisan-cmd domain:sync || exit-with-error "Failed to sync domain config"
 fi
 
-./bin/scp-exec php_server su www -c 'php artisan theme:sync' || exit-with-error "Failed to sync theme config"
+artisan-cmd theme:sync || exit-with-error "Failed to sync theme config"
 
 echo ""
 echo "========="
