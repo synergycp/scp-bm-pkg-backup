@@ -2,13 +2,14 @@
   "data": {
     "slug": "backup",
     "name": "Backups",
-    "semver": "1.0.0",
+    "semver": "1.0.1",
     "description": "Allows administrators to create Database Backups on a recurring basis. Backups are copied to a remote destination using secure copy over SSH.",
     "download_url": "https://api.packages.synergycp.com/package/synergycp/backup/download.tar.gz",
     "release_date_unix": 1574636981,
     "changelog": [
       "Initial versioned release",
-      "Ability for administrators to save Configuration Backups"
+      "Ability for administrators to save Configuration Backups",
+      "Cache busting of frontend files"
     ]
   }
 }
