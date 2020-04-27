@@ -16,7 +16,6 @@ var js = {
 };
 
 var versionManifest = gulp.require("version-manifest")({
-  angularModule: "pkg.backup",
   build: PATH.PUBLIC,
   files: [PATH.PUBLIC + "**/*.*"],
   package: "backup/admin"
