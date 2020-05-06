@@ -47,8 +47,7 @@ fi
 printf "\t\t\t[OK]\n"
 
 echo "Running app install process..."
-# @nocommit TODO: remove channel=test
-cd /tmp && wget -q https://install.synergycp.com/bm/app.sh && bash app.sh test || exit-with-error "Failed to install the application."
+cd /tmp && wget -q https://install.synergycp.com/bm/app.sh && bash app.sh || exit-with-error "Failed to install the application."
 
 clear
 echo "App install finished. Importing config..."
@@ -115,8 +114,7 @@ printf "\t\t[OK]\n"
 
 # This is required e.g. to make sure that database migrations are run.
 echo "Config files regenerated. Running application update..."
-# @nocommit TODO: remove channel=test
-artisan-cmd version:update --force --channel=test || exit-with-error "Failed to update application"
+artisan-cmd version:update --force || exit-with-error "Failed to update application"
 
 echo "Application updated. Reinstalling packages..."
 artisan-cmd pkg:reinstall || exit-with-error "Failed to reinstall packages"
