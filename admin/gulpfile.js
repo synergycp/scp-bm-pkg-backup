@@ -1,5 +1,4 @@
 var gulp = require("scp-ng-gulp")(require("gulp"));
-var _ = require("lodash");
 
 gulp.require("settings").dir = __dirname;
 
@@ -20,27 +19,6 @@ var versionManifest = gulp.require("version-manifest")({
   files: [PATH.PUBLIC + "**/*.*"],
   package: "backup/admin"
 });
-
-// CSS
-// var scss = {
-//   img: 'assets/img/',
-//   src: 'app/',
-// };
-// var appStyles = {
-//   src: [scss.src + '**/*.scss'],
-//   dest: PATH.PUBLIC,
-//   base: scss.src,
-//   image: scss.image,
-// };
-// var styles = gulp.require('styles');
-// gulp.task('styles', [
-//   'styles:app',
-//   'styles:app:rtl',
-// ]);
-// gulp.task('styles:app', styles.add(appStyles));
-// gulp.task('styles:app:rtl', styles.rtl(appStyles));
-
-gulp.task("styles", gulp.noop);
 
 var scripts = gulp.require("scripts");
 gulp.task(
@@ -72,10 +50,8 @@ gulp.task(
 
 gulp.task("manifest", versionManifest);
 
-var production = gulp.require("production");
-gulp.task("prod", production());
-
-gulp.task("default", ["copy", "styles", "templates", "scripts"], function() {
-  return gulp.start("manifest");
-});
-gulp.task("build", ["default"]);
+gulp.task(
+  "default",
+  gulp.series([gulp.parallel(["copy", "templates", "scripts"]), "manifest"])
+);
+gulp.task("build", gulp.series(["default"]));
