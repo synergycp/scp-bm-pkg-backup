@@ -10,7 +10,7 @@ On Synergy, go to System > Backup Destinations and create a new destination. Sel
 
 ## Restoring from a Backup
 
-1. Gather up all the files. You'll need our [backup-restore.sh](https://install.synergycp.com/bm/scripts/backup-restore.sh) script, the backup.sql.gz file from your backup server, and your synergycp-config-backup.tar.gz config backup file.
+1. Gather up all the files. You'll need our [backup-restore.sh](https://install.synergycp.com/bm/scripts/backup-restore.sh) script, the `database.gz` file from your backup server, and your `synergycp-config-backup.tar.gz` config backup file.
 2. Upload all 3 of those files, using the same names above, to any one folder on your new SynergyCP master server. Make sure that server is a fresh server with nothing installed and meets all of the [install requirements](https://synergycp.zendesk.com/hc/en-us/articles/115009722328-Installation).
 3. Run the restore script: `bash backup-restore.sh` as the root user on the new server from the directory with those 3 files.
 4. The DHCP & File server running on the main SynergyCP web instance will now be out of date, since new API key
@@ -28,3 +28,4 @@ On Synergy, go to System > Backup Destinations and create a new destination. Sel
 
 5. Run switch scans on every switch to update the bandwidth polling configuration file that is stored on disk. This can
    be done in bulk using the checkboxes on the switch list page.
+6. We recommend deleting the config and database backup files from the new server once they have been imported successfully.
