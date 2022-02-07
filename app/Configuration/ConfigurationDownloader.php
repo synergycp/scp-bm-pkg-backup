@@ -29,7 +29,27 @@ class ConfigurationDownloader {
   public function download(): BinaryFileResponse {
     $archive = $this->setupArchive('/tmp/pkg-backup-config-download.tar');
 
-    $this->addFile($archive, base_path('.env'));
+    // TODO: Pull this from manager
+    $archive->addFromString(
+      ".env",
+      "APP_ENV=production
+APP_DEBUG=false
+APP_KEY=" .
+        env('APP_KEY') .
+        "
+DB_HOST=db
+DB_DATABASE=synergy
+DB_USERNAME=synergy
+DB_PASSWORD=Zo3MDmWiskU2O
+PHP_CONF_MAX_EXECUTION_TIME=6000
+PHP_CONF_UPLOAD_LIMIT=7G
+PHP_CONF_MEMORY_LIMIT=8G
+PHP_CONF_POOL_MAX_CHILDREN=50
+RTG_DB_HOST=db
+REDIS_HOST=redis
+BEANSTALKD_HOST=beanstalkd"
+    );
+
     chmod($archive->getPath(), 0600);
     $this->addSshKey($archive);
 

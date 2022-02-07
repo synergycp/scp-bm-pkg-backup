@@ -2,12 +2,13 @@
 
 namespace Packages\Backup\App\Recurring\Events;
 
+use App\Support\Event;
 use App\Support\Job;
 use App\Support\Jobs\IEventWithJob;
 use Packages\Backup\App\Recurring\Recurring;
 use Packages\Backup\App\Recurring\RecurringHealthCheckJob;
 
-abstract class RecurringEvent implements IEventWithJob {
+abstract class RecurringEvent extends Event implements IEventWithJob {
   /**
    * @var Recurring
    */
