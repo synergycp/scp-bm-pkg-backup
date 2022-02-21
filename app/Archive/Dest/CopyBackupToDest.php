@@ -3,12 +3,13 @@
 namespace Packages\Backup\App\Archive\Dest;
 
 use Packages\Backup\App\Archive;
-use Illuminate\Contracts\Queue;
 
 /**
  * Copy a Backup from its temp file to its destination.
+ *
+ * DO NOT QUEUE THIS: it needs to be run on the same worker that originally created the backup.
  */
-class CopyBackupToDest implements Queue\ShouldQueue {
+class CopyBackupToDest {
   /**
    * @var DestService
    */
