@@ -15,7 +15,7 @@ exit-with-error() {
 }
 
 php-exec() {
-  echo "$@" | /scp/bin/scp-exec php_server su www -c bash
+  echo "$@" | /scp/bin/scp-exec php_server bash
   return $?
 }
 artisan-cmd() {
@@ -61,7 +61,6 @@ PHP_CONT=$(
 
 CONT_EXTRACT_CFG_DIR="$CONT_TMP_DIR/extracted"
 docker exec "$PHP_CONT" mkdir -p "$CONT_EXTRACT_CFG_DIR" || exit-with-error "Failed to create temp directory for backup extract"
-docker exec "$PHP_CONT" chown www:www "$CONT_EXTRACT_CFG_DIR" || exit-with-error "Failed to create temp directory for backup extract"
 docker cp "$START_DIR/$CONFIG_FILE" "$PHP_CONT:$CONT_TMP_DIR/$CONFIG_FILE" || exit-with-error "Failed to copy config into container"
 
 {
@@ -76,7 +75,7 @@ chmod 0600 storage/keys/id_rsa storage/keys/id_rsa.pub || exit \$?
 php artisan config:cache || exit \$?
 php artisan queue:restart || exit \$?
 EOF
-} | docker exec -i "$PHP_CONT" su www -c 'bash' || exit-with-error "Failed to extract config into container"
+} | docker exec -i "$PHP_CONT" bash || exit-with-error "Failed to extract config into container"
 
 cd $SCP_ROOT_DIR
 
@@ -112,15 +111,7 @@ echo -n "Database backup imported. Clearing application cache..."
 artisan-cmd system:cache:flush || exit-with-error "Failed to flush system cache"
 printf "\t\t[OK]\n"
 
-# This is required e.g. to make sure that database migrations are run.
-echo "Config files regenerated. Running application update..."
-artisan-cmd version:update --force || exit-with-error "Failed to update application"
-
-echo "Application updated. Reinstalling packages..."
-artisan-cmd pkg:reinstall || exit-with-error "Failed to reinstall packages"
-
-echo "Packages reinstalled. Regenerating config files..."
-
+echo "Regenerating config files..."
 artisan-cmd domain:sync
 DOMAIN_SYNC_EXIT_CODE=$?
 
@@ -131,6 +122,14 @@ if [ $DOMAIN_SYNC_EXIT_CODE -gt 0 ]; then
 fi
 
 artisan-cmd theme:sync || exit-with-error "Failed to sync theme config"
+
+# This is required e.g. to make sure that database migrations are run.
+echo "Running application update..."
+artisan-cmd version:update:complete || exit-with-error "Failed to update application"
+
+echo "Application updated. Reinstalling packages..."
+artisan-cmd pkg:reinstall || exit-with-error "Failed to reinstall packages"
+
 
 echo ""
 echo "========="
