@@ -1,12 +1,12 @@
-(function () {
-    'use strict';
+(function() {
+  "use strict";
 
-    angular
-        .module('pkg.backup.home', [
-            'scp.angle.layout.list',
-            'scp.core.api',
-            'pkg.backup.recurring',
-            'pkg.backup.destination',
-            'pkg.backup.archive',
-        ]);
+  angular.module("pkg.backup.home", [
+    "scp.angle.layout.list",
+    "scp.core.api",
+    "scp.core.auth",
+    "pkg.backup.recurring",
+    "pkg.backup.destination",
+    "pkg.backup.archive"
+  ]);
 })();
