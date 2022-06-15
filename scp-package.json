@@ -2,10 +2,10 @@
   "data": {
     "slug": "backup",
     "name": "Backups",
-    "semver": "1.0.7",
+    "semver": "1.0.8",
     "description": "Allows administrators to create Database Backups on a recurring basis. Backups are copied to a remote destination using secure copy over SSH.",
     "download_url": "https://api.packages.synergycp.com/package/synergycp/backup/download.tar.gz",
-    "release_date_unix": 1652846194,
+    "release_date_unix": 1655262811,
     "changelog": [
       "Update to support 4.0 application version environment backup",
       "Ensure that backup remote copy happens on the same worker as backup file creation"
