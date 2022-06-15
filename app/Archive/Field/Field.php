@@ -40,6 +40,6 @@ class Field extends Model implements ICanHavePermissions {
    * @inheritDoc
    */
   protected function permissionRulesForEdit(): array {
-    return [new AllowIfUserHasPermissions([self::PERMISSION_WRITE])];
+    return [AllowIfUserHasPermissions::create([self::PERMISSION_WRITE])];
   }
 }
