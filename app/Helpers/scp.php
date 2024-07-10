@@ -5,7 +5,7 @@ if (!function_exists('array_get')) {
     }
 }
 if (!function_exists('str_slug')) {
-    function str_slug(string $title, string $separator = '-', string|null $language = 'en') {
+    function str_slug(string $title, string $separator = '-', ?string $language = 'en') {
         return Illuminate\Support\Str::slug($title, $separator, $language);
     }
 }
