@@ -56,7 +56,7 @@ class DestService {
    */
   public function copy(Archive\Archive $backup) {
     try {
-      $this->event->fire(new CopyingArchiveToDest($backup));
+      $this->event->dispatch(new CopyingArchiveToDest($backup));
 
       $tempFile = $this->file->tempFile($backup);
       $destFile = $this->destFileName($backup);
@@ -65,7 +65,7 @@ class DestService {
         ->get($backup->dest)
         ->copy($backup->dest, $tempFile, $destFile);
 
-      $this->event->fire(new CopiedArchiveToDest($backup));
+      $this->event->dispatch(new CopiedArchiveToDest($backup));
     } catch (\Exception $exc) {
       $this->backup->failed($backup, $exc);
 

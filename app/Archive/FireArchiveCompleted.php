@@ -21,6 +21,6 @@ class FireArchiveCompleted {
    * @param Events\ArchiveEvent $event
    */
   public function handle(Events\ArchiveEvent $event) {
-    $this->event->fire(new Events\ArchiveCompleted($event->target));
+    $this->event->dispatch(new Events\ArchiveCompleted($event->target));
   }
 }
