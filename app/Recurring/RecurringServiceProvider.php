@@ -22,7 +22,7 @@ class RecurringServiceProvider extends ServiceProvider {
     collection($this->providers)->each(_one([$this->app, 'register']));
   }
 
-  public function boot() {
-    (new ClassMap)->map('pkg.backup.recurring', Recurring::class);
+  public function boot(ClassMap $classMap) {
+    $classMap->map('pkg.backup.recurring', Recurring::class);
   }
 }
