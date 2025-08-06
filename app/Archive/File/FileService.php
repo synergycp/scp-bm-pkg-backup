@@ -65,13 +65,13 @@ class FileService {
    */
   public function save(Archive\Archive $backup) {
     try {
-      $this->event->fire(new FileCompressing($backup));
+      $this->event->dispatch(new FileCompressing($backup));
 
       $this->handler
         ->get($backup->source)
         ->handle($backup, $this->tempFile($backup));
 
-      $this->event->fire(new FileCreated($backup));
+      $this->event->dispatch(new FileCreated($backup));
     } catch (\Exception $exc) {
       $this->backup->failed($backup, $exc);
 
@@ -86,7 +86,7 @@ class FileService {
     try {
       $this->file->delete($this->tempFile($backup));
 
-      $this->event->fire(new FileDeleted($backup));
+      $this->event->dispatch(new FileDeleted($backup));
     } catch (\Exception $exc) {
       $this->backup->failed($backup, $exc);
 

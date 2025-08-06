@@ -50,7 +50,7 @@ class ArchiveService {
     $backup->recurring()->associate($recurring ? $recurring->getKey() : null);
     $backup->save();
 
-    $this->event->fire(new Events\ArchiveCreated($backup));
+    $this->event->dispatch(new Events\ArchiveCreated($backup));
 
     return $backup;
   }
@@ -60,6 +60,6 @@ class ArchiveService {
    * @param \Exception $exc
    */
   public function failed(Archive $backup, \Exception $exc) {
-    $this->event->fire(new Events\ArchiveFailed($backup, $exc));
+    $this->event->dispatch(new Events\ArchiveFailed($backup, $exc));
   }
 }
