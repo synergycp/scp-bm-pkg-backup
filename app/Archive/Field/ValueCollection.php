@@ -4,13 +4,15 @@ namespace Packages\Backup\App\Archive\Field;
 
 use Illuminate\Database\Eloquent\Collection;
 
-class ValueCollection extends Collection {
+class ValueCollection extends Collection
+{
   /**
    * @param string $name
    *
    * @return Value
    */
-  public function byName($name) {
+  public function byName($name)
+  {
     $matchesName = function (Value $value) use (&$name) {
       return $value->field->name === $name;
     };
@@ -23,7 +25,8 @@ class ValueCollection extends Collection {
    *
    * @return string
    */
-  public function value($name) {
-    return $this->byName($name)->value();
+  public function value($key, $_ = null)
+  {
+    return $this->byName($key)->value();
   }
 }
