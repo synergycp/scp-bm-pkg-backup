@@ -8,7 +8,8 @@ use Packages\Backup\App\Archive;
 /**
  * MySQLDump Handler.
  */
-class MysqlDumpHandler implements Archive\Source\Handler\Handler {
+class MysqlDumpHandler implements Archive\Source\Handler\Handler
+{
   /**
    * @var Shell\Shell
    */
@@ -39,7 +40,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
   /**
    * {@inheritdoc}
    */
-  public function handle(Archive\Archive $backup, $tempFile) {
+  public function handle(Archive\Archive $backup, $tempFile)
+  {
     $this->makeOutputDir($tempFile);
     $this->dump($backup, $tempFile);
   }
@@ -61,7 +63,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @throws \Exception
    */
-  protected function run(Shell\ShellCommand $cmd, $command) {
+  protected function run(Shell\ShellCommand $cmd, $command)
+  {
     $cmd->exec($command);
 
     if ($errors = $cmd->getErrors()) {
@@ -75,7 +78,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @throws \Exception
    */
-  protected function dump(Archive\Archive $backup, $tempFile) {
+  protected function dump(Archive\Archive $backup, $tempFile)
+  {
     $this->run(
       $this->shell->cmd()->setOutputFile($tempFile),
       $this->command($backup)
@@ -87,31 +91,22 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @return string
    */
-  protected function command(Archive\Archive $backup) {
-    $arguments = [
-      $this->exec,
+  protected function command(Archive\Archive $backup)
+  {
+    $database = $this->getDatabase($backup);
 
-      // --defaults-file option must be the first option.
-      // '--defaults-file=$(bash -c "echo ~")/.my.cnf',
-
-      sprintf(
-        '-u %s -p%s -h %s',
-        escapeshellarg(config('database.connections.mysql.username')),
-        escapeshellarg(config('database.connections.mysql.password')),
-        escapeshellarg(config('database.connections.mysql.host'))
-      ),
-
-      // Efficient, exact MyISAM backups.
-      '--single-transaction --quick',
-
-      // The database that is getting exported.
-      $this->getDatabase($backup),
-
-      // Pipe the output through gzip with maximum compression
-      '| gzip -9',
-    ];
-
-    return implode(' ', $arguments);
+    // Usar mysql para hacer backup solo de datos con manejo de errores
+    return sprintf(
+      "mysql -u %s -p%s -h %s %s -e \"SHOW TABLES\" | tail -n +2 | while read table; do echo \"-- Table: \$table\"; mysql -u %s -p%s -h %s %s -e \"SELECT * FROM \$table\" 2>/dev/null | sed \"1d\"; done | gzip -9",
+      escapeshellarg(config('database.connections.mysql.username')),
+      escapeshellarg(config('database.connections.mysql.password')),
+      escapeshellarg(config('database.connections.mysql.host')),
+      escapeshellarg($database),
+      escapeshellarg(config('database.connections.mysql.username')),
+      escapeshellarg(config('database.connections.mysql.password')),
+      escapeshellarg(config('database.connections.mysql.host')),
+      escapeshellarg($database)
+    );
   }
 
   /**
@@ -119,7 +114,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @return string
    */
-  protected function getDatabase(Archive\Archive $backup) {
+  protected function getDatabase(Archive\Archive $backup)
+  {
     return $this->value
       ->byName($backup->source, MysqlDumpFields::DATABASE)
       ->value();
