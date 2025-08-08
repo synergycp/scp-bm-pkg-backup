@@ -49,8 +49,10 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @throws \Exception
    */
-  protected function makeOutputDir($tempFile) {
-    $this->run($this->shell->cmd(), "mkdir -p $tempFile; rmdir $tempFile");
+  protected function makeOutputDir($tempFile)
+  {
+    $dir = dirname($tempFile);
+    $this->run($this->shell->cmd(), "mkdir -p $dir");
   }
 
   /**
