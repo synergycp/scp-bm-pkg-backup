@@ -123,15 +123,14 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
     );
 
     // Remove existing .gz file if it exists
-    $gzFile = $tempFile . '-custom.gz';
-    if (file_exists($gzFile)) {
-      unlink($gzFile);
-    }
-
+    // $gzFile = $tempFile . '.gz';
+    // if (file_exists($gzFile)) {
+    //   unlink($gzFile);
+    // }
     // Compress the file
     $this->run(
       $this->shell->cmd(),
-      "gzip -9 " . escapeshellarg($tempFile)
+      "gzip -c -9 " . escapeshellarg($tempFile) . " > " . escapeshellarg($tempFile) . ".tmp && mv " . escapeshellarg($tempFile) . ".tmp " . escapeshellarg($tempFile)
     );
   }
 
@@ -208,7 +207,7 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
       $this->getDatabase($backup),
 
       // Pipe the output through gzip with maximum compression
-      '| gzip -9',
+      '| gzip -f -9',
     ];
 
     return implode(' ', $arguments);
