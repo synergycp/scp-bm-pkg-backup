@@ -148,30 +148,58 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
       $output .= $createTable[0]->{'Create Table'} . ";\n\n";
     }
 
-    // Get table data
+    // Get table data with pagination
     $output .= "-- Data for table `{$tableName}`\n";
 
     try {
-      $rows = $connection->select("SELECT * FROM `{$database}`.`{$tableName}`");
-      if (!empty($rows)) {
-        $columns = array_keys((array) $rows[0]);
-        $output .= "INSERT INTO `{$tableName}` (`" . implode('`, `', $columns) . "`) VALUES\n";
+      // Get total row count for pagination
+      $countResult = $connection->select("SELECT COUNT(*) as total FROM `{$database}`.`{$tableName}`");
+      $totalRows = $countResult[0]->total;
 
-        $values = [];
-        foreach ($rows as $row) {
-          $rowValues = [];
-          foreach ($columns as $column) {
-            $value = $row->$column;
-            if ($value === null) {
-              $rowValues[] = 'NULL';
-            } else {
-              $rowValues[] = "'" . addslashes($value) . "'";
+      if ($totalRows > 0) {
+        // Get column names from first row
+        $firstRow = $connection->select("SELECT * FROM `{$database}`.`{$tableName}` LIMIT 1");
+        if (!empty($firstRow)) {
+          $columns = array_keys((array) $firstRow[0]);
+          $output .= "INSERT INTO `{$tableName}` (`" . implode('`, `', $columns) . "`) VALUES\n";
+
+          // Process data in chunks to avoid memory issues
+          $chunkSize = 500; // Process 1000 rows at a time
+          $offset = 0;
+          $firstChunk = true;
+
+          while ($offset < $totalRows) {
+            $rows = $connection->select("SELECT * FROM `{$database}`.`{$tableName}` LIMIT {$chunkSize} OFFSET {$offset}");
+
+            if (!empty($rows)) {
+              $values = [];
+              foreach ($rows as $row) {
+                $rowValues = [];
+                foreach ($columns as $column) {
+                  $value = $row->$column;
+                  if ($value === null) {
+                    $rowValues[] = 'NULL';
+                  } else {
+                    $rowValues[] = "'" . addslashes($value) . "'";
+                  }
+                }
+                $values[] = "(" . implode(', ', $rowValues) . ")";
+              }
+
+              // Add comma separator between chunks (except for first chunk)
+              if (!$firstChunk) {
+                $output .= ",\n";
+              }
+
+              $output .= implode(",\n", $values);
+              $firstChunk = false;
             }
-          }
-          $values[] = "(" . implode(', ', $rowValues) . ")";
-        }
 
-        $output .= implode(",\n", $values) . ";\n";
+            $offset += $chunkSize;
+          }
+
+          $output .= ";\n";
+        }
       }
     } catch (\Exception $e) {
       $output .= "-- Error reading data from table {$tableName}: " . $e->getMessage() . "\n";
