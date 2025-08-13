@@ -105,16 +105,25 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
     $tables = $connection->select("SHOW TABLES FROM `{$database}`");
     $tableNames = array_column($tables, "Tables_in_{$database}");
 
-    $backupContent = "-- Custom MySQL Backup\n";
-    $backupContent .= "-- Generated on: " . date('Y-m-d H:i:s') . "\n";
-    $backupContent .= "-- Database: {$database}\n\n";
-
-    foreach ($tableNames as $tableName) {
-      $backupContent .= $this->backupTable($connection, $database, $tableName);
-    }
-    // Create a temporary file with the backup content
+    // Create a temporary file and write header
     $tempContentFile = $tempFile . '.tmp';
-    file_put_contents($tempContentFile, $backupContent);
+    $handle = fopen($tempContentFile, 'w');
+
+    if (!$handle) {
+      throw new \Exception('Cannot create temporary backup file');
+    }
+
+    // Write header
+    fwrite($handle, "-- Custom MySQL Backup\n");
+    fwrite($handle, "-- Generated on: " . date('Y-m-d H:i:s') . "\n");
+    fwrite($handle, "-- Database: {$database}\n\n");
+
+    // Process each table
+    foreach ($tableNames as $tableName) {
+      $this->backupTableToFile($connection, $database, $tableName, $handle);
+    }
+
+    fclose($handle);
 
     // Move the temporary file to the final location
     $this->run(
@@ -122,11 +131,6 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
       "mv " . escapeshellarg($tempContentFile) . " " . escapeshellarg($tempFile)
     );
 
-    // Remove existing .gz file if it exists
-    // $gzFile = $tempFile . '.gz';
-    // if (file_exists($gzFile)) {
-    //   unlink($gzFile);
-    // }
     // Compress the file
     $this->run(
       $this->shell->cmd(),
@@ -135,21 +139,22 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
   }
 
   /**
-   * Backup a single table
+   * Backup a single table to a file handle.
    */
-  protected function backupTable($connection, $database, $tableName)
+  protected function backupTableToFile($connection, $database, $tableName, $handle)
   {
-    $output = "\n-- Table structure for table `{$tableName}`\n";
-    $output .= "DROP TABLE IF EXISTS `{$tableName}`;\n";
+    // Write table header
+    fwrite($handle, "\n-- Table structure for table `{$tableName}`\n");
+    fwrite($handle, "DROP TABLE IF EXISTS `{$tableName}`;\n");
 
     // Get table structure
     $createTable = $connection->select("SHOW CREATE TABLE `{$database}`.`{$tableName}`");
     if (!empty($createTable)) {
-      $output .= $createTable[0]->{'Create Table'} . ";\n\n";
+      fwrite($handle, $createTable[0]->{'Create Table'} . ";\n\n");
     }
 
-    // Get table data with pagination
-    $output .= "-- Data for table `{$tableName}`\n";
+    // Write data header
+    fwrite($handle, "-- Data for table `{$tableName}`\n");
 
     try {
       // Get total row count for pagination
@@ -161,10 +166,10 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
         $firstRow = $connection->select("SELECT * FROM `{$database}`.`{$tableName}` LIMIT 1");
         if (!empty($firstRow)) {
           $columns = array_keys((array) $firstRow[0]);
-          $output .= "INSERT INTO `{$tableName}` (`" . implode('`, `', $columns) . "`) VALUES\n";
+          fwrite($handle, "INSERT INTO `{$tableName}` (`" . implode('`, `', $columns) . "`) VALUES\n");
 
           // Process data in chunks to avoid memory issues
-          $chunkSize = 500; // Process 1000 rows at a time
+          $chunkSize = 500; // Process 500 rows at a time
           $offset = 0;
           $firstChunk = true;
 
@@ -188,24 +193,22 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler
 
               // Add comma separator between chunks (except for first chunk)
               if (!$firstChunk) {
-                $output .= ",\n";
+                fwrite($handle, ",\n");
               }
 
-              $output .= implode(",\n", $values);
+              fwrite($handle, implode(",\n", $values));
               $firstChunk = false;
             }
 
             $offset += $chunkSize;
           }
 
-          $output .= ";\n";
+          fwrite($handle, ";\n");
         }
       }
     } catch (\Exception $e) {
-      $output .= "-- Error reading data from table {$tableName}: " . $e->getMessage() . "\n";
+      fwrite($handle, "-- Error reading data from table {$tableName}: " . $e->getMessage() . "\n");
     }
-
-    return $output;
   }
 
   /**
