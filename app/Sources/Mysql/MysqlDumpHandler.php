@@ -4,11 +4,13 @@ namespace Packages\Backup\App\Sources\Mysql;
 
 use App\Shell;
 use Packages\Backup\App\Archive;
+use Illuminate\Support\Facades\DB;
 
 /**
  * MySQLDump Handler.
  */
-class MysqlDumpHandler implements Archive\Source\Handler\Handler {
+class MysqlDumpHandler implements Archive\Source\Handler\Handler
+{
   /**
    * @var Shell\Shell
    */
@@ -39,7 +41,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
   /**
    * {@inheritdoc}
    */
-  public function handle(Archive\Archive $backup, $tempFile) {
+  public function handle(Archive\Archive $backup, $tempFile)
+  {
     $this->makeOutputDir($tempFile);
     $this->dump($backup, $tempFile);
   }
@@ -49,8 +52,10 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @throws \Exception
    */
-  protected function makeOutputDir($tempFile) {
-    $this->run($this->shell->cmd(), "mkdir -p $tempFile; rmdir $tempFile");
+  protected function makeOutputDir($tempFile)
+  {
+    $dir = dirname($tempFile);
+    $this->run($this->shell->cmd(), "mkdir -p $dir");
   }
 
   /**
@@ -59,7 +64,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @throws \Exception
    */
-  protected function run(Shell\ShellCommand $cmd, $command) {
+  protected function run(Shell\ShellCommand $cmd, $command)
+  {
     $cmd->exec($command);
 
     if ($errors = $cmd->getErrors()) {
@@ -73,19 +79,20 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @throws \Exception
    */
-  protected function dump(Archive\Archive $backup, $tempFile) {
+  protected function dump(Archive\Archive $backup, $tempFile)
+  {
     $this->run(
       $this->shell->cmd()->setOutputFile($tempFile),
       $this->command($backup)
     );
   }
-
   /**
    * @param Archive\Archive $backup
    *
    * @return string
    */
-  protected function command(Archive\Archive $backup) {
+  protected function command(Archive\Archive $backup)
+  {
     $arguments = [
       $this->exec,
 
@@ -106,7 +113,7 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
       $this->getDatabase($backup),
 
       // Pipe the output through gzip with maximum compression
-      '| gzip -9',
+      '| gzip -f -9',
     ];
 
     return implode(' ', $arguments);
@@ -117,7 +124,8 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    *
    * @return string
    */
-  protected function getDatabase(Archive\Archive $backup) {
+  protected function getDatabase(Archive\Archive $backup)
+  {
     return $this->value
       ->byName($backup->source, MysqlDumpFields::DATABASE)
       ->value();

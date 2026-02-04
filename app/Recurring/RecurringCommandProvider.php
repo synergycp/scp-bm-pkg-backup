@@ -14,7 +14,7 @@ class RecurringCommandProvider extends ScheduleServiceProvider {
   /**
    * Register the commands.
    */
-  public function boot() {
+  public function boot():void {
     $this->commands($this->commands);
 
     parent::boot();
