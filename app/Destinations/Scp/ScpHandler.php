@@ -89,7 +89,7 @@ class ScpHandler implements Archive\Dest\Handler\Handler {
 
     $hostParts = explode(':', $values->value(ScpFields::HOST));
     $host = $hostParts[0];
-    $port = (int) array_get($hostParts, 1, 22);
+    $port = (int) \Illuminate\Support\Arr::get($hostParts, 1, 22);
 
     $login = sprintf(
       '%s@%s',

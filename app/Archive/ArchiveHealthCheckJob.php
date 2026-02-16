@@ -17,8 +17,8 @@ class ArchiveHealthCheckJob extends Job {
       ->orderBy('created_at', 'desc')
       ->take(2)
       ->get();
-    $latest = array_get($latestTwo, 0);
-    $previous = array_get($latestTwo, 1);
+    $latest = \Illuminate\Support\Arr::get($latestTwo, 0);
+    $previous = \Illuminate\Support\Arr::get($latestTwo, 1);
 
     if (!$latest) {
       $status->warn(static::HEALTH_SLUG_BACKUP_STATUS);

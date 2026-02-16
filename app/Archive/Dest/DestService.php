@@ -76,7 +76,7 @@ class DestService {
   private function destFileName(Archive\Archive $backup): string {
     return sprintf(
       '%s.%d.%s',
-      str_slug($backup->source->name),
+      \Illuminate\Support\Str::slug($backup->source->name),
       $backup->getKey(),
       $backup->source->ext
     );

@@ -1,6 +1,6 @@
 {
     "name": "synergycp/scp-package-backup",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Synergy Control Panel - Backups Package",
     "keywords": ["Synergy", "Server", "Control", "Panel", "Dedicated", "Backups"],
     "license": "none",
