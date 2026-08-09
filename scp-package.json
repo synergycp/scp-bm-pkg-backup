@@ -2,11 +2,13 @@
   "data": {
     "slug": "backup",
     "name": "Backups",
-    "semver": "2.1.2",
+    "semver": "2.2.0",
     "description": "Allows administrators to create Database Backups on a recurring basis. Backups are copied to a remote destination using secure copy over SSH.",
     "download_url": "https://distribution.synergycp.com/packages/synergycp/backup/download.tar.gz",
     "release_date_unix": 1786302004,
     "changelog": [
+      "Add Backblaze B2 as a backup destination handler (native B2 API, SHA1-verified uploads, retention support)",
+      "Encrypt secret destination credentials (such as the B2 application key) at rest using the panel encryption key",
       "Fix the destination form offering the MySQL Dump source handler as a destination handler",
       "Fix SCP upload failing with \"No such file or directory\" on OpenSSH 9+ (SFTP-based scp takes the remote path literally)",
       "Bracket IPv6 hosts in the scp target so their colons are not taken as the path separator",

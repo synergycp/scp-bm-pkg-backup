@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations;
 use Packages\Backup\App\Archive;
 
+/**
+ * Class Field
+ * @package Packages\Backup\App\Archive\Field
+ * @property string $name
+ * @property bool $secret values of this Field are encrypted at rest
+ */
 class Field extends Model implements ICanHavePermissions {
   use THasPermissionChecks;
 
@@ -18,6 +24,8 @@ class Field extends Model implements ICanHavePermissions {
   const PERMISSION_WRITE = Archive\Archive::PERMISSION_WRITE;
 
   public $table = 'pkg_backup_fields';
+
+  protected $casts = ['secret' => 'bool'];
 
   /**
    * @return Relations\BelongsTo

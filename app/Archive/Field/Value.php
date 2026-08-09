@@ -29,7 +29,55 @@ class Value extends Model implements ICanHavePermissions {
    * @return string
    */
   public function value() {
-    return $this->attributes['value'];
+    return $this->decryptIfSecret(
+      isset($this->attributes['value']) ? $this->attributes['value'] : null
+    );
+  }
+
+  /**
+   * Decrypt values of secret Fields transparently on read.
+   *
+   * {@inheritdoc}
+   */
+  public function getAttributeValue($key) {
+    $value = parent::getAttributeValue($key);
+
+    return $key === 'value' ? $this->decryptIfSecret($value) : $value;
+  }
+
+  /**
+   * Encrypt values of secret Fields transparently on write, so credentials
+   * are never stored in plain text. Uses the panel's application key — the
+   * same key the configuration backup preserves.
+   *
+   * {@inheritdoc}
+   */
+  public function setAttribute($key, $value) {
+    if ($key === 'value' && $value !== null && $this->isSecret()) {
+      $value = encrypt($value);
+    }
+
+    return parent::setAttribute($key, $value);
+  }
+
+  /**
+   * @return bool
+   */
+  protected function isSecret() {
+    return (bool) ($this->field ? $this->field->secret : false);
+  }
+
+  /**
+   * @param string|null $value
+   *
+   * @return string|null
+   */
+  protected function decryptIfSecret($value) {
+    if ($value === null || $value === '' || !$this->isSecret()) {
+      return $value;
+    }
+
+    return decrypt($value);
   }
 
   /**
