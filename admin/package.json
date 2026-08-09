@@ -1,6 +1,6 @@
 {
   "name": "scp-package-backup-admin",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Synergy Control Panel Backups Package Admin Front End",
   "author": "synergycontrolpanel",
   "devDependencies": {
