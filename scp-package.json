@@ -2,11 +2,12 @@
   "data": {
     "slug": "backup",
     "name": "Backups",
-    "semver": "2.1.1",
+    "semver": "2.1.2",
     "description": "Allows administrators to create Database Backups on a recurring basis. Backups are copied to a remote destination using secure copy over SSH.",
     "download_url": "https://distribution.synergycp.com/packages/synergycp/backup/download.tar.gz",
     "release_date_unix": 1786302004,
     "changelog": [
+      "Fix the destination form offering the MySQL Dump source handler as a destination handler",
       "Fix SCP upload failing with \"No such file or directory\" on OpenSSH 9+ (SFTP-based scp takes the remote path literally)",
       "Bracket IPv6 hosts in the scp target so their colons are not taken as the path separator",
       "Add retention limits: keep the last N backups per recurring backup and/or cap total backups per destination; older backups are pruned automatically, including the remote file",
