@@ -61,12 +61,18 @@ class DestService {
       $tempFile = $this->file->tempFile($backup);
       $destFile = $this->destFileName($backup);
 
+      // Remember the remote file name so the remote copy can still be found
+      // (e.g. for deletion) if the Source is renamed later.
+      $backup->dest_file = $destFile;
+      $backup->save();
+
       $this->handler
         ->get($backup->dest)
         ->copy($backup->dest, $tempFile, $destFile);
 
       $this->event->dispatch(new CopiedArchiveToDest($backup));
     } catch (\Exception $exc) {
+      $this->file->cleanup($backup);
       $this->backup->failed($backup, $exc);
 
       throw new CopyToDestFailed($exc);
@@ -74,6 +80,10 @@ class DestService {
   }
 
   private function destFileName(Archive\Archive $backup): string {
+    if ($backup->dest_file) {
+      return $backup->dest_file;
+    }
+
     return sprintf(
       '%s.%d.%s',
       \Illuminate\Support\Str::slug($backup->source->name),
@@ -90,13 +100,26 @@ class DestService {
    * @throws DeleteFromDestFailed
    */
   public function delete(Archive\Archive $backup) {
-    $dest = $backup->dest;
     try {
-      $this->handler->get($dest)->delete($dest, $this->destFileName($backup));
+      $this->deleteFromDest($backup);
     } catch (\Exception $exc) {
       $this->backup->failed($backup, $exc);
 
       throw new DeleteFromDestFailed($exc);
     }
+  }
+
+  /**
+   * Delete the Backup off of the Destination without marking the Backup
+   * itself as failed.
+   *
+   * @param Archive\Archive $backup
+   *
+   * @throws \Exception
+   */
+  public function deleteFromDest(Archive\Archive $backup) {
+    $dest = $backup->dest;
+
+    $this->handler->get($dest)->delete($dest, $this->destFileName($backup));
   }
 }

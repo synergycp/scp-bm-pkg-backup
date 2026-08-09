@@ -51,6 +51,26 @@ class DestUpdateService extends UpdateService {
   protected function updateAll(Collection $items) {
     $this->setName($items);
     $this->setHandler($items);
+    $this->setMaxArchives($items);
+  }
+
+  /**
+   * @param Collection $items
+   */
+  private function setMaxArchives(Collection $items) {
+    $changed = $this->changed([
+      'max_archives' => $this->input('max_archives') ?: null,
+    ]);
+
+    $event = $this->queueHandler(Events\MaxArchivesChanged::class);
+
+    $this->successItems(
+      'pkg.backup::destination.update.max_archives',
+      $items
+        ->filter($changed)
+        ->reject([$this, 'isCreating'])
+        ->each($event)
+    );
   }
 
   /**

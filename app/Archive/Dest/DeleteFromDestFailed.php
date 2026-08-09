@@ -11,7 +11,9 @@ class DeleteFromDestFailed extends \Exception {
       sprintf(
         'Delete Backup from Destination Failed: %s',
         $previous->getMessage()
-      )
+      ),
+      0,
+      $previous
     );
   }
 }

@@ -4,6 +4,7 @@
     var INPUTS = {
         name: '',
         handler: '',
+        max_archives: '',
         fields: {}
     };
 

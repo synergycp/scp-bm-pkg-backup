@@ -26,6 +26,11 @@
       "LABEL": "Name",
       "PLACEHOLDER": "Name"
     },
+    "max_archives": {
+      "LABEL": "Backups to keep",
+      "PLACEHOLDER": "Keep all",
+      "HELP_TEXT": "The total number of finished Backups to keep on this Destination, across all Recurring and manual Backups. The oldest Backups are deleted automatically once the limit is exceeded. Leave empty for no limit."
+    },
     "handler": {
       "LABEL": "Handler",
       "PLACEHOLDER": "Handler"

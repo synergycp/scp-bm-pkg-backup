@@ -7,5 +7,6 @@ return [
     'source' => 'Source of recurring archive updated.',
     'destination' => 'Destination of recurring archive updated.',
     'period' => 'Period of recurring archive updated.',
+    'max_archives' => 'Retention limit of recurring archive updated.',
   ],
 ];

@@ -16,6 +16,7 @@ use Packages\Backup\App\Recurring;
  * @property int $period
  * @property int $recurring_id
  * @property int $status one of ArchiveStatus::*
+ * @property string|null $dest_file remote file name recorded at copy time
  * @property Dest $dest
  */
 class Archive extends Model implements ICanHavePermissions {

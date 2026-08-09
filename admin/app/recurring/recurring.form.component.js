@@ -5,6 +5,7 @@
         source: '',
         dest: '',
         period: '',
+        max_archives: '',
     };
 
     angular

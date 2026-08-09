@@ -2,12 +2,23 @@
   "data": {
     "slug": "backup",
     "name": "Backups",
-    "semver": "2.0.1",
+    "semver": "2.1.0",
     "description": "Allows administrators to create Database Backups on a recurring basis. Backups are copied to a remote destination using secure copy over SSH.",
     "download_url": "https://distribution.synergycp.com/packages/synergycp/backup/download.tar.gz",
-    "release_date_unix": 1655262811,
+    "release_date_unix": 1786302004,
     "changelog": [
-      "Updated project dependencies"
+      "Add retention limits: keep the last N backups per recurring backup and/or cap total backups per destination; older backups are pruned automatically, including the remote file",
+      "Delete the remote file when a backup archive is deleted",
+      "Detect mysqldump failures reliably (pipefail + exit codes) and verify the dump is a valid gzip file before uploading",
+      "Include stored routines, events and triggers in database dumps",
+      "Keep database credentials out of the process list using a private defaults file",
+      "Escape all shell arguments (database name, folders, remote paths)",
+      "Harden SSH/SCP: no interactive prompts, connection timeout, host key pinning, IPv6 and host:port support",
+      "Fix backups to destinations without a folder configured",
+      "Mark backups stuck in progress for over 24 hours as failed",
+      "Track backup health per destination so one healthy destination cannot mask a failing one",
+      "Clean up temp files after failed backups",
+      "Fix recurring backups being skipped when more than 300 are due at once"
     ]
   }
 }

@@ -73,9 +73,25 @@ class FileService {
 
       $this->event->dispatch(new FileCreated($backup));
     } catch (\Exception $exc) {
+      $this->cleanup($backup);
       $this->backup->failed($backup, $exc);
 
       throw $exc;
+    }
+  }
+
+  /**
+   * Remove the local temp file without firing file lifecycle events, so that
+   * failed backups cannot fill the panel's disk with partial dumps.
+   *
+   * @param Archive\Archive $backup
+   */
+  public function cleanup(Archive\Archive $backup) {
+    try {
+      $this->file->delete($this->tempFile($backup));
+    } catch (\Exception $exc) {
+      // Best effort only: the failure that triggered this cleanup takes
+      // precedence.
     }
   }
 

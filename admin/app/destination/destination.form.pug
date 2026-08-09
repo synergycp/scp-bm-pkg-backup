@@ -9,6 +9,15 @@ placeholder="{{ 'pkg.backup.admin.destination.form.name.PLACEHOLDER' | translate
 ng-model="destinationForm.input.name"
 )
 
++field(
+"pkg.backup.admin.destination.form.max_archives.LABEL",
+"max_archives"
+)(
+placeholder="{{ 'pkg.backup.admin.destination.form.max_archives.PLACEHOLDER' | translate }}"
+ng-model="destinationForm.input.max_archives"
+)
+    p.help-block(data-translate="pkg.backup.admin.destination.form.max_archives.HELP_TEXT")
+
 +label("pkg.backup.admin.destination.form.handler.LABEL")
     .input-group
         +ui-select("destinationForm.handlers")(ng-model="destinationForm.input.handler")

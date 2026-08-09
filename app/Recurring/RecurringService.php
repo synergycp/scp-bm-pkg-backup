@@ -38,18 +38,19 @@ class RecurringService {
    * @return int
    */
   public function run() {
-    $sum = 0;
-    $createBackups = function (Eloquent\Collection $items) use (&$sum) {
-      $sum += $items->count();
-      $this->createBackups($items);
-    };
-
-    $this->recurrings
+    // Materialize the full result set before creating any backups: creating
+    // an Archive removes its Recurring from the ready() result set, which
+    // would shift database-side chunk pagination and skip rows.
+    $ready = $this->recurrings
       ->query()
       ->ready()
-      ->chunk(300, $createBackups);
+      ->get();
 
-    return $sum;
+    $ready->chunk(300)->each(function (Eloquent\Collection $items) {
+      $this->createBackups($items);
+    });
+
+    return $ready->count();
   }
 
   /**

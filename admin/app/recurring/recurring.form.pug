@@ -25,3 +25,12 @@ include /node_modules/scp-ng-gulp/resources/pug/mixins/form
   ng-model="recurringForm.input.period"
 )
   p.help-block(data-translate="pkg.backup.admin.recurring.form.period.HELP_TEXT")
+
++field(
+  "pkg.backup.admin.recurring.form.max_archives.LABEL",
+  "max_archives"
+)(
+  placeholder="{{ 'pkg.backup.admin.recurring.form.max_archives.PLACEHOLDER' | translate }}"
+  ng-model="recurringForm.input.max_archives"
+)
+  p.help-block(data-translate="pkg.backup.admin.recurring.form.max_archives.HELP_TEXT")

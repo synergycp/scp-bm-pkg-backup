@@ -36,6 +36,11 @@
       "PLACEHOLDER": "In Seconds",
       "HELP_TEXT": "The number of seconds between each Recurring Backup."
     },
+    "max_archives": {
+      "LABEL": "Backups to keep",
+      "PLACEHOLDER": "Keep all",
+      "HELP_TEXT": "The number of finished Backups to keep on the Destination. Older Backups are deleted automatically. Leave empty to keep all Backups."
+    },
     "buttons": {
       "DELETE": "Delete"
     }

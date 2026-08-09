@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations;
  * @package Packages\Backup\App\Archive\Dest
  * @property Collection $fieldValues
  * @property Archive\Handler\Handler $handler
+ * @property int|null $max_archives finished Archives to keep on this Destination, null keeps all
  */
 class Dest extends Model implements
   Archive\Field\HasValues,

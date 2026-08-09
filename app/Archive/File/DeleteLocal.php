@@ -3,12 +3,14 @@
 namespace Packages\Backup\App\Archive\File;
 
 use Packages\Backup\App\Archive;
-use Illuminate\Contracts\Queue;
 
 /**
  * Delete the local copy of a Backup after it has been copied to its destination.
+ *
+ * DO NOT QUEUE THIS: the temp file only exists on the worker that created the
+ * backup, so it must run on that same worker.
  */
-class DeleteLocal implements Queue\ShouldQueue {
+class DeleteLocal {
   /**
    * @var FileService
    */

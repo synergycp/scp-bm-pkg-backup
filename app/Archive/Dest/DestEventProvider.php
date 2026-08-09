@@ -14,5 +14,6 @@ class DestEventProvider extends EventServiceProvider {
     Events\DestDeleted::class => [EventLogger::class],
     Events\NameChanged::class => [EventLogger::class],
     Events\HandlerChanged::class => [EventLogger::class],
+    Events\MaxArchivesChanged::class => [EventLogger::class],
   ];
 }

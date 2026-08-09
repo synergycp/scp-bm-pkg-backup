@@ -6,6 +6,7 @@ use App\Log\EventLogger;
 use App\Support\EventServiceProvider;
 use App\Support\Jobs\JobRunnerEventListener;
 use Packages\Backup\App\Recurring\Events\DestinationChanged;
+use Packages\Backup\App\Recurring\Events\MaxArchivesChanged;
 use Packages\Backup\App\Recurring\Events\PeriodChanged;
 use Packages\Backup\App\Recurring\Events\RecurringCreated;
 use Packages\Backup\App\Recurring\Events\RecurringDeleted;
@@ -29,5 +30,6 @@ class RecurringEventProvider extends EventServiceProvider {
     SourceChanged::class => [EventLogger::class],
     DestinationChanged::class => [EventLogger::class],
     PeriodChanged::class => [EventLogger::class],
+    MaxArchivesChanged::class => [EventLogger::class],
   ];
 }

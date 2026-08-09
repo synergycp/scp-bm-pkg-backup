@@ -13,6 +13,7 @@ use Packages\Backup\App\Archive;
  * Class Recurring
  * @package Packages\Backup\App\Recurring
  * @property int $period
+ * @property int|null $max_archives number of finished Archives to keep, null keeps all
  */
 class Recurring extends Model implements ICanHavePermissions {
   use Archive\Archivable;

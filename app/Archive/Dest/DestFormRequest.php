@@ -9,6 +9,7 @@ class DestFormRequest extends RestRequest {
     $this->rules = [
       'name' => 'required',
       'handler.id' => 'required|exists:pkg_backup_handlers,id',
+      'max_archives' => 'nullable|integer|min:1',
     ];
   }
 }

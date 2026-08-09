@@ -10,6 +10,7 @@ class RecurringFormRequest extends RestRequest {
       'dest.id' => 'required|exists:pkg_backup_destinations,id',
       'source.id' => 'required|exists:pkg_backup_sources,id',
       'period' => 'required|integer|min:0',
+      'max_archives' => 'nullable|integer|min:1',
     ];
   }
 }

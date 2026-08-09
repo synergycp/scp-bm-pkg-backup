@@ -5,6 +5,7 @@ namespace Packages\Backup\App\Recurring;
 use App\Support\Http\UpdateService;
 use Illuminate\Support\Collection;
 use Packages\Backup\App\Recurring\Events\DestinationChanged;
+use Packages\Backup\App\Recurring\Events\MaxArchivesChanged;
 use Packages\Backup\App\Recurring\Events\PeriodChanged;
 use Packages\Backup\App\Recurring\Events\RecurringCreated;
 use Packages\Backup\App\Recurring\Events\SourceChanged;
@@ -33,6 +34,7 @@ class RecurringUpdateService extends UpdateService {
     $item->source_id = $this->request->input('source.id');
     $item->destination_id = $this->request->input('dest.id');
     $item->period = $this->request->input('period');
+    $item->max_archives = $this->request->input('max_archives') ?: null;
   }
 
   public function afterCreate(Collection $items) {
@@ -63,6 +65,7 @@ class RecurringUpdateService extends UpdateService {
     $this->setSource($items);
     $this->setDestination($items);
     $this->setPeriod($items);
+    $this->setMaxArchives($items);
   }
 
   public function setSource(Collection $items) {
@@ -100,6 +103,20 @@ class RecurringUpdateService extends UpdateService {
 
     $this->successItems(
       'pkg.backup::recurring.update.period',
+      $items
+        ->filter($this->changed($inputs))
+        ->reject([$this, 'isCreating'])
+        ->each($createEvent)
+    );
+  }
+
+  public function setMaxArchives(Collection $items) {
+    $inputs = ['max_archives' => $this->input('max_archives') ?: null];
+
+    $createEvent = $this->queueHandler(MaxArchivesChanged::class);
+
+    $this->successItems(
+      'pkg.backup::recurring.update.max_archives',
       $items
         ->filter($this->changed($inputs))
         ->reject([$this, 'isCreating'])

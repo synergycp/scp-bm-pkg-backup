@@ -11,7 +11,7 @@ class DestTransformer extends Transformer {
    * @return mixed
    */
   public function item(Dest $item) {
-    return $item->expose(['id', 'name']) + $this->handler($item);
+    return $item->expose(['id', 'name', 'max_archives']) + $this->handler($item);
   }
 
   private function handler(Dest $item) {

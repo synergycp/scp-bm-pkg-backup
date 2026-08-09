@@ -19,6 +19,8 @@ class ArchiveEventProvider extends EventServiceProvider {
     Events\ArchiveCompleted::class => [
       EventLogger::class,
       MarkArchiveStatus::class,
+      PruneRecurringArchives::class,
+      PruneDestinationArchives::class,
       JobRunnerEventListener::class,
     ],
     Events\ArchiveFailed::class => [
@@ -28,6 +30,7 @@ class ArchiveEventProvider extends EventServiceProvider {
     ],
     Events\ArchiveDeleted::class => [
       EventLogger::class,
+      Dest\DeleteArchiveFromDest::class,
       JobRunnerEventListener::class,
     ],
 

@@ -10,7 +10,7 @@ class RecurringTransformer extends Transformer {
    * @return mixed
    */
   public function item(Recurring $item) {
-    return $item->expose(['id', 'period', 'dest', 'source']) + [
+    return $item->expose(['id', 'period', 'max_archives', 'dest', 'source']) + [
       'name' => $item->source->name,
       'created_at' => $this->date($item->created_at),
       'updated_at' => $this->date($item->updated_at),

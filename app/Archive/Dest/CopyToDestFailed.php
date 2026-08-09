@@ -9,7 +9,7 @@ class CopyToDestFailed extends \Exception {
   public function __construct(\Exception $previous) {
     parent::__construct(
       sprintf('Copy Backup to Destination Failed: %s', $previous->getMessage()),
-      null,
+      0,
       $previous
     );
   }

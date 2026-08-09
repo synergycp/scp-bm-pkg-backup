@@ -36,11 +36,15 @@ class ValueService {
    * @param HasValues $hasFields
    * @param string    $name
    *
-   * @return Field
+   * @return Value|null
    */
   public function byName(HasValues $hasFields, $name) {
-    // TODO: query single record from the database.
-
-    return $this->all($hasFields)->byName($name);
+    return $this->values
+      ->query()
+      ->parent($hasFields)
+      ->whereHas('field', function ($query) use ($name) {
+        $query->where('name', $name);
+      })
+      ->first();
   }
 }
