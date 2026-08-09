@@ -77,12 +77,26 @@ jobs:
         run: |
           aws s3 cp download.tar.gz s3://${{ env.R2_BUCKET }}/${{ env.PACKAGE_PATH }}/download.tar.gz --content-type application/gzip
 
+      # dev/restore.sh is the source of truth for the customer-facing
+      # disaster recovery script served at
+      # https://install.synergycp.com/bm/scripts/backup-restore.sh
+      # (the install.synergycp.com git repo is archived). The beta channel
+      # (backup-restore.beta.sh) is not touched here and stays manual.
+      - name: Publish restore script to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
+        run: |
+          bash -n dev/restore.sh
+          aws s3 cp dev/restore.sh s3://${{ env.R2_BUCKET }}/bm/scripts/backup-restore.sh --content-type text/x-shellscript
+
       - name: Purge Cloudflare cache
         run: |
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_CACHE_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data '{"files":["https://distribution.synergycp.com/${{ env.PACKAGE_PATH }}/download.tar.gz"]}'
+            --data '{"files":["https://distribution.synergycp.com/${{ env.PACKAGE_PATH }}/download.tar.gz","https://install.synergycp.com/bm/scripts/backup-restore.sh"]}'
 
       - name: Notify Slack on success
         if: success()
