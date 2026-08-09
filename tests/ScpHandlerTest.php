@@ -54,9 +54,16 @@ final class ScpHandlerTest extends TestCase {
     $this->assertStringStartsWith('scp ', $scp);
     $this->assertStringContainsString('-P 2222', $scp);
     $this->assertStringContainsString("'/scp/data/tmp/backup/42'", $scp);
+    // The remote path is passed literally (single, local-only escaping):
+    // scp's default SFTP mode does not expand it through a remote shell.
     $this->assertStringContainsString(
-      "'scp@backups.example.com:'\\''my backups/\$(reboot)/source-name.42.sql.gz'\\'''",
+      "'scp@backups.example.com:my backups/\$(reboot)/source-name.42.sql.gz'",
       $scp
+    );
+    $this->assertStringNotContainsString(
+      ":'\\''",
+      $scp,
+      'remote path must not be escaped for a remote shell'
     );
   }
 
@@ -93,7 +100,7 @@ final class ScpHandlerTest extends TestCase {
     $this->assertStringStartsWith('scp ', $commands[0]);
     $this->assertStringContainsString('-P 22', $commands[0]);
     $this->assertStringContainsString(
-      "'scp@backups.example.com:'\\''source-name.42.sql.gz'\\'''",
+      "'scp@backups.example.com:source-name.42.sql.gz'",
       $commands[0]
     );
   }
@@ -107,6 +114,12 @@ final class ScpHandlerTest extends TestCase {
 
     $this->assertStringContainsString('-p 2200', $commands[0]);
     $this->assertStringContainsString("'scp@2001:db8::1'", $commands[0]);
+    // The scp target brackets the IPv6 host so its colons are not taken as
+    // the path separator.
+    $this->assertStringContainsString(
+      "'scp@[2001:db8::1]:backups/source-name.42.sql.gz'",
+      $commands[1]
+    );
   }
 
   public function testBareIpv6HostKeepsTheDefaultPort(): void {
@@ -118,6 +131,27 @@ final class ScpHandlerTest extends TestCase {
 
     $this->assertStringContainsString('-p 22 ', $commands[0]);
     $this->assertStringContainsString("'scp@2001:db8::1'", $commands[0]);
+    $this->assertStringContainsString(
+      "'scp@[2001:db8::1]:backups/source-name.42.sql.gz'",
+      $commands[1]
+    );
+  }
+
+  public function testRemotePathIsUsableBySftpModeScp(): void {
+    // Regression: OpenSSH 9+ scp defaults to SFTP, which opens the remote
+    // path literally. Shell-escaping it made the server look for a file
+    // named '/folder/file.gz' (quotes included) and fail with
+    // "No such file or directory".
+    $commands = $this->copy([
+      'host' => 'nas.example.ts.net',
+      'user' => 'test02-backup',
+      'folder' => '/hdd-pool/test02-backup',
+    ], 'main-database.1077.gz');
+
+    $this->assertStringContainsString(
+      "'test02-backup@nas.example.ts.net:/hdd-pool/test02-backup/main-database.1077.gz'",
+      $commands[1]
+    );
   }
 
   public function testHostPortSplitStillWorks(): void {

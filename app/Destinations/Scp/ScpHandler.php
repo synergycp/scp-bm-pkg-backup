@@ -121,14 +121,30 @@ class ScpHandler implements Archive\Dest\Handler\Handler {
       'scp',
       $this->scpOptions($target['port']),
       escapeshellarg($tempFile),
-      // The remote path is expanded by the remote shell, so it is escaped for
-      // the remote side before the whole argument is escaped locally.
+      // scp uses the SFTP protocol by default since OpenSSH 9.0, which takes
+      // the remote path literally: it must NOT be escaped for a remote shell.
       escapeshellarg(
-        sprintf('%s:%s', $target['login'], escapeshellarg($target['file']))
+        sprintf('%s:%s', $this->scpLogin($target), $target['file'])
       ),
     ]));
 
     return $commands;
+  }
+
+  /**
+   * The login for an scp target. Unlike the ssh login, an IPv6 host must be
+   * bracketed here so its colons are not taken as the path separator.
+   *
+   * @param array $target
+   *
+   * @return string
+   */
+  protected function scpLogin(array $target) {
+    $host = strpos($target['host'], ':') !== false
+      ? sprintf('[%s]', $target['host'])
+      : $target['host'];
+
+    return sprintf('%s@%s', $target['user'], $host);
   }
 
   /**
@@ -172,9 +188,12 @@ class ScpHandler implements Archive\Dest\Handler\Handler {
     }
 
     list($host, $port) = $this->parseHost($values->value(ScpFields::HOST));
+    $user = $values->value(ScpFields::USER);
 
     return [
-      'login' => sprintf('%s@%s', $values->value(ScpFields::USER), $host),
+      'user' => $user,
+      'host' => $host,
+      'login' => sprintf('%s@%s', $user, $host),
       'port' => $port,
       'file' => $file,
       'folder' => $fileFolder,
