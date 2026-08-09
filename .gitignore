@@ -3,3 +3,6 @@
 /public
 CLAUDE.md
 /.phpunit.cache
+/main-database.*.gz.enc
+/database.gz*
+/synergycp-config-backup.tar.gz

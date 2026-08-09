@@ -12,7 +12,29 @@ env:
   D1_DATABASE: packages-api
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run unit tests
+        run: vendor/bin/phpunit
+
+      - name: Run restore script tests
+        run: bash dev/restore-tests.sh
+
   build-and-deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
