@@ -6,3 +6,4 @@ CLAUDE.md
 /main-database.*.gz.enc
 /database.gz*
 /synergycp-config-backup.tar.gz
+/.wrangler
