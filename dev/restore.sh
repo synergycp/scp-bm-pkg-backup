@@ -44,6 +44,8 @@ START_DIR=$(pwd)
 
 # Config
 DB_FILE=database.gz
+# Backups made by backup package 2.4.0+ are encrypted and end in .gz.enc.
+[ -f database.gz.enc ] && DB_FILE=database.gz.enc
 CONFIG_FILE=synergycp-config-backup.tar.gz
 CONT_TMP_DIR=/tmp/scp-backup
 CONT_APP_DIR=/var/www/html
@@ -81,7 +83,7 @@ fi
 
 echo -n "Checking for database file and config file..."
 if [ ! -f "$DB_FILE" ]; then
-  exit-with-error "Could not find database file. It must be named ${DB_FILE} in the directory this script was run from ($(pwd))."
+  exit-with-error "Could not find database file. It must be named database.gz (or database.gz.enc for encrypted backups) in the directory this script was run from ($(pwd))."
 fi
 if [ ! -f "$CONFIG_FILE" ]; then
   exit-with-error "Could not find config file. It must be named ${CONFIG_FILE} in the directory this script was run from ($(pwd))."
@@ -89,16 +91,51 @@ fi
 printf "\t\t\t[OK]\n"
 
 # Verify both backup files BEFORE doing anything destructive, so a truncated
-# upload is caught in seconds instead of after the database has been erased.
+# upload or a mismatched key is caught in seconds instead of after the
+# database has been erased.
 echo -n "Verifying backup file integrity..."
-if ! gunzip -t "$DB_FILE" > /dev/null 2>&1; then
-  exit-with-error "${DB_FILE} is not a valid gzip file. The upload is likely incomplete - please re-upload it and run this script again."
-fi
 for member in .env id_rsa id_rsa.pub; do
   if ! tar -tzf "$CONFIG_FILE" "$member" > /dev/null 2>&1; then
     exit-with-error "${CONFIG_FILE} does not contain ${member}, so it is not a valid SynergyCP configuration backup. Please re-upload it and run this script again."
   fi
 done
+
+# Secrets (extracted .env, decryption passphrase) live in a private temp dir
+# that is removed when the script exits, however it exits.
+WORK_TMP=$(mktemp -d) || exit-with-error "Failed to create a temporary directory"
+chmod 0700 "$WORK_TMP"
+trap 'rm -rf "$WORK_TMP"' EXIT
+PASS_FILE="$WORK_TMP/backup.key"
+
+# Backups made by backup package 2.4.0+ are encrypted with the panel's
+# application key (openssl enc, "Salted__" header). Detect the format from
+# the file itself rather than trusting the name.
+DB_ENCRYPTED=0
+if [ "$(head -c 8 "$DB_FILE")" = "Salted__" ]; then
+  DB_ENCRYPTED=1
+fi
+
+decrypt-db() {
+  openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -pass "file:$PASS_FILE"
+}
+
+if [ "$DB_ENCRYPTED" -eq 1 ]; then
+  command -v openssl > /dev/null 2>&1 || exit-with-error "openssl is required to restore an encrypted backup but is not installed. Install it (apt-get install openssl) and run this script again."
+
+  tar -zxf "$CONFIG_FILE" -C "$WORK_TMP" .env || exit-with-error "Failed to read .env from ${CONFIG_FILE}"
+  APP_KEY=$(sed -n 's/^APP_KEY=//p' "$WORK_TMP/.env" | head -n 1)
+  APP_KEY=${APP_KEY%\"}; APP_KEY=${APP_KEY#\"}
+  [ -n "$APP_KEY" ] || exit-with-error "The .env inside ${CONFIG_FILE} has no APP_KEY, so the encrypted database backup cannot be decrypted."
+  printf '%s' "$APP_KEY" > "$PASS_FILE"
+
+  if ! decrypt-db < "$DB_FILE" 2> /dev/null | gzip -t > /dev/null 2>&1; then
+    exit-with-error "${DB_FILE} could not be decrypted and verified with the key in ${CONFIG_FILE}. Either the file is corrupt (re-upload it) or the configuration backup is not from the installation that made this database backup."
+  fi
+else
+  if ! gunzip -t "$DB_FILE" > /dev/null 2>&1; then
+    exit-with-error "${DB_FILE} is not a valid gzip file. The upload is likely incomplete - please re-upload it and run this script again."
+  fi
+fi
 printf "\t\t[OK]\n"
 
 echo ""
@@ -108,7 +145,12 @@ if [ "$INSTALL_APP" -eq 1 ]; then
 else
   echo "  1. Use the SynergyCP installation already on this server."
 fi
-echo "  2. ERASE this installation's database and import ${DB_FILE} in its place."
+if [ "$DB_ENCRYPTED" -eq 1 ]; then
+  echo "  2. ERASE this installation's database and import ${DB_FILE} in its place"
+  echo "     (decrypted with the key from your configuration backup)."
+else
+  echo "  2. ERASE this installation's database and import ${DB_FILE} in its place."
+fi
 echo "  3. Import the secret key and SSH keys from ${CONFIG_FILE}."
 echo ""
 echo "IMPORTANT: the backup must come from the same SynergyCP version that is installed."
@@ -194,9 +236,13 @@ EOF
 printf "\t\t[OK]\n"
 
 echo -n "Database cleared. Importing database backup..."
-# pipefail (set above) makes this fail when gunzip fails mid-stream, so a
+# pipefail (set above) makes this fail when any stage fails mid-stream, so a
 # corrupt dump cannot produce a silently partial import.
-(gunzip < "$START_DIR/$DB_FILE" | ./bin/scp-db) || exit-with-error "Failed to import database"
+if [ "$DB_ENCRYPTED" -eq 1 ]; then
+  (decrypt-db < "$START_DIR/$DB_FILE" | gunzip | ./bin/scp-db) || exit-with-error "Failed to import database"
+else
+  (gunzip < "$START_DIR/$DB_FILE" | ./bin/scp-db) || exit-with-error "Failed to import database"
+fi
 printf "\t\t[OK]\n"
 
 # This is required so that the settings cache gets rewritten (and possibly other caches).

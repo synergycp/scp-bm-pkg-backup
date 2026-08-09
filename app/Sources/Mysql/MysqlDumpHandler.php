@@ -43,14 +43,22 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
     $this->makeOutputDir($tempFile);
 
     $credentialsFile = $tempFile . '.cnf';
-    $this->writeCredentialsFile($credentialsFile);
+    $encryptionKeyFile = $tempFile . '.key';
 
     try {
-      $this->dump($backup, $tempFile, $credentialsFile);
-      $this->verify($tempFile);
+      $this->writeSecretFile(
+        $credentialsFile,
+        $this->credentialsFileContents()
+      );
+      $this->writeSecretFile($encryptionKeyFile, $this->encryptionKey());
+
+      $this->dump($backup, $tempFile, $credentialsFile, $encryptionKeyFile);
+      $this->verify($tempFile, $encryptionKeyFile);
     } finally {
-      if (is_file($credentialsFile)) {
-        unlink($credentialsFile);
+      foreach ([$credentialsFile, $encryptionKeyFile] as $secretFile) {
+        if (is_file($secretFile)) {
+          unlink($secretFile);
+        }
       }
     }
   }
@@ -91,43 +99,67 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
    * @param Archive\Archive $backup
    * @param string          $tempFile
    * @param string          $credentialsFile
+   * @param string          $encryptionKeyFile
    *
    * @throws \Exception
    */
-  protected function dump(Archive\Archive $backup, $tempFile, $credentialsFile) {
+  protected function dump(
+    Archive\Archive $backup,
+    $tempFile,
+    $credentialsFile,
+    $encryptionKeyFile
+  ) {
     $this->run(
       $this->shell->cmd()->setOutputFile($tempFile),
-      // pipefail makes the dump fail when mysqldump fails, even though gzip
-      // (the last command in the pipeline) exits successfully.
+      // pipefail makes the dump fail when mysqldump fails, even though the
+      // last command in the pipeline exits successfully.
       sprintf(
         'bash -o pipefail -c %s',
-        escapeshellarg($this->command($backup, $credentialsFile))
+        escapeshellarg(
+          $this->command($backup, $credentialsFile, $encryptionKeyFile)
+        )
       )
     );
   }
 
   /**
-   * Ensure the dump produced a non-empty, valid gzip file.
+   * Ensure the dump produced a non-empty file that decrypts to valid gzip
+   * data with the panel's key.
    *
    * @param string $tempFile
+   * @param string $encryptionKeyFile
    *
    * @throws \Exception
    */
-  protected function verify($tempFile) {
+  protected function verify($tempFile, $encryptionKeyFile) {
     $file = escapeshellarg($tempFile);
 
     $this->run(
       $this->shell->cmd(),
-      sprintf('test -s %s && gzip -t < %s', $file, $file)
+      sprintf(
+        'bash -o pipefail -c %s',
+        escapeshellarg(sprintf(
+          'test -s %s && %s < %s | gzip -t',
+          $file,
+          $this->decryptCommand($encryptionKeyFile),
+          $file
+        ))
+      )
     );
   }
+
   /**
    * @param Archive\Archive $backup
    * @param string          $credentialsFile
+   * @param string          $encryptionKeyFile
    *
    * @return string
    */
-  protected function command(Archive\Archive $backup, $credentialsFile) {
+  protected function command(
+    Archive\Archive $backup,
+    $credentialsFile,
+    $encryptionKeyFile
+  ) {
     $arguments = [
       $this->exec,
 
@@ -150,36 +182,91 @@ class MysqlDumpHandler implements Archive\Source\Handler\Handler {
       // Pipe the output through gzip. Level 6 compresses nearly as well as 9
       // at a fraction of the CPU time, keeping the dump window short.
       '| gzip -f -6',
+
+      // Encrypt with the panel's secret key so the backup can only be read
+      // together with the configuration backup. The restore script and docs
+      // depend on these exact parameters.
+      sprintf('| %s', $this->encryptCommand($encryptionKeyFile)),
     ];
 
     return implode(' ', $arguments);
   }
 
   /**
-   * Write the MySQL client credentials to a file only readable by us.
+   * @param string $encryptionKeyFile
    *
-   * @param string $path
+   * @return string
+   */
+  protected function encryptCommand($encryptionKeyFile) {
+    return sprintf(
+      'openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -salt -pass file:%s',
+      escapeshellarg($encryptionKeyFile)
+    );
+  }
+
+  /**
+   * @param string $encryptionKeyFile
+   *
+   * @return string
+   */
+  protected function decryptCommand($encryptionKeyFile) {
+    return sprintf(
+      'openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -pass file:%s',
+      escapeshellarg($encryptionKeyFile)
+    );
+  }
+
+  /**
+   * The passphrase backups are encrypted with: the panel's application key,
+   * which is included in (and only in) the configuration backup.
+   *
+   * @return string
    *
    * @throws \Exception
    */
-  protected function writeCredentialsFile($path) {
-    $contents = implode("\n", [
+  protected function encryptionKey() {
+    $key = (string) config('app.key');
+
+    if ($key === '') {
+      throw new \Exception(
+        'The application key is empty; refusing to create an unencrypted backup.'
+      );
+    }
+
+    return $key;
+  }
+
+  /**
+   * @return string
+   */
+  protected function credentialsFileContents() {
+    return implode("\n", [
       '[client]',
       sprintf('user="%s"', $this->escapeCnf(config('database.connections.mysql.username'))),
       sprintf('password="%s"', $this->escapeCnf(config('database.connections.mysql.password'))),
       sprintf('host="%s"', $this->escapeCnf(config('database.connections.mysql.host'))),
       '',
     ]);
+  }
 
+  /**
+   * Write a secret to a file only readable by us.
+   *
+   * @param string $path
+   * @param string $contents
+   *
+   * @throws \Exception
+   */
+  protected function writeSecretFile($path, $contents) {
     // Create the file empty and lock its permissions down before the
-    // credentials are written to it.
+    // secret is written to it.
     if (
       file_put_contents($path, '') === false ||
       !chmod($path, 0600) ||
       file_put_contents($path, $contents) === false
     ) {
       throw new \Exception(
-        sprintf('Unable to write MySQL credentials file %s for backup.', $path)
+        sprintf('Unable to write secret file %s for backup.', $path)
       );
     }
   }

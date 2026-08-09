@@ -2,11 +2,13 @@
   "data": {
     "slug": "backup",
     "name": "Backups",
-    "semver": "2.3.1",
+    "semver": "2.4.0",
     "description": "Allows administrators to create Database Backups on a recurring basis. Backups are copied to a remote destination using secure copy over SSH.",
     "download_url": "https://distribution.synergycp.com/packages/synergycp/backup/download.tar.gz",
     "release_date_unix": 1786302004,
     "changelog": [
+      "Encrypt every database backup (AES-256) with the panel secret key before it leaves the server; backups can only be decrypted together with the configuration backup",
+      "The restore script detects encrypted backups, verifies the key before touching anything, and decrypts automatically during import; older unencrypted backups remain restorable",
       "Harden the disaster recovery restore script: validate backup files before any destructive step, resume after failed attempts, confirm before erasing, clean up secrets, and log to restore.log",
       "Add Cloudflare R2 as a backup destination handler (S3-compatible API with SigV4 signing, encrypted credentials, retention support)",
       "Add Backblaze B2 as a backup destination handler (native B2 API, SHA1-verified uploads, retention support)",

@@ -64,6 +64,38 @@ namespace App\Shell {
       );
     }
   }
+
+  /**
+   * A ShellCommand that actually runs its command through the local shell,
+   * mirroring the framework's proc_open() semantics. Used by round-trip
+   * integration tests.
+   */
+  class ExecutingShellCommand extends ShellCommand {
+    public function exec(string $cmd): static {
+      $this->executed = $cmd;
+
+      $errFile = tempnam(sys_get_temp_dir(), 'scp-test-err-');
+      $suffix = ($this->outputFile !== null ? ' 1>' . $this->outputFile : '')
+        . ' 2>' . escapeshellarg($errFile);
+
+      exec($cmd . $suffix, $ignored, $code);
+
+      $this->exitCode = $code;
+      $this->errors = trim((string) file_get_contents($errFile));
+      unlink($errFile);
+
+      return $this;
+    }
+  }
+
+  class ExecutingShell extends Shell {
+    public function cmd(): ShellCommand {
+      $cmd = new ExecutingShellCommand();
+      $this->commands[] = $cmd;
+
+      return $cmd;
+    }
+  }
 }
 
 namespace App\System\SSH\Key {

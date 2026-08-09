@@ -20,11 +20,14 @@ final class MysqlDumpHandlerTest extends TestCase {
   private string $tempDir;
   private string $tempFile;
 
+  private const APP_KEY = 'base64:test-app-key';
+
   protected function setUp(): void {
     TestConfig::$values = [
       'database.connections.mysql.username' => 'scp_user',
       'database.connections.mysql.password' => self::PASSWORD,
       'database.connections.mysql.host' => 'db-host',
+      'app.key' => self::APP_KEY,
     ];
 
     $this->shell = new Shell();
@@ -64,23 +67,65 @@ final class MysqlDumpHandlerTest extends TestCase {
       'output dir is created quoted, from the parent directory'
     );
     $this->assertStringStartsWith('bash -o pipefail -c ', $dump);
-    $this->assertSame(
-      sprintf("test -s '%s' && gzip -t < '%s'", $this->tempFile, $this->tempFile),
+
+    $this->assertStringStartsWith('bash -o pipefail -c ', $verify);
+    $this->assertStringContainsString('test -s ', $verify);
+    $this->assertStringContainsString(
+      'openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -pass file:',
       $verify,
-      'dump is verified to be a non-empty valid gzip file'
+      'verification decrypts with the panel key'
     );
+    $this->assertStringContainsString('| gzip -t', $verify);
   }
 
   public function testDumpFailsWhenAnyPipelineCommandFails(): void {
     $this->handler->handle($this->backup, $this->tempFile);
 
-    // pipefail is what surfaces a mysqldump failure that gzip would
-    // otherwise mask with its own successful exit code.
+    // pipefail is what surfaces a mysqldump failure that gzip/openssl would
+    // otherwise mask with their own successful exit codes.
     $this->assertStringContainsString(
       'bash -o pipefail -c ',
       $this->dumpCommand()
     );
     $this->assertStringContainsString('| gzip -f -6', $this->dumpCommand());
+  }
+
+  public function testDumpIsEncryptedWithThePanelKey(): void {
+    $this->handler->handle($this->backup, $this->tempFile);
+
+    $this->assertStringContainsString(
+      '| openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -salt -pass file:',
+      $this->dumpCommand()
+    );
+    $this->assertStringContainsString(
+      $this->tempFile . '.key',
+      $this->dumpCommand(),
+      'the passphrase comes from a key file, never the command line'
+    );
+    $this->assertStringNotContainsString(self::APP_KEY, $this->dumpCommand());
+  }
+
+  public function testEncryptionKeyFileIsRemovedAfterSuccessAndFailure(): void {
+    $this->handler->handle($this->backup, $this->tempFile);
+    $this->assertFileDoesNotExist($this->tempFile . '.key');
+
+    $this->shell->nextExitCode = 2;
+    try {
+      $this->handler->handle($this->backup, $this->tempFile);
+      $this->fail('expected the dump to throw');
+    } catch (\Exception $exc) {
+      // expected
+    }
+    $this->assertFileDoesNotExist($this->tempFile . '.key');
+  }
+
+  public function testAnEmptyAppKeyRefusesToBackUp(): void {
+    TestConfig::$values['app.key'] = '';
+
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessageMatches('/application key is empty/');
+
+    $this->handler->handle($this->backup, $this->tempFile);
   }
 
   public function testDumpOutputIsRedirectedToTheTempFile(): void {
@@ -145,8 +190,12 @@ final class MysqlDumpHandlerTest extends TestCase {
   public function testCredentialsFileIsPrivateAndEscaped(): void {
     $cnf = $this->tempDir . '/creds.cnf';
 
-    $write = new \ReflectionMethod(MysqlDumpHandler::class, 'writeCredentialsFile');
-    $write->invoke($this->handler, $cnf);
+    $contents = new \ReflectionMethod(
+      MysqlDumpHandler::class,
+      'credentialsFileContents'
+    );
+    $write = new \ReflectionMethod(MysqlDumpHandler::class, 'writeSecretFile');
+    $write->invoke($this->handler, $cnf, $contents->invoke($this->handler));
 
     $this->assertSame(
       '0600',
