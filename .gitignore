@@ -7,3 +7,4 @@ CLAUDE.md
 /database.gz*
 /synergycp-config-backup.tar.gz
 /.wrangler
+/announcement.html
