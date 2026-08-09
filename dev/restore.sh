@@ -24,6 +24,9 @@ exit-with-error() {
     echo ""
     echo "=========="
     echo "ERROR: $*  (error code: ${ERROR})"
+    echo ""
+    echo "Need help? Open a ticket (https://kb.synergycp.com/#contacting-support)"
+    echo "and attach ${LOG_FILE:-restore.log} so we can see the full restore output."
   } >&2
   exit "${ERROR}"
 }
